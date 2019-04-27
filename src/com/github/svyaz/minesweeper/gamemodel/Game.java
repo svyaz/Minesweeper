@@ -1,5 +1,7 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
+import com.github.svyaz.minesweeper.gamemodel.gamemodes.GameMode;
+
 import java.time.Duration;
 
 public class Game {
