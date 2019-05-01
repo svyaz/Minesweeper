@@ -4,8 +4,8 @@ public class RookieMode extends GameMode {
     public RookieMode() {
         name = "rookie";
         description = "Новичок";
-        width = 9;
-        height = 9;
+        columns = 9;
+        rows = 9;
         bombsCount = 10;
     }
 }

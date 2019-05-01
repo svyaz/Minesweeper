@@ -6,7 +6,9 @@ import com.github.svyaz.minesweeper.gamemodel.gamemodes.RookieMode;
 public class Main {
     public static void main(String[] args) {
 
-        Game game = new Game(new RookieMode());
+        Game gameController = new Game(new RookieMode());
+        gameController.start();
+
     }
 }
 

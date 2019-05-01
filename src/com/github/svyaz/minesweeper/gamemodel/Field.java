@@ -11,14 +11,14 @@ public class Field {
     private Cell[][] cells;
 
     /**
-     * Количество ячеек по горизонтали.
-     */
-    private int width;
-
-    /**
      * Количество ячеек по вертикали.
      */
-    private int height;
+    private int rows;
+
+    /**
+     * Количество ячеек по горизонтали.
+     */
+    private int columns;
 
     /**
      * Количество мин.
@@ -29,17 +29,17 @@ public class Field {
      * Создает поле из переданного режима игры
      */
     public Field(GameMode mode) {
-        this.width = mode.getWidth();
-        this.height = mode.getHeight();
+        this.columns = mode.getColumns();
+        this.rows = mode.getRows();
         this.bombsCount = mode.getBombsCount();
-        this.cells = new Cell[height][width];
+        this.cells = new Cell[rows][columns];
         initField();
     }
 
     private void initField() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                cells[i][j] = new Cell();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                cells[i][j] = new Cell(i, j);
             }
         }
 
@@ -47,23 +47,16 @@ public class Field {
         int i = 0;
 
         while (i < bombsCount) {
-            int randomRow = random.nextInt(height);
-            int randomColumn = random.nextInt(width);
+            int randomRow = random.nextInt(rows);
+            int randomColumn = random.nextInt(columns);
 
-            if (cells[randomRow][randomColumn].getHasBomb()) {
+            if (cells[randomRow][randomColumn].hasBomb()) {
                 continue;
             }
-            cells[randomRow][randomColumn].setHasBomb(true);
+            cells[randomRow][randomColumn].setBomb();
             i++;
         }
     }
 
-    public void printField() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                System.out.printf(" %s", cells[i][j].getCellLook());
-            }
-            System.out.println();
-        }
-    }
+
 }

@@ -15,14 +15,14 @@ public abstract class GameMode {
     String description;
 
     /**
-     * Ширина поля, в количестве ячеек.
+     * Ширина поля, столбцы.
      */
-    int width;
+    int columns;
 
     /**
-     * Ширина поля, в количестве ячеек.
+     * Высота поля, строки.
      */
-    int height;
+    int rows;
 
     /**
      * Количество бомб.
@@ -37,12 +37,12 @@ public abstract class GameMode {
         return description;
     }
 
-    public int getWidth() {
-        return width;
+    public int getColumns() {
+        return columns;
     }
 
-    public int getHeight() {
-        return height;
+    public int getRows() {
+        return rows;
     }
 
     public int getBombsCount() {

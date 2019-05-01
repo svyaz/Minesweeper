@@ -5,34 +5,68 @@ package com.github.svyaz.minesweeper.gamemodel;
  */
 public class Cell {
     /**
+     * Координата ячейки по строке
+     */
+    private int row;
+
+    /**
+     * Координата ячейки по столбцу
+     */
+    private int column;
+
+    /**
      * Открыта или закрыта.
      */
-    private boolean isOpen = false;
+    private boolean open;
 
     /**
      * Есть ли бомба на ячейке.
      */
-    private boolean hasBomb = false;
+    private boolean bomb;
 
     /**
      * Внешность ячейки.
      */
-    private CellLook cellLook = CellLook.CLOSED_CLEAR;
+    private CellLook cellLook;
+
+    public Cell(int row, int column) {
+        this.row = row;
+        this.column = column;
+        //this.bomb = bomb;
+        this.open = false;
+        this.cellLook = CellLook.CLOSED_CLEAR;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
 
     public boolean isOpen() {
-        return isOpen;
+        return open;
     }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public void setOpen() {
+        open = true;
     }
 
-    public boolean getHasBomb() {
-        return hasBomb;
+    public boolean hasBomb() {
+        return bomb;
     }
 
-    public void setHasBomb(boolean hasBomb) {
-        this.hasBomb = hasBomb;
+    void setBomb() {
+        bomb = true;
     }
 
     public CellLook getCellLook() {
