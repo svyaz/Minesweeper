@@ -54,9 +54,26 @@ public class Field {
                 continue;
             }
             cells[randomRow][randomColumn].setBomb();
+            //TODO DEBUG
+            System.out.println("bomb(" + randomRow + "," + randomColumn + ")");
             i++;
         }
     }
 
+    public Cell getCell(int row, int column) {
+        //TODO исключение при выходе за границы с сообщением
+        return cells[row][column];
+    }
 
+    public int getBombsCount() {
+        return bombsCount;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
 }

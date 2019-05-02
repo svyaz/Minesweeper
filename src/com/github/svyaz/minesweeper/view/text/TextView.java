@@ -5,8 +5,8 @@ import com.github.svyaz.minesweeper.gamemodel.Command;
 import com.github.svyaz.minesweeper.gamemodel.GameCommand;
 import com.github.svyaz.minesweeper.view.GameView;
 
+import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class TextView implements GameView {
     private int rows;
@@ -14,7 +14,7 @@ public class TextView implements GameView {
     private int bombsCount;
     private char[][] cells;
     private String modeDescription;
-    private long gameTime;
+    private String timeString;
     private Scanner scanner;
 
     public TextView() {
@@ -25,7 +25,7 @@ public class TextView implements GameView {
     @Override
     public void initView(String modeDescription, int rows, int columns, int bombsCount) {
         this.modeDescription = modeDescription;
-        this.gameTime = 0;
+        //this.timeString = 0;
         this.rows = rows;
         this.columns = columns;
         this.bombsCount = bombsCount;
@@ -39,7 +39,7 @@ public class TextView implements GameView {
     }
 
     @Override
-    public void updateField(Cell[] updateCells) {
+    public void updateField(List<Cell> updateCells) {
         for (Cell cell : updateCells) {
             char cellSymbol;
             //TODO сделать красивые символы
@@ -88,10 +88,18 @@ public class TextView implements GameView {
     }
 
     @Override
+    public void updateGameTime(long gameTime) {
+        int hours = (int) gameTime / 3_600_000;
+        int minutes = ((int) gameTime % 3_600_000) / 60_000;
+        int seconds = ((int) gameTime % 60_000) / 1_000;
+        timeString = String.format("%d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    @Override
     public void printField() {
         System.out.println("Mode: " + modeDescription);
         System.out.println("Bombs remaining: " + bombsCount);
-        System.out.println("Time: " + gameTime);
+        System.out.println("Time: " + timeString);
 
         //TODO вывести координаты по горизонтали и по вертикали
         //Stream.iterate(1, c -> c + 1).limit(columns).forEach(System.out::println);
@@ -161,7 +169,7 @@ public class TextView implements GameView {
 
             } else if (inputString.matches("n \\w+")) {
                 // Запуск новой игры в одном из предустановленных режимов (Новичок, Любитель, Профессионал).
-                return new Command(GameCommand.START_NEW_GAME, 0,0,0, inputString.substring(2));
+                return new Command(GameCommand.START_NEW_GAME, 0, 0, 0, inputString.substring(2));
 
             } else if (inputString.matches("r")) {
                 // Рестартовать игру в текущем режиме
