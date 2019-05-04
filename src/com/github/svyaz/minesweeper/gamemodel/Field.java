@@ -92,6 +92,7 @@ public class Field {
     }
 
     public boolean isAllOpen() {
+        System.out.printf("All: %d, open: %d, bombs: %d%n", rows * columns, openCellsCount, bombsCount);
         return rows * columns - openCellsCount == bombsCount;
     }
 }

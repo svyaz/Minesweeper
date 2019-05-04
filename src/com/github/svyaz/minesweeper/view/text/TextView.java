@@ -72,7 +72,7 @@ public class TextView implements GameView {
                     cellSymbol = '8';
                     break;
                 case CLOSED_FLAGGED:
-                    cellSymbol = '!';
+                    cellSymbol = 'F';
                     break;
                 case BOMB_CLEAR:
                     cellSymbol = '*';

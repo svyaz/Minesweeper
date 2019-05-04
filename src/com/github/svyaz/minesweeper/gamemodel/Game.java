@@ -155,20 +155,20 @@ public class Game {
 
                     // Если дошли сюда - то ячейку значит нужно открыть
                     LinkedList<Cell> cellsToUpdate = new LinkedList<>();
-                    boolean[][] visited = new boolean[field.getRows()][field.getColumns()];
                     Queue<Cell> queue = new LinkedList<>();
                     queue.add(cell);
 
                     while (!queue.isEmpty()) {
                         Cell current = queue.remove();
-                        int row = current.getRow();
-                        int column = current.getColumn();
 
-                        if (visited[row][column]) {
+                        if (current.isOpen()) {
+                            // Если ячейка уже открыта
                             continue;
                         }
 
-                        visited[row][column] = true;
+                        int row = current.getRow();
+                        int column = current.getColumn();
+
                         int bombsAround = 0;
                         Queue<Cell> subQueue = new LinkedList<>();
 
