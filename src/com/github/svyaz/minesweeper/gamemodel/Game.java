@@ -101,13 +101,10 @@ public class Game {
         view.printField();
 
         while (true) {
-            Command command = view.getCommand();
+            Command command = view.waitCommand();
             switch (command.getCommand()) {
 
                 case OPEN_CELL:
-                    //TODO open one cell
-                    view.showMessage("open one cell: " + command.getRow() + ", " + command.getColumn());
-
                     // Если игра уже закончена
                     if (status == LOST || status == FINISHED) {
                         view.showMessage("Игра уже закончена!");
@@ -120,8 +117,15 @@ public class Game {
                         status = STARTED;
                     }
 
-                    //TODO Провалидировать row и column
-                    Cell cell = field.getCell(command.getRow(), command.getColumn());
+                    // Если за пределами поля
+                    int commandRow = command.getRow();
+                    int commandColumn = command.getColumn();
+                    if (commandRow >= field.getRows() || commandColumn >= field.getColumns()) {
+                        view.printField();
+                        break;
+                    }
+
+                    Cell cell = field.getCell(commandRow, commandColumn);
 
                     // Если флаг или уже открыта, то просто перерисовываем поле.
                     if (cell.hasFlag() || cell.isOpen()) {
@@ -129,13 +133,15 @@ public class Game {
                         break;
                     }
 
+                    // Для обновления внешнего вида ячеек
+                    List<Cell> cellsToUpdate = new LinkedList<>();
+
                     // Если бомба - взорвались и конец игры. Отмечаем все бомбы на карте
                     //TODO те что с флажкам - остаются с флажками!
                     //TODO где флажок стоял неправильно - надо зачеркнутую бомбу
                     if (cell.hasBomb()) {
                         status = LOST;
                         timer.cancel();
-                        List<Cell> cellsToUpdate = new LinkedList<>();
                         for (int i = 0; i < field.getRows(); i++) {
                             for (int j = 0; j < field.getColumns(); j++) {
                                 Cell tmpCell = field.getCell(i, j);
@@ -154,7 +160,6 @@ public class Game {
                     }
 
                     // Если дошли сюда - то ячейку значит нужно открыть
-                    LinkedList<Cell> cellsToUpdate = new LinkedList<>();
                     Queue<Cell> queue = new LinkedList<>();
                     queue.add(cell);
 
@@ -168,7 +173,6 @@ public class Game {
 
                         int row = current.getRow();
                         int column = current.getColumn();
-
                         int bombsAround = 0;
                         Queue<Cell> subQueue = new LinkedList<>();
 
@@ -218,6 +222,43 @@ public class Game {
                 case FLAG_CELL:
                     //TODO flag/unflag cell
                     view.showMessage("flag/unflag cell:" + command.getRow() + ", " + command.getColumn());
+
+                    // Если игра уже закончена
+                    if (status == LOST || status == FINISHED) {
+                        view.showMessage("Игра уже закончена!");
+                        break;
+                    }
+
+                    // Стартуем игру если это первый ход
+                    if (status == NOT_STARTED) {
+                        startTimer();
+                        status = STARTED;
+                    }
+
+                    // Если за пределами поля
+                    int fRow = command.getRow();
+                    int fColumn = command.getColumn();
+                    if (fRow >= field.getRows() || fColumn >= field.getColumns()) {
+                        view.printField();
+                        break;
+                    }
+
+                    Cell fCell = field.getCell(fRow, fColumn);
+
+                    // Если уже открыта - просто перерисовываем поле
+                    if (fCell.isOpen()) {
+                        view.printField();
+                        break;
+                    }
+
+                    // Ставим/убираем флаг
+                    fCell.setFlag(!fCell.hasFlag());
+                    fCell.setCellLook(fCell.hasFlag() ? CellLook.CLOSED_FLAGGED : CellLook.CLOSED_CLEAR);
+                    List<Cell> updateCells = new LinkedList<>();
+                    updateCells.add(fCell);
+                    view.updateField(updateCells);
+                    view.updateGameTime(time);
+                    view.printField();
                     break;
                 case EXIT:
                     view.showMessage("Пока пока!");

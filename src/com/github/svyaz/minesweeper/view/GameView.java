@@ -21,8 +21,8 @@ public interface GameView {
     // Нарисовать поле
     void printField();
 
-    // Получить команду
-    Command getCommand();
+    // Ожидать команду
+    Command waitCommand();
 
     // Показать сообщение об ошибке
     void showMessage(String message);

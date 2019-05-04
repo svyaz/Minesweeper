@@ -118,7 +118,7 @@ public class TextView implements GameView {
     }
 
     @Override
-    public Command getCommand() {
+    public Command waitCommand() {
         while (scanner.hasNext()) {
             String inputString = scanner.next();
             //TODO отрезать пробелы с начала и конца, убрать двойные пробелы.
