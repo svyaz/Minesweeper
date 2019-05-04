@@ -105,6 +105,8 @@ public class Game {
             switch (command.getCommand()) {
 
                 case OPEN_CELL:
+                    //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
+
                     // Если игра уже закончена
                     if (status == LOST || status == FINISHED) {
                         view.showMessage("Игра уже закончена!");
@@ -136,9 +138,7 @@ public class Game {
                     // Для обновления внешнего вида ячеек
                     List<Cell> cellsToUpdate = new LinkedList<>();
 
-                    // Если бомба - взорвались и конец игры. Отмечаем все бомбы на карте
-                    //TODO те что с флажкам - остаются с флажками!
-                    //TODO где флажок стоял неправильно - надо зачеркнутую бомбу
+                    // Если бомба - взорвались и конец игры. Отмечаем все бомбы на поле
                     if (cell.hasBomb()) {
                         status = LOST;
                         timer.cancel();
@@ -147,6 +147,9 @@ public class Game {
                                 Cell tmpCell = field.getCell(i, j);
 
                                 if (tmpCell.hasBomb()) {
+                                    if (tmpCell.hasFlag()) {
+                                        continue;
+                                    }
                                     tmpCell.setCellLook(tmpCell == cell ? CellLook.BOMB_BANG : CellLook.BOMB_CLEAR);
                                     cellsToUpdate.add(tmpCell);
                                 }
@@ -220,7 +223,6 @@ public class Game {
                     view.showMessage("open neighbor cells: " + command.getRow() + ", " + command.getColumn());
                     break;
                 case FLAG_CELL:
-                    //TODO flag/unflag cell
                     view.showMessage("flag/unflag cell:" + command.getRow() + ", " + command.getColumn());
 
                     // Если игра уже закончена
