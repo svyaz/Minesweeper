@@ -130,8 +130,11 @@ public class Game {
                     }
 
                     // Если бомба - взорвались и конец игры. Отмечаем все бомбы на карте
+                    //TODO те что с флажкам - остаются с флажками!
+                    //TODO где флажок стоял неправильно - надо зачеркнутую бомбу
                     if (cell.hasBomb()) {
                         status = LOST;
+                        timer.cancel();
                         List<Cell> cellsToUpdate = new LinkedList<>();
                         for (int i = 0; i < field.getRows(); i++) {
                             for (int j = 0; j < field.getColumns(); j++) {
@@ -151,33 +154,61 @@ public class Game {
                     }
 
                     // Если дошли сюда - то ячейку значит нужно открыть
-                    //TODO и если вокруг нее 0 бомб - то открыть участок до бомб
+                    LinkedList<Cell> cellsToUpdate = new LinkedList<>();
+                    boolean[][] visited = new boolean[field.getRows()][field.getColumns()];
+                    Queue<Cell> queue = new LinkedList<>();
+                    queue.add(cell);
 
-                    int row = cell.getRow();
-                    int column = cell.getColumn();
-                    int bombsAround = 0;
+                    while (!queue.isEmpty()) {
+                        Cell current = queue.remove();
+                        int row = current.getRow();
+                        int column = current.getColumn();
 
-                    for (int i = row - 1; i <= row + 1; i++) {
-                        for (int j = column - 1; j <= column + 1; j++) {
-                            if (i < 0 || i >= field.getRows() || j < 0 || j >= field.getColumns() || (i == row && j == column)) {
-                                // Проверка выхода за границы поля
-                                continue;
+                        if (visited[row][column]) {
+                            continue;
+                        }
+
+                        visited[row][column] = true;
+                        int bombsAround = 0;
+                        Queue<Cell> subQueue = new LinkedList<>();
+
+                        for (int i = row - 1; i <= row + 1; i++) {
+                            for (int j = column - 1; j <= column + 1; j++) {
+                                if (i < 0 || i >= field.getRows() || j < 0 || j >= field.getColumns() || (i == row && j == column)) {
+                                    // Проверка выхода за границы поля и если та же самая ячейка
+                                    continue;
+                                }
+
+                                Cell neighbor = field.getCell(i, j);
+                                if (neighbor.hasBomb()) {
+                                    ++bombsAround;
+                                } else {
+                                    subQueue.add(neighbor);
+                                }
                             }
-                            if (field.getCell(i, j).hasBomb()) {
-                                ++bombsAround;
-                            }
+                        }
+
+                        current.open();
+                        current.setCellLook(CellLook.values()[bombsAround]);
+                        cellsToUpdate.add(current);
+                        field.incrementOpenCellsCount();
+
+                        if (bombsAround == 0) {
+                            queue.addAll(subQueue);
                         }
                     }
 
-                    cell.open();
-                    //TODO проверку после каждого открытия сколько осталось не открытых ячеек и не пора ли заканчивать игру???
-                    //TODO проверить на настоящей игре что происходит если не посльзоваться флагами, а просто все открывать
-                    cell.setCellLook(CellLook.values()[bombsAround]);
-                    LinkedList<Cell> cellsToUpdate = new LinkedList<>();
-                    cellsToUpdate.add(cell);
                     view.updateField(cellsToUpdate);
                     view.updateGameTime(time);
                     view.printField();
+
+                    if (field.isAllOpen()) {
+                        // Если всё открыто кроме бомб - игра пройдена!
+                        //TODO поставить флажки на все неоткрытые клетки (с бомбами)
+                        status = FINISHED;
+                        timer.cancel();
+                        view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
+                    }
                     break;
 
                 case OPEN_NEIGHBOR:

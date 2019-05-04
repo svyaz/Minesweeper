@@ -26,12 +26,18 @@ public class Field {
     private int bombsCount;
 
     /**
+     * Количество открытых ячеек
+     */
+    private int openCellsCount;
+
+    /**
      * Создает поле из переданного режима игры
      */
     public Field(GameMode mode) {
         this.columns = mode.getColumns();
         this.rows = mode.getRows();
         this.bombsCount = mode.getBombsCount();
+        this.openCellsCount = 0;
         this.cells = new Cell[rows][columns];
         initField();
     }
@@ -54,9 +60,9 @@ public class Field {
                 continue;
             }
             cells[randomRow][randomColumn].setBomb();
+            i++;
             //TODO DEBUG
             System.out.println("bomb(" + randomRow + "," + randomColumn + ")");
-            i++;
         }
     }
 
@@ -65,15 +71,27 @@ public class Field {
         return cells[row][column];
     }
 
-    public int getBombsCount() {
-        return bombsCount;
-    }
-
     public int getRows() {
         return rows;
     }
 
     public int getColumns() {
         return columns;
+    }
+
+    public int getBombsCount() {
+        return bombsCount;
+    }
+
+    public int getOpenCellsCount() {
+        return openCellsCount;
+    }
+
+    public void incrementOpenCellsCount() {
+        openCellsCount++;
+    }
+
+    public boolean isAllOpen() {
+        return rows * columns - openCellsCount == bombsCount;
     }
 }

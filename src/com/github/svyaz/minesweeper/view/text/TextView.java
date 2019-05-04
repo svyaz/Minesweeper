@@ -121,6 +121,7 @@ public class TextView implements GameView {
     public Command getCommand() {
         while (scanner.hasNext()) {
             String inputString = scanner.next();
+            //TODO отрезать пробелы с начала и конца, убрать двойные пробелы.
 
             if (inputString.matches("o \\d+ \\d+")) {
                 // Команда "Открыть одну ячейку по координатам"
