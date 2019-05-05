@@ -29,3 +29,6 @@ public class Main {
 -about
 -help
  */
+
+//TODO сделать картинку с зачеркнутой бомбой для CellLook.BOMB_WRONG
+//TODO сделать правильный манифест-файл

@@ -9,6 +9,7 @@ public class Command {
 
     /**
      * Для команды с всеми возможными параметрами
+     * TODO поменять порядок параметров с сделать перегрузки конструкторов.
      */
     public Command(GameCommand command, int row, int column, int bombsCount, String parameter) {
         this.command = command;

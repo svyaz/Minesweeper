@@ -80,6 +80,9 @@ public class TextView implements GameView {
                 case BOMB_BANG:
                     cellSymbol = 'X';
                     break;
+                case BOMB_WRONG:
+                    cellSymbol = 'W';
+                    break;
                 default:
                     cellSymbol = '-';
             }
@@ -183,6 +186,4 @@ public class TextView implements GameView {
         }
         return null;    // Чтобы метод компилировался.
     }
-
-
 }

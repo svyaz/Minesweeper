@@ -76,7 +76,6 @@ public class Game {
 
             @Override
             public void run() {
-                //System.out.println((System.currentTimeMillis() - startTime) / 1000);
                 time = System.currentTimeMillis() - startTime;
                 view.updateGameTime(time);
             }
@@ -151,8 +150,14 @@ public class Game {
                                         continue;
                                     }
                                     tmpCell.setCellLook(tmpCell == cell ? CellLook.BOMB_BANG : CellLook.BOMB_CLEAR);
-                                    cellsToUpdate.add(tmpCell);
+                                } else {
+                                    if (tmpCell.hasFlag()) {
+                                        tmpCell.setCellLook(CellLook.BOMB_WRONG);
+                                    } else {
+                                        continue;
+                                    }
                                 }
+                                cellsToUpdate.add(tmpCell);
                             }
                         }
                         view.updateField(cellsToUpdate);
@@ -223,8 +228,6 @@ public class Game {
                     view.showMessage("open neighbor cells: " + command.getRow() + ", " + command.getColumn());
                     break;
                 case FLAG_CELL:
-                    view.showMessage("flag/unflag cell:" + command.getRow() + ", " + command.getColumn());
-
                     // Если игра уже закончена
                     if (status == LOST || status == FINISHED) {
                         view.showMessage("Игра уже закончена!");
