@@ -106,8 +106,7 @@ public class Game {
 
 
                 case OPEN_NEIGHBOR:
-                    //TODO open neighbor cells
-                    view.showMessage("open neighbor cells: " + command.getRow() + ", " + command.getColumn());
+
                     break;
                 case FLAG_CELL:
                     // Если игра уже закончена
@@ -302,6 +301,11 @@ public class Game {
             timer.cancel();
             view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
         }
+    }
+
+    public void openNeighbors(int row, int column) {
+        //TODO open neighbor cells
+        view.showMessage("open neighbor cells: " + row + ", " + column);
     }
 
     public void restart() {

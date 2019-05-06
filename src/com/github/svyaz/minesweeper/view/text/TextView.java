@@ -137,7 +137,7 @@ public class TextView implements GameView {
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                //return new Command(GameCommand.OPEN_NEIGHBOR, row, column, 0, null);
+                return new OpenNeighborsCommand(row, column);
 
             } else if (inputString.matches("f \\d+ \\d+")) {
                 // Команда "Поставить/снять флаг"
