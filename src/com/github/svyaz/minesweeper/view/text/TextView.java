@@ -156,7 +156,7 @@ public class TextView implements GameView {
 
             } else if (inputString.matches("s")) {
                 // Команда "Показать таблицу рекордов"
-                //return new Command(GameCommand.SHOW_SCORES);
+                return new ShowScoresCommand();
 
             } else if (inputString.matches("e")) {
                 // Выход из программы.

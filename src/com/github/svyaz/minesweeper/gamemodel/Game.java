@@ -266,8 +266,6 @@ public class Game {
                     view.printField();
                     break;
 
-                case SHOW_ABOUT:
-
                 case START_NEW_GAME:
                     view.showMessage("Новая игра: " + command.getParameter());
                     try {
@@ -301,10 +299,7 @@ public class Game {
                     //TODO new game
                     view.showMessage("new free game: " + command.getRow() + ", " + command.getColumn() + ", " + command.getBombsCount());
                     break;
-                case SHOW_SCORES:
-                    //TODO show scores
-                    view.showMessage("Show scores.");
-                    break;
+
             }*/
         }
     }
@@ -332,6 +327,11 @@ public class Game {
     public void showAbout() {
         //TODO написать текстовку about
         view.showMessage("About text!");
+    }
+
+    public void showScores() {
+        //TODO show scores
+        view.showMessage("Show scores.");
     }
 
 }
