@@ -1,5 +1,6 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
+import com.github.svyaz.minesweeper.gamemodel.commands.Command;
 import com.github.svyaz.minesweeper.gamemodel.gamemodes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 import com.github.svyaz.minesweeper.view.text.TextView;
@@ -60,10 +61,6 @@ public class Game {
 
     }
 
-    public Field getField() {
-        return field;
-    }
-
     /**
      * Запуск таймера при старте игры (когда сделан первый ход)
      */
@@ -101,7 +98,10 @@ public class Game {
 
         while (true) {
             Command command = view.waitCommand();
-            switch (command.getCommand()) {
+            command.setGame(this);
+            command.execute();
+
+            /*switch (command.getCommand()) {
 
                 case OPEN_CELL:
                     //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
@@ -265,34 +265,12 @@ public class Game {
                     view.updateGameTime(time);
                     view.printField();
                     break;
-                case EXIT:
-                    view.showMessage("Пока пока!");
-                    System.exit(0);
-                    break;
+
                 case SHOW_ABOUT:
                     //TODO написать текстовку about
                     view.showMessage("About text!");
                     break;
-                case RESTART_GAME:
-                    //TODO restart game in current mode
-                    //TODO это все или нет? Вроде норм работает...
-                    view.showMessage("restart game in current mode: " + gameMode.getName());
 
-                    if (status != NOT_STARTED) {
-                        status = NOT_STARTED;
-                        timer.cancel();
-                    }
-
-                    field = new Field(gameMode);
-                    time = 0;
-                    view.initView(gameMode.getDescription(),
-                            gameMode.getRows(),
-                            gameMode.getColumns(),
-                            gameMode.getBombsCount());
-                    view.updateGameTime(time);
-                    view.printField();
-
-                    break;
                 case START_NEW_GAME:
                     view.showMessage("Новая игра: " + command.getParameter());
                     try {
@@ -330,10 +308,29 @@ public class Game {
                     //TODO show scores
                     view.showMessage("Show scores.");
                     break;
-            }
+            }*/
         }
     }
 
+    public void restart() {
+        if (status != NOT_STARTED) {
+            status = NOT_STARTED;
+            timer.cancel();
+        }
+
+        field = new Field(gameMode);
+        time = 0;
+        view.initView(gameMode.getDescription(),
+                gameMode.getRows(),
+                gameMode.getColumns(),
+                gameMode.getBombsCount());
+        view.updateGameTime(time);
+        view.printField();
+    }
+
+    public void exit() {
+        System.exit(0);
+    }
 
 }
 

@@ -1,7 +1,7 @@
 package com.github.svyaz.minesweeper.view;
 
 import com.github.svyaz.minesweeper.gamemodel.Cell;
-import com.github.svyaz.minesweeper.gamemodel.Command;
+import com.github.svyaz.minesweeper.gamemodel.commands.Command;
 
 import java.util.List;
 

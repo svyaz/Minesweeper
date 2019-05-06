@@ -1,8 +1,7 @@
 package com.github.svyaz.minesweeper.view.text;
 
 import com.github.svyaz.minesweeper.gamemodel.Cell;
-import com.github.svyaz.minesweeper.gamemodel.Command;
-import com.github.svyaz.minesweeper.gamemodel.GameCommand;
+import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
 import java.util.List;
@@ -131,21 +130,21 @@ public class TextView implements GameView {
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new Command(GameCommand.OPEN_CELL, row, column, 0, null);
+                //return new Command(GameCommand.OPEN_CELL, row, column, 0, null);
 
             } else if (inputString.matches("b \\d+ \\d+")) {
                 // Команда "Открыть окружающие ячейки"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new Command(GameCommand.OPEN_NEIGHBOR, row, column, 0, null);
+                //return new Command(GameCommand.OPEN_NEIGHBOR, row, column, 0, null);
 
             } else if (inputString.matches("f \\d+ \\d+")) {
                 // Команда "Поставить/снять флаг"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new Command(GameCommand.FLAG_CELL, row, column, 0, null);
+                //return new Command(GameCommand.FLAG_CELL, row, column, 0, null);
 
             } else if (inputString.matches("h")) {
                 //TODO написать текстовку help-а по командам
@@ -153,15 +152,15 @@ public class TextView implements GameView {
 
             } else if (inputString.matches("a")) {
                 // Показать информацию о программе
-                return new Command(GameCommand.SHOW_ABOUT);
+                //return new Command(GameCommand.SHOW_ABOUT);
 
             } else if (inputString.matches("s")) {
                 // Команда "Показать таблицу рекордов"
-                return new Command(GameCommand.SHOW_SCORES);
+                //return new Command(GameCommand.SHOW_SCORES);
 
             } else if (inputString.matches("e")) {
                 // Выход из программы.
-                return new Command(GameCommand.EXIT);
+                return new ExitCommand();
 
             } else if (inputString.matches("n \\d+ \\d+ \\d+")) {
                 // Запуск новой игры в Свободном режиме
@@ -169,18 +168,16 @@ public class TextView implements GameView {
                 int rows = Integer.parseInt(strings[1]);
                 int columns = Integer.parseInt(strings[2]);
                 int bombsCount = Integer.parseInt(strings[3]);
-                return new Command(GameCommand.START_NEW_FREE, rows, columns, bombsCount, null);
+                //return new Command(GameCommand.START_NEW_FREE, rows, columns, bombsCount, null);
 
             } else if (inputString.matches("n \\w+")) {
                 // Запуск новой игры в одном из предустановленных режимов (Новичок, Любитель, Профессионал).
-                return new Command(GameCommand.START_NEW_GAME, 0, 0, 0, inputString.substring(2));
+                //return new Command(GameCommand.START_NEW_GAME, 0, 0, 0, inputString.substring(2));
 
             } else if (inputString.matches("r")) {
                 // Рестартовать игру в текущем режиме
-                return new Command(GameCommand.RESTART_GAME);
-
+                return new RestartCommand();
             } else {
-                // Ввели что-то неизвестное.
                 showMessage("Неизвестная команда!");
             }
         }
