@@ -103,125 +103,7 @@ public class Game {
 
             /*switch (command.getCommand()) {
 
-                case OPEN_CELL:
-                    //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
 
-                    // Если игра уже закончена
-                    if (status == LOST || status == FINISHED) {
-                        view.showMessage("Игра уже закончена!");
-                        break;
-                    }
-
-                    // Стартуем игру если это первый ход
-                    if (status == NOT_STARTED) {
-                        startTimer();
-                        status = STARTED;
-                    }
-
-                    // Если за пределами поля
-                    int commandRow = command.getRow();
-                    int commandColumn = command.getColumn();
-                    if (commandRow >= field.getRows() || commandColumn >= field.getColumns()) {
-                        view.printField();
-                        break;
-                    }
-
-                    Cell cell = field.getCell(commandRow, commandColumn);
-
-                    // Если флаг или уже открыта, то просто перерисовываем поле.
-                    if (cell.hasFlag() || cell.isOpen()) {
-                        view.printField();
-                        break;
-                    }
-
-                    // Для обновления внешнего вида ячеек
-                    List<Cell> cellsToUpdate = new LinkedList<>();
-
-                    // Если бомба - взорвались и конец игры. Отмечаем все бомбы на поле
-                    if (cell.hasBomb()) {
-                        status = LOST;
-                        timer.cancel();
-                        for (int i = 0; i < field.getRows(); i++) {
-                            for (int j = 0; j < field.getColumns(); j++) {
-                                Cell tmpCell = field.getCell(i, j);
-
-                                if (tmpCell.hasBomb()) {
-                                    if (tmpCell.hasFlag()) {
-                                        continue;
-                                    }
-                                    tmpCell.setCellLook(tmpCell == cell ? CellLook.BOMB_BANG : CellLook.BOMB_CLEAR);
-                                } else {
-                                    if (tmpCell.hasFlag()) {
-                                        tmpCell.setCellLook(CellLook.BOMB_WRONG);
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                                cellsToUpdate.add(tmpCell);
-                            }
-                        }
-                        view.updateField(cellsToUpdate);
-                        view.updateGameTime(time);
-                        view.printField();
-                        view.showMessage("!!!!! Bang !!!!! Вы взорвались !!!!!");
-                        break;
-                    }
-
-                    // Если дошли сюда - то ячейку значит нужно открыть
-                    Queue<Cell> queue = new LinkedList<>();
-                    queue.add(cell);
-
-                    while (!queue.isEmpty()) {
-                        Cell current = queue.remove();
-
-                        if (current.isOpen()) {
-                            // Если ячейка уже открыта
-                            continue;
-                        }
-
-                        int row = current.getRow();
-                        int column = current.getColumn();
-                        int bombsAround = 0;
-                        Queue<Cell> subQueue = new LinkedList<>();
-
-                        for (int i = row - 1; i <= row + 1; i++) {
-                            for (int j = column - 1; j <= column + 1; j++) {
-                                if (i < 0 || i >= field.getRows() || j < 0 || j >= field.getColumns() || (i == row && j == column)) {
-                                    // Проверка выхода за границы поля и если та же самая ячейка
-                                    continue;
-                                }
-
-                                Cell neighbor = field.getCell(i, j);
-                                if (neighbor.hasBomb()) {
-                                    ++bombsAround;
-                                } else {
-                                    subQueue.add(neighbor);
-                                }
-                            }
-                        }
-
-                        current.open();
-                        current.setCellLook(CellLook.values()[bombsAround]);
-                        cellsToUpdate.add(current);
-                        field.incrementOpenCellsCount();
-
-                        if (bombsAround == 0) {
-                            queue.addAll(subQueue);
-                        }
-                    }
-
-                    view.updateField(cellsToUpdate);
-                    view.updateGameTime(time);
-                    view.printField();
-
-                    if (field.isAllOpen()) {
-                        // Если всё открыто кроме бомб - игра пройдена!
-                        //TODO поставить флажки на все неоткрытые клетки (с бомбами)
-                        status = FINISHED;
-                        timer.cancel();
-                        view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
-                    }
-                    break;
 
                 case OPEN_NEIGHBOR:
                     //TODO open neighbor cells
@@ -301,6 +183,124 @@ public class Game {
                     break;
 
             }*/
+        }
+    }
+
+    public void openCell(int row, int column) {
+        //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
+
+        // Если игра уже закончена
+        if (status == LOST || status == FINISHED) {
+            view.showMessage("Игра уже закончена!");
+            return;
+        }
+
+        // Стартуем игру если это первый ход
+        if (status == NOT_STARTED) {
+            startTimer();
+            status = STARTED;
+        }
+
+        // Если за пределами поля
+        if (row >= field.getRows() || column >= field.getColumns()) {
+            view.printField();
+            return;
+        }
+
+        Cell cell = field.getCell(row, column);
+
+        // Если флаг или уже открыта, то просто перерисовываем поле.
+        if (cell.hasFlag() || cell.isOpen()) {
+            view.printField();
+            return;
+        }
+
+        // Для обновления внешнего вида ячеек
+        List<Cell> cellsToUpdate = new LinkedList<>();
+
+        // Если бомба - взорвались и конец игры. Отмечаем все бомбы на поле
+        if (cell.hasBomb()) {
+            status = LOST;
+            timer.cancel();
+            for (int i = 0; i < field.getRows(); i++) {
+                for (int j = 0; j < field.getColumns(); j++) {
+                    Cell tmpCell = field.getCell(i, j);
+
+                    if (tmpCell.hasBomb()) {
+                        if (tmpCell.hasFlag()) {
+                            continue;
+                        }
+                        tmpCell.setCellLook(tmpCell == cell ? CellLook.BOMB_BANG : CellLook.BOMB_CLEAR);
+                    } else {
+                        if (tmpCell.hasFlag()) {
+                            tmpCell.setCellLook(CellLook.BOMB_WRONG);
+                        } else {
+                            continue;
+                        }
+                    }
+                    cellsToUpdate.add(tmpCell);
+                }
+            }
+            view.updateField(cellsToUpdate);
+            view.updateGameTime(time);
+            view.printField();
+            view.showMessage("!!!!! Bang !!!!! Вы взорвались !!!!!");
+            return;
+        }
+
+        // Если дошли сюда - то ячейку значит нужно открыть
+        Queue<Cell> queue = new LinkedList<>();
+        queue.add(cell);
+
+        while (!queue.isEmpty()) {
+            Cell current = queue.remove();
+
+            if (current.isOpen()) {
+                // Если ячейка уже открыта
+                continue;
+            }
+
+            int currentRow = current.getRow();
+            int currentColumn = current.getColumn();
+            int bombsAround = 0;
+            Queue<Cell> subQueue = new LinkedList<>();
+
+            for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+                for (int j = currentColumn - 1; j <= currentColumn + 1; j++) {
+                    if (i < 0 || i >= field.getRows() || j < 0 || j >= field.getColumns() || (i == currentRow && j == currentColumn)) {
+                        // Проверка выхода за границы поля и если та же самая ячейка
+                        continue;
+                    }
+
+                    Cell neighbor = field.getCell(i, j);
+                    if (neighbor.hasBomb()) {
+                        ++bombsAround;
+                    } else {
+                        subQueue.add(neighbor);
+                    }
+                }
+            }
+
+            current.open();
+            current.setCellLook(CellLook.values()[bombsAround]);
+            cellsToUpdate.add(current);
+            field.incrementOpenCellsCount();
+
+            if (bombsAround == 0) {
+                queue.addAll(subQueue);
+            }
+        }
+
+        view.updateField(cellsToUpdate);
+        view.updateGameTime(time);
+        view.printField();
+
+        if (field.isAllOpen()) {
+            // Если всё открыто кроме бомб - игра пройдена!
+            //TODO поставить флажки на все неоткрытые клетки (с бомбами)
+            status = FINISHED;
+            timer.cancel();
+            view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
         }
     }
 

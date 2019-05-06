@@ -130,7 +130,7 @@ public class TextView implements GameView {
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                //return new Command(GameCommand.OPEN_CELL, row, column, 0, null);
+                return new OpenCellCommand(row, column);
 
             } else if (inputString.matches("b \\d+ \\d+")) {
                 // Команда "Открыть окружающие ячейки"
