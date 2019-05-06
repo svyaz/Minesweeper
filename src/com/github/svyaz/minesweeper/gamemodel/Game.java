@@ -104,49 +104,6 @@ public class Game {
             /*switch (command.getCommand()) {
 
 
-
-                case OPEN_NEIGHBOR:
-
-                    break;
-                case FLAG_CELL:
-                    // Если игра уже закончена
-                    if (status == LOST || status == FINISHED) {
-                        view.showMessage("Игра уже закончена!");
-                        break;
-                    }
-
-                    // Стартуем игру если это первый ход
-                    if (status == NOT_STARTED) {
-                        startTimer();
-                        status = STARTED;
-                    }
-
-                    // Если за пределами поля
-                    int fRow = command.getRow();
-                    int fColumn = command.getColumn();
-                    if (fRow >= field.getRows() || fColumn >= field.getColumns()) {
-                        view.printField();
-                        break;
-                    }
-
-                    Cell fCell = field.getCell(fRow, fColumn);
-
-                    // Если уже открыта - просто перерисовываем поле
-                    if (fCell.isOpen()) {
-                        view.printField();
-                        break;
-                    }
-
-                    // Ставим/убираем флаг
-                    fCell.setFlag(!fCell.hasFlag());
-                    fCell.setCellLook(fCell.hasFlag() ? CellLook.CLOSED_FLAGGED : CellLook.CLOSED_CLEAR);
-                    List<Cell> updateCells = new LinkedList<>();
-                    updateCells.add(fCell);
-                    view.updateField(updateCells);
-                    view.updateGameTime(time);
-                    view.printField();
-                    break;
-
                 case START_NEW_GAME:
                     view.showMessage("Новая игра: " + command.getParameter());
                     try {
@@ -306,6 +263,43 @@ public class Game {
     public void openNeighbors(int row, int column) {
         //TODO open neighbor cells
         view.showMessage("open neighbor cells: " + row + ", " + column);
+    }
+
+    public void flagCell(int row, int column) {
+        // Если игра уже закончена
+        if (status == LOST || status == FINISHED) {
+            view.showMessage("Игра уже закончена!");
+            return;
+        }
+
+        // Стартуем игру если это первый ход
+        if (status == NOT_STARTED) {
+            startTimer();
+            status = STARTED;
+        }
+
+        // Если за пределами поля
+        if (row >= field.getRows() || row >= field.getColumns()) {
+            view.printField();
+            return;
+        }
+
+        Cell fCell = field.getCell(row, column);
+
+        // Если уже открыта - просто перерисовываем поле
+        if (fCell.isOpen()) {
+            view.printField();
+            return;
+        }
+
+        // Ставим/убираем флаг
+        fCell.setFlag(!fCell.hasFlag());
+        fCell.setCellLook(fCell.hasFlag() ? CellLook.CLOSED_FLAGGED : CellLook.CLOSED_CLEAR);
+        List<Cell> updateCells = new LinkedList<>();
+        updateCells.add(fCell);
+        view.updateField(updateCells);
+        view.updateGameTime(time);
+        view.printField();
     }
 
     public void restart() {

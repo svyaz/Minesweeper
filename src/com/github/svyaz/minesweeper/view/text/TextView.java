@@ -144,7 +144,7 @@ public class TextView implements GameView {
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                //return new Command(GameCommand.FLAG_CELL, row, column, 0, null);
+                return new FlagCellCommand(row, column);
 
             } else if (inputString.matches("h")) {
                 //TODO написать текстовку help-а по командам
