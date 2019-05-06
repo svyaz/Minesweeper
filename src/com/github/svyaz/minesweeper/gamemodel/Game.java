@@ -1,6 +1,7 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
 import com.github.svyaz.minesweeper.gamemodel.commands.Command;
+import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 import com.github.svyaz.minesweeper.view.text.TextView;
@@ -100,46 +101,53 @@ public class Game {
             Command command = view.waitCommand();
             command.setGame(this);
             command.execute();
-
-            /*switch (command.getCommand()) {
-
-
-                case START_NEW_GAME:
-                    view.showMessage("Новая игра: " + command.getParameter());
-                    try {
-                        //noinspection OptionalGetWithoutIsPresent
-                        gameMode = Arrays.stream(gameModes)
-                                .filter(m -> m.getName().equals(command.getParameter()))
-                                .findFirst()
-                                .get();
-                        System.out.println(gameMode.getDescription());
-
-                        if (status != NOT_STARTED) {
-                            status = NOT_STARTED;
-                            timer.cancel();
-                        }
-
-                        field = new Field(gameMode);
-                        time = 0;
-                        view.initView(gameMode.getDescription(),
-                                gameMode.getRows(),
-                                gameMode.getColumns(),
-                                gameMode.getBombsCount());
-                        view.updateGameTime(time);
-                        view.printField();
-
-                    } catch (NoSuchElementException e) {
-                        view.showMessage("Неизвестный режим!");
-                    }
-
-                    break;
-                case START_NEW_FREE:
-                    //TODO new game
-                    view.showMessage("new free game: " + command.getRow() + ", " + command.getColumn() + ", " + command.getBombsCount());
-                    break;
-
-            }*/
         }
+    }
+
+    public void startNewGame(String mode) {
+        try {
+            //noinspection OptionalGetWithoutIsPresent
+            gameMode = Arrays.stream(gameModes)
+                    .filter(m -> m.getName().equals(mode))
+                    .findFirst()
+                    .get();
+
+            this.restart();
+        } catch (NoSuchElementException e) {
+            view.showMessage("Неизвестный режим!");
+        }
+    }
+
+    public void startNewGame(int rows, int columns, int bombsCount) {
+        try {
+            //noinspection OptionalGetWithoutIsPresent
+            gameMode = Arrays.stream(gameModes)
+                    .filter(m -> m.getName().equals("free"))
+                    .findFirst()
+                    .get();
+
+            //TODO ???????
+
+            this.restart();
+        } catch (NoSuchElementException e) {
+            view.showMessage("Неизвестный режим!");
+        }
+    }
+
+    public void restart() {
+        if (status != NOT_STARTED) {
+            status = NOT_STARTED;
+            timer.cancel();
+        }
+
+        field = new Field(gameMode);
+        time = 0;
+        view.initView(gameMode.getDescription(),
+                gameMode.getRows(),
+                gameMode.getColumns(),
+                gameMode.getBombsCount());
+        view.updateGameTime(time);
+        view.printField();
     }
 
     public void openCell(int row, int column) {
@@ -298,22 +306,6 @@ public class Game {
         List<Cell> updateCells = new LinkedList<>();
         updateCells.add(fCell);
         view.updateField(updateCells);
-        view.updateGameTime(time);
-        view.printField();
-    }
-
-    public void restart() {
-        if (status != NOT_STARTED) {
-            status = NOT_STARTED;
-            timer.cancel();
-        }
-
-        field = new Field(gameMode);
-        time = 0;
-        view.initView(gameMode.getDescription(),
-                gameMode.getRows(),
-                gameMode.getColumns(),
-                gameMode.getBombsCount());
         view.updateGameTime(time);
         view.printField();
     }

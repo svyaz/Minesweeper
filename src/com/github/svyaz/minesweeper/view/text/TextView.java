@@ -168,11 +168,11 @@ public class TextView implements GameView {
                 int rows = Integer.parseInt(strings[1]);
                 int columns = Integer.parseInt(strings[2]);
                 int bombsCount = Integer.parseInt(strings[3]);
-                //return new Command(GameCommand.START_NEW_FREE, rows, columns, bombsCount, null);
+                return new StartFreeGameCommand(rows, columns, bombsCount);
 
             } else if (inputString.matches("n \\w+")) {
                 // Запуск новой игры в одном из предустановленных режимов (Новичок, Любитель, Профессионал).
-                //return new Command(GameCommand.START_NEW_GAME, 0, 0, 0, inputString.substring(2));
+                return new StartPresetGameCommand(inputString.substring(2));
 
             } else if (inputString.matches("r")) {
                 // Рестартовать игру в текущем режиме
