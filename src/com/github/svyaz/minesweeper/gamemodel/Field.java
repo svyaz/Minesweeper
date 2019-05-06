@@ -1,6 +1,6 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.GameMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 
 import java.util.Random;
 

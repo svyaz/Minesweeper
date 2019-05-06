@@ -1,4 +1,4 @@
-package com.github.svyaz.minesweeper.gamemodel.gamemodes;
+package com.github.svyaz.minesweeper.gamemodel.modes;
 
 public class FanMode extends GameMode {
     public FanMode() {

@@ -1,7 +1,7 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
 import com.github.svyaz.minesweeper.gamemodel.commands.Command;
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.GameMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 import com.github.svyaz.minesweeper.view.text.TextView;
 
@@ -267,9 +267,6 @@ public class Game {
                     break;
 
                 case SHOW_ABOUT:
-                    //TODO написать текстовку about
-                    view.showMessage("About text!");
-                    break;
 
                 case START_NEW_GAME:
                     view.showMessage("Новая игра: " + command.getParameter());
@@ -330,6 +327,11 @@ public class Game {
 
     public void exit() {
         System.exit(0);
+    }
+
+    public void showAbout() {
+        //TODO написать текстовку about
+        view.showMessage("About text!");
     }
 
 }

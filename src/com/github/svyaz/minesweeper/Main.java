@@ -1,10 +1,10 @@
 package com.github.svyaz.minesweeper;
 
 import com.github.svyaz.minesweeper.gamemodel.Game;
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.FanMode;
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.FreeMode;
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.ProMode;
-import com.github.svyaz.minesweeper.gamemodel.gamemodes.RookieMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.FanMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.ProMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.RookieMode;
 
 public class Main {
     public static void main(String[] args) {

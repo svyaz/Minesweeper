@@ -1,4 +1,4 @@
-package com.github.svyaz.minesweeper.gamemodel.gamemodes;
+package com.github.svyaz.minesweeper.gamemodel.modes;
 
 public class ProMode extends GameMode {
     public ProMode() {
