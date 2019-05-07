@@ -53,16 +53,16 @@ public class Field {
         int i = 0;
 
         while (i < bombsCount) {
-            int randomRow = random.nextInt(rows);
-            int randomColumn = random.nextInt(columns);
+            int row = random.nextInt(rows);
+            int column = random.nextInt(columns);
 
-            if (cells[randomRow][randomColumn].hasBomb()) {
+            if (cells[row][column].hasBomb()) {
                 continue;
             }
-            cells[randomRow][randomColumn].setBomb();
+            cells[row][column].setBomb();
             i++;
             //TODO DEBUG
-            System.out.println("bomb(" + randomRow + "," + randomColumn + ")");
+            System.out.println("bomb(" + row + "," + column + ")");
         }
     }
 

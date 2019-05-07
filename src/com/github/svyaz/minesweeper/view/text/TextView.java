@@ -98,6 +98,11 @@ public class TextView implements GameView {
     }
 
     @Override
+    public void updateBombsCounter(int bombsCount) {
+        this.bombsCount = bombsCount;
+    }
+
+    @Override
     public void printField() {
         System.out.println("Mode: " + modeDescription);
         System.out.println("Bombs remaining: " + bombsCount);

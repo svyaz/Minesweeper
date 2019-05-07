@@ -271,6 +271,78 @@ public class Game {
     public void openNeighbors(int row, int column) {
         //TODO open neighbor cells
         view.showMessage("open neighbor cells: " + row + ", " + column);
+
+        // Если игра уже закончена
+        if (status == LOST || status == FINISHED) {
+            view.showMessage("Игра уже закончена!");
+            return;
+        }
+
+        // Стартуем игру если это первый ход
+        if (status == NOT_STARTED) {
+            startTimer();
+            status = STARTED;
+        }
+
+        // Если за пределами поля
+        if (row >= field.getRows() || column >= field.getColumns()) {
+            view.printField();
+            return;
+        }
+
+        Cell cell = field.getCell(row, column);
+
+        // Если флаг или уже открыта, то просто перерисовываем поле.
+        if (cell.hasFlag() || !cell.isOpen()) {
+            view.printField();
+            return;
+        }
+
+        int currentRow = cell.getRow();
+        int currentColumn = cell.getColumn();
+        int bombsAround = 0;
+        int flagsAround = 0;
+        List<Cell> cellsToOpenList = new LinkedList<>();
+
+        for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+            for (int j = currentColumn - 1; j <= currentColumn + 1; j++) {
+                // Проверка выхода за границы поля и если та же самая ячейка
+                if (i < 0 || i >= field.getRows() || j < 0 || j >= field.getColumns() || (i == currentRow && j == currentColumn)) {
+                    continue;
+                }
+
+                Cell neighbor = field.getCell(i, j);
+
+                // Если уже открытая то пропускаем
+                if (neighbor.isOpen()) {
+                    continue;
+                }
+
+                // Считаем бомбы вокруг
+                if (neighbor.hasBomb()) {
+                    ++bombsAround;
+                }
+
+                // Считаем флаги вокруг
+                if (neighbor.hasFlag()) {
+                    ++flagsAround;
+                } else {
+                    if (neighbor.hasBomb()) {
+                        // Добавление в начало чтобы на бомбах сразу взрываться
+                        cellsToOpenList.add(0, neighbor);
+                    } else {
+                        cellsToOpenList.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        if (bombsAround == flagsAround) {
+            //TODO Отдельный private метод на открытие. А то еще и перерисовывает после каждой открытой клетки!
+            for (Cell cellToOpen : cellsToOpenList) {
+                openCell(cellToOpen.getRow(), cellToOpen.getColumn());
+            }
+        }
     }
 
     public void flagCell(int row, int column) {
