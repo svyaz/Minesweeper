@@ -44,7 +44,7 @@ public class Game {
     /**
      * Возможные режимы: Новичок, Любитель, Профессионал, Свободная игра.
      */
-    private GameMode[] gameModes;
+    private HashMap<String, GameMode> gameModes;
 
     /**
      * Игровое поле.
@@ -54,12 +54,16 @@ public class Game {
     /**
      * Создание контроллера в выбранном режиме.
      */
-    public Game(GameMode... gameModes) {
-        this.view = new TextView();
-        this.status = NOT_STARTED;
-        this.gameModes = gameModes;
-        gameMode = gameModes[0];
+    public Game(GameMode... modes) {
+        view = new TextView();
+        status = NOT_STARTED;
 
+        gameModes = new HashMap<>();
+        for (GameMode mode : modes) {
+            gameModes.put(mode.getName(), mode);
+        }
+
+        this.gameMode = gameModes.get("rookie");
     }
 
     /**
@@ -104,33 +108,20 @@ public class Game {
     }
 
     public void startNewGame(String mode) {
-        try {
-            //noinspection OptionalGetWithoutIsPresent
-            gameMode = Arrays.stream(gameModes)
-                    .filter(m -> m.getName().equals(mode))
-                    .findFirst()
-                    .get();
-
-            this.restart();
-        } catch (NoSuchElementException e) {
+        GameMode gameMode = gameModes.get(mode);
+        if (gameMode == null) {
             view.showMessage("Неизвестный режим!");
+            return;
         }
+        this.gameMode = gameMode;
+        this.restart();
     }
 
     public void startNewGame(int rows, int columns, int bombsCount) {
-        try {
-            //noinspection OptionalGetWithoutIsPresent
-            gameMode = Arrays.stream(gameModes)
-                    .filter(m -> m.getName().equals("free"))
-                    .findFirst()
-                    .get();
-
-            //TODO ???????
-
-            this.restart();
-        } catch (NoSuchElementException e) {
-            view.showMessage("Неизвестный режим!");
-        }
+        GameMode mode = new FreeMode(rows, columns, bombsCount);
+        gameModes.put(mode.getName(), mode);
+        gameMode = mode;
+        this.restart();
     }
 
     public void restart() {
