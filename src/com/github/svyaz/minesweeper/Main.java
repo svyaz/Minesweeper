@@ -15,7 +15,7 @@ public class Main {
                 new ProMode(),
                 new FreeMode(9, 9, 10)
         );
-        gameController.init();
+        gameController.runGame();
 
     }
 }

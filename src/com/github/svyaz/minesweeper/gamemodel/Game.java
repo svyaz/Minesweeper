@@ -82,10 +82,9 @@ public class Game {
     }
 
     /**
-     * Rock it!
-     * TODO выбрать подходящее имя для метода!!!
+     * Let's rock !!!
      */
-    public void init() {
+    public void runGame() {
 
         //TODO одинаковый код - в отдельный метод
         this.field = new Field(gameMode);
@@ -269,9 +268,6 @@ public class Game {
     }
 
     public void openNeighbors(int row, int column) {
-        //TODO open neighbor cells
-        view.showMessage("open neighbor cells: " + row + ", " + column);
-
         // Если игра уже закончена
         if (status == LOST || status == FINISHED) {
             view.showMessage("Игра уже закончена!");
