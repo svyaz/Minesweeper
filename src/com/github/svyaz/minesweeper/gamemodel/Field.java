@@ -33,7 +33,7 @@ public class Field {
     /**
      * Создает поле из переданного режима игры
      */
-    public Field(GameMode mode) {
+    Field(GameMode mode) {
         this.columns = mode.getColumns();
         this.rows = mode.getRows();
         this.bombsCount = mode.getBombsCount();
@@ -61,13 +61,11 @@ public class Field {
             }
             cells[row][column].setBomb();
             i++;
-            //TODO DEBUG
-            System.out.println("bomb(" + row + "," + column + ")");
+            // DEBUG System.out.println("bomb(" + row + "," + column + ")");
         }
     }
 
-    public Cell getCell(int row, int column) {
-        //TODO исключение при выходе за границы с сообщением
+    Cell getCell(int row, int column) {
         return cells[row][column];
     }
 
@@ -79,20 +77,12 @@ public class Field {
         return columns;
     }
 
-    public int getBombsCount() {
-        return bombsCount;
-    }
-
-    public int getOpenCellsCount() {
-        return openCellsCount;
-    }
-
-    public void incrementOpenCellsCount() {
+    void incrementOpenCellsCount() {
         openCellsCount++;
     }
 
-    public boolean isAllOpen() {
-        System.out.printf("All: %d, open: %d, bombs: %d%n", rows * columns, openCellsCount, bombsCount);
+    boolean isAllOpen() {
+        // DEBUG System.out.printf("All: %d, open: %d, bombs: %d%n", rows * columns, openCellsCount, bombsCount);
         return rows * columns - openCellsCount == bombsCount;
     }
 }
