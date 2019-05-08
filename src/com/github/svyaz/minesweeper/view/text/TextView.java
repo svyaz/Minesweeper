@@ -5,6 +5,7 @@ import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -16,6 +17,7 @@ public class TextView implements GameView {
     private String modeDescription;
     private String timeString;
     private Scanner scanner;
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.text.Messages");
 
     public TextView() {
         scanner = new Scanner(System.in);
