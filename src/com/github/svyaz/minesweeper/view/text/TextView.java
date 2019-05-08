@@ -41,7 +41,6 @@ public class TextView implements GameView {
     public void updateField(List<Cell> updateCells) {
         for (Cell cell : updateCells) {
             char cellSymbol;
-            //TODO сделать красивые символы
             switch (cell.getCellLook()) {
                 case OPEN_0:
                     cellSymbol = '0';
@@ -71,7 +70,7 @@ public class TextView implements GameView {
                     cellSymbol = '8';
                     break;
                 case CLOSED_FLAGGED:
-                    cellSymbol = 'F';
+                    cellSymbol = 'f';
                     break;
                 case BOMB_CLEAR:
                     cellSymbol = '*';
@@ -127,8 +126,7 @@ public class TextView implements GameView {
     @Override
     public Command waitCommand() {
         while (scanner.hasNext()) {
-            String inputString = scanner.next();
-            //TODO отрезать пробелы с начала и конца, убрать двойные пробелы.
+            String inputString = scanner.next().trim().replaceAll(" +", " ");
 
             if (inputString.matches("o \\d+ \\d+")) {
                 // Команда "Открыть одну ячейку по координатам"

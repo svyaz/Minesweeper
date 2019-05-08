@@ -8,7 +8,6 @@ import com.github.svyaz.minesweeper.gamemodel.modes.RookieMode;
 
 public class Main {
     public static void main(String[] args) {
-
         Game gameController = new Game(
                 new RookieMode(),
                 new FanMode(),
@@ -16,7 +15,6 @@ public class Main {
                 new FreeMode(9, 9, 10)
         );
         gameController.runGame();
-
     }
 }
 
