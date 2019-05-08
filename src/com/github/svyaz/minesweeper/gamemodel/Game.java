@@ -245,17 +245,26 @@ public class Game {
             }
         }
 
+        if (field.isAllOpen()) {
+            // Если всё открыто - игра пройдена!
+            status = FINISHED;
+            timer.cancel();
+            // Ставим флажки на все неоткрытые клетки с бомбами
+            for (int i = 0; i < field.getRows(); i++) {
+                for (int j = 0; j < field.getColumns(); j++) {
+                    Cell tmpCell = field.getCell(i, j);
+                    if (tmpCell.hasBomb() && !tmpCell.hasFlag()) {
+                        tmpCell.setCellLook(CellLook.CLOSED_FLAGGED);
+                        cellsToUpdate.add(tmpCell);
+                    }
+                }
+            }
+            view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
+        }
+
         view.updateField(cellsToUpdate);
         view.updateGameTime(time);
         view.printField();
-
-        if (field.isAllOpen()) {
-            // Если всё открыто кроме бомб - игра пройдена!
-            //TODO поставить флажки на все неоткрытые клетки (с бомбами)
-            status = FINISHED;
-            timer.cancel();
-            view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
-        }
     }
 
     public void openNeighbors(int row, int column) {
