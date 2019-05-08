@@ -6,6 +6,7 @@ import com.github.svyaz.minesweeper.view.GameView;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class TextView implements GameView {
     private int rows;
@@ -24,7 +25,6 @@ public class TextView implements GameView {
     @Override
     public void initView(String modeDescription, int rows, int columns, int bombsCount) {
         this.modeDescription = modeDescription;
-        //this.timeString = 0;
         this.rows = rows;
         this.columns = columns;
         this.bombsCount = bombsCount;
@@ -103,14 +103,31 @@ public class TextView implements GameView {
 
     @Override
     public void printField() {
-        System.out.println("Mode: " + modeDescription);
-        System.out.println("Bombs remaining: " + bombsCount);
-        System.out.println("Time: " + timeString);
+        System.out.println("================================================================");
+        System.out.printf("Режим: %.15s | Бомб осталось: %.3s | Время игры: %.9s %n",
+                modeDescription, bombsCount, timeString);
+        System.out.println("================================================================");
 
-        //TODO вывести координаты по горизонтали и по вертикали
-        //Stream.iterate(1, c -> c + 1).limit(columns).forEach(System.out::println);
+        // Вывод координат
+        System.out.print("   |");
+        for (int i = 0; i < columns; i++) {
+            if (i % 2 == 0) {
+                System.out.printf("%2s  ", i);
+            }
+        }
+        System.out.println();
+        Stream.generate(() -> "-")
+                .limit(columns * 2 + 4)
+                .forEach(System.out::print);
+        System.out.println();
 
         for (int i = 0; i < rows; i++) {
+            if (i % 2 == 0) {
+                System.out.printf("%2s |", i);
+            } else {
+                System.out.print("   |");
+            }
+
             for (int j = 0; j < columns; j++) {
                 System.out.print(" " + cells[i][j]);
             }
@@ -161,7 +178,7 @@ public class TextView implements GameView {
                 // Команда "Показать таблицу рекордов"
                 return new ShowScoresCommand();
 
-            } else if (inputString.matches("e")) {
+            } else if (inputString.matches("[qe]")) {
                 // Выход из программы.
                 return new ExitCommand();
 

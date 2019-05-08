@@ -368,6 +368,8 @@ public class Game {
             return;
         }
 
+        //TODO надо проверять количество оставшихся бомб, которые можно поставить!
+
         // Ставим/убираем флаг
         fCell.setFlag(!fCell.hasFlag());
         fCell.setCellLook(fCell.hasFlag() ? CellLook.CLOSED_FLAGGED : CellLook.CLOSED_CLEAR);
