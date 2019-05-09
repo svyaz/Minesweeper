@@ -16,7 +16,7 @@ public interface GameView {
     void updateGameTime(long gameTime);
 
     // Обновить число оставшихся бомб
-    void updateBombsCounter(int bombsCount);
+    void updateBombsCount(int bombsCount);
 
     // Нарисовать поле
     void printField();

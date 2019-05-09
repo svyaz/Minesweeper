@@ -1,5 +1,8 @@
 package com.github.svyaz.minesweeper.gamemodel.commands;
 
+/**
+ * Команда запустить игру в Свободном режиме.
+ */
 public class StartFreeGameCommand extends Command {
     private final int rows;
     private final int columns;

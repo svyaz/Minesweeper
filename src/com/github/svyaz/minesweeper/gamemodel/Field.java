@@ -4,6 +4,9 @@ import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 
 import java.util.Random;
 
+/**
+ * Игровое поле.
+ */
 public class Field {
     /**
      * Массив ячеек поля.
@@ -42,6 +45,9 @@ public class Field {
         initField();
     }
 
+    /**
+     * Заполнение поля бомбами в случайном порядке.
+     */
     private void initField() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -61,7 +67,6 @@ public class Field {
             }
             cells[row][column].setBomb();
             i++;
-            // DEBUG System.out.println("bomb(" + row + "," + column + ")");
         }
     }
 
@@ -82,7 +87,6 @@ public class Field {
     }
 
     boolean isAllOpen() {
-        // DEBUG System.out.printf("All: %d, open: %d, bombs: %d%n", rows * columns, openCellsCount, bombsCount);
         return rows * columns - openCellsCount == bombsCount;
     }
 }

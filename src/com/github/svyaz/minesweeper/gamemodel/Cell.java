@@ -34,7 +34,7 @@ public class Cell {
      */
     private CellLook cellLook;
 
-    public Cell(int row, int column) {
+    Cell(int row, int column) {
         this.row = row;
         this.column = column;
         this.bomb = false;
@@ -51,15 +51,15 @@ public class Cell {
         return column;
     }
 
-    public boolean isOpen() {
+    boolean isOpen() {
         return open;
     }
 
-    public void open() {
+    void open() {
         open = true;
     }
 
-    public boolean hasBomb() {
+    boolean hasBomb() {
         return bomb;
     }
 
@@ -67,11 +67,11 @@ public class Cell {
         bomb = true;
     }
 
-    public boolean hasFlag() {
+    boolean hasFlag() {
         return flag;
     }
 
-    public void setFlag(boolean flag) {
+    void setFlag(boolean flag) {
         this.flag = flag;
     }
 
@@ -79,7 +79,7 @@ public class Cell {
         return cellLook;
     }
 
-    public void setCellLook(CellLook cellLook) {
+    void setCellLook(CellLook cellLook) {
         this.cellLook = cellLook;
     }
 }

@@ -11,7 +11,7 @@ import java.util.*;
 import static com.github.svyaz.minesweeper.gamemodel.GameStatus.*;
 
 /**
- * По сути пока получается что это и есть контроллер.
+ * По сути получается что это и есть контроллер.
  */
 public class Game {
     /**
@@ -52,7 +52,7 @@ public class Game {
     private Field field;
 
     /**
-     * Создание контроллера в выбранном режиме.
+     * Создание контроллера и установка режима "Новичок" при запуске.
      */
     public Game(GameMode... modes) {
         view = new TextView();
@@ -89,7 +89,6 @@ public class Game {
      * Let's rock !!!
      */
     public void runGame() {
-
         //TODO одинаковый код - в отдельный метод
         this.field = new Field(gameMode);
         time = 0;
@@ -97,7 +96,6 @@ public class Game {
                 gameMode.getRows(),
                 gameMode.getColumns(),
                 gameMode.getBombsCount());
-        view.updateGameTime(time);
         view.printField();
 
         while (true) {
@@ -107,16 +105,28 @@ public class Game {
         }
     }
 
+    /**
+     * Запуск новой игры в одном из предустановленных режимов.
+     *
+     * @param mode режим игры.
+     */
     public void startNewGame(String mode) {
         GameMode gameMode = gameModes.get(mode);
         if (gameMode == null) {
-            view.showMessage("Неизвестный режим!");
+            view.showMessage("MODES_UNKNOWN");
             return;
         }
         this.gameMode = gameMode;
         this.restart();
     }
 
+    /**
+     * Запуск новой игры в Свободном режиме.
+     *
+     * @param rows       число строк.
+     * @param columns    число столбцов.
+     * @param bombsCount число бомб.
+     */
     public void startNewGame(int rows, int columns, int bombsCount) {
         GameMode mode = new FreeMode(rows, columns, bombsCount);
         gameModes.put(mode.getName(), mode);
@@ -124,6 +134,10 @@ public class Game {
         this.restart();
     }
 
+    /**
+     * Перезапуск игры.
+     * Используется для создания новой игры и для перезапуска в текущем режиме.
+     */
     public void restart() {
         if (status != NOT_STARTED) {
             status = NOT_STARTED;
@@ -136,16 +150,26 @@ public class Game {
                 gameMode.getRows(),
                 gameMode.getColumns(),
                 gameMode.getBombsCount());
-        view.updateGameTime(time);
         view.printField();
     }
 
+    /**
+     * Открыть ячейку по заданным строке-столбцу.
+     * Можно взорваться если открывать ячейку с бомбой.
+     * Если вокруг открываемой ячейки нет бомб, то открывается область до бомб.
+     * Метод используется также для открытия ячеек вокруг выбранной уже открытой ячейки, если вокруг нее
+     * уже проставлены флаги.
+     *
+     * @param row    строка ячейки.
+     * @param column столбец ячейки.
+     * @see Game#openNeighbors(int, int)
+     */
     public void openCell(int row, int column) {
         //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
 
         // Если игра уже закончена
         if (status == LOST || status == FINISHED) {
-            view.showMessage("Игра уже закончена!");
+            view.showMessage("MSG_GAME_ALREADY_FINISHED");
             return;
         }
 
@@ -196,9 +220,8 @@ public class Game {
                 }
             }
             view.updateField(cellsToUpdate);
-            view.updateGameTime(time);
             view.printField();
-            view.showMessage("!!!!! Bang !!!!! Вы взорвались !!!!!");
+            view.showMessage("MSG_GAME_LOST");
             return;
         }
 
@@ -259,18 +282,27 @@ public class Game {
                     }
                 }
             }
-            view.showMessage("!!!!! Вы выиграли !!!!! УРА !!!!!");
+            //TODO Сообщение должно выводиться внизу под полем!
+            view.showMessage("MSG_GAME_FINISHED");
         }
 
         view.updateField(cellsToUpdate);
-        view.updateGameTime(time);
         view.printField();
     }
 
+    /**
+     * Открытие ячеек вокруг уже открытой ячейки, если вокруг неё проставлено количество флагов равное
+     * количеству бомб.
+     * Можно взорваться если флаги расставлены неправильно.
+     * Если вокруг открываемой ячейки нет бомб, то открывается область до бомб.
+     *
+     * @param row    строка ячейки.
+     * @param column столбец ячейки.
+     */
     public void openNeighbors(int row, int column) {
         // Если игра уже закончена
         if (status == LOST || status == FINISHED) {
-            view.showMessage("Игра уже закончена!");
+            view.showMessage("MSG_GAME_ALREADY_FINISHED");
             return;
         }
 
@@ -341,10 +373,16 @@ public class Game {
         }
     }
 
+    /**
+     * Установка или снятие флага с ячейки с переданными строкой-столбцом.
+     *
+     * @param row    строка ячейки.
+     * @param column столбец ячейки.
+     */
     public void flagCell(int row, int column) {
         // Если игра уже закончена
         if (status == LOST || status == FINISHED) {
-            view.showMessage("Игра уже закончена!");
+            view.showMessage("MSG_GAME_ALREADY_FINISHED");
             return;
         }
 
@@ -376,24 +414,29 @@ public class Game {
         List<Cell> updateCells = new LinkedList<>();
         updateCells.add(fCell);
         view.updateField(updateCells);
-        view.updateGameTime(time);
         view.printField();
     }
 
+    /**
+     * Выход из программы.
+     */
     public void exit() {
         System.exit(0);
     }
 
+    /**
+     * Показать информацию о программе.
+     */
     public void showAbout() {
-        //TODO написать текстовку about
-        view.showMessage("About text!");
+        view.showMessage("ABOUT_TEXT");
     }
 
+    /**
+     * Показать таблицу рекордов.
+     */
     public void showScores() {
         //TODO show scores
         view.showMessage("Show scores.");
     }
 
 }
-
-//TODO все сообщения вынести в отдельный файл.

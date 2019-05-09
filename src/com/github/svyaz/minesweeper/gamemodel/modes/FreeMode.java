@@ -3,7 +3,7 @@ package com.github.svyaz.minesweeper.gamemodel.modes;
 public class FreeMode extends GameMode {
     public FreeMode(int rows, int columns, int bombsCount) {
         this.name = "free";
-        this.description = "Свободная игра";
+        this.description = "MODES_FREE";
 
         /*
          * Размер поля в стандартном сапёре в режиме "Свободная игра" ограничен:

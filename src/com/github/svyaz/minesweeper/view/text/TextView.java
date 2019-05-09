@@ -17,7 +17,7 @@ public class TextView implements GameView {
     private String modeDescription;
     private String timeString;
     private Scanner scanner;
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.text.Messages");
+    private ResourceBundle messages = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.text.Messages");
 
     public TextView() {
         scanner = new Scanner(System.in);
@@ -31,6 +31,7 @@ public class TextView implements GameView {
         this.columns = columns;
         this.bombsCount = bombsCount;
         this.cells = new char[rows][columns];
+        updateGameTime(0);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -99,47 +100,56 @@ public class TextView implements GameView {
     }
 
     @Override
-    public void updateBombsCounter(int bombsCount) {
+    public void updateBombsCount(int bombsCount) {
         this.bombsCount = bombsCount;
     }
 
     @Override
     public void printField() {
-        System.out.println("================================================================");
-        System.out.printf("Режим: %.15s | Бомб осталось: %.3s | Время игры: %.9s %n",
-                modeDescription, bombsCount, timeString);
-        System.out.println("================================================================");
+        String ls = System.lineSeparator();
+        StringBuilder sb = new StringBuilder();
 
-        // Вывод координат
-        System.out.print("   |");
+        sb.append("================================================================").append(ls);
+        sb.append(messages.getString("VIEW_MODE"));
+        sb.append(String.format(" %.15s | ", messages.getString(modeDescription)));
+        sb.append(messages.getString("VIEW_BOMBS_REMAIN"));
+        sb.append(String.format(" %.3s | ", bombsCount));
+        sb.append(messages.getString("VIEW_GAME_TIME"));
+        sb.append(String.format(" %.9s ", timeString)).append(ls);
+        sb.append("================================================================").append(ls);
+
+        // Координаты
+        sb.append("   |");
         for (int i = 0; i < columns; i++) {
             if (i % 2 == 0) {
-                System.out.printf("%2s  ", i);
+                sb.append(String.format("%2s  ", i));
             }
         }
-        System.out.println();
+        sb.append(ls);
         Stream.generate(() -> "-")
                 .limit(columns * 2 + 4)
-                .forEach(System.out::print);
-        System.out.println();
+                .forEach(sb::append);
+        sb.append(ls);
 
         for (int i = 0; i < rows; i++) {
             if (i % 2 == 0) {
-                System.out.printf("%2s |", i);
+                sb.append(String.format("%2s |", i));
             } else {
-                System.out.print("   |");
+                sb.append("   |");
             }
 
             for (int j = 0; j < columns; j++) {
-                System.out.print(" " + cells[i][j]);
+                sb.append(' ').append(cells[i][j]);
             }
-            System.out.println();
+            sb.append(ls);
         }
+
+        System.out.print(sb.toString());
     }
 
     @Override
     public void showMessage(String message) {
-        System.out.println(message);
+        System.out.println(messages.getString(message));
     }
 
     @Override
@@ -169,8 +179,8 @@ public class TextView implements GameView {
                 return new FlagCellCommand(row, column);
 
             } else if (inputString.matches("h")) {
-                //TODO написать текстовку help-а по командам
-                showMessage("help message!");
+                // Показать help по командам
+                showMessage("HELP_TEXT");
 
             } else if (inputString.matches("a")) {
                 // Показать информацию о программе
@@ -200,7 +210,8 @@ public class TextView implements GameView {
                 // Рестартовать игру в текущем режиме
                 return new RestartCommand();
             } else {
-                showMessage("Неизвестная команда!");
+                //  Когда ввели что-то неожидаемое.
+                showMessage("MSG_UNKNOWN_COMMAND");
             }
         }
         return null;    // Чтобы метод компилировался.
