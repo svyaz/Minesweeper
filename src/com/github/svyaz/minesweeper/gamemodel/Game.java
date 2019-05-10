@@ -232,8 +232,8 @@ public class Game {
         while (!queue.isEmpty()) {
             Cell current = queue.remove();
 
-            if (current.isOpen()) {
-                // Если ячейка уже открыта
+            if (current.isOpen() || current.hasFlag()) {
+                // Если ячейка уже открыта или на ней стоит флаг
                 continue;
             }
 
@@ -398,21 +398,32 @@ public class Game {
             return;
         }
 
-        Cell fCell = field.getCell(row, column);
+        Cell cell = field.getCell(row, column);
 
         // Если уже открыта - просто перерисовываем поле
-        if (fCell.isOpen()) {
+        if (cell.isOpen()) {
             view.printField();
             return;
         }
 
-        //TODO надо проверять количество оставшихся бомб, которые можно поставить!
-
         // Ставим/убираем флаг
-        fCell.setFlag(!fCell.hasFlag());
-        fCell.setCellLook(fCell.hasFlag() ? CellLook.CLOSED_FLAGGED : CellLook.CLOSED_CLEAR);
+        if (cell.hasFlag()) {
+            cell.setFlag(false);
+            cell.setCellLook(CellLook.CLOSED_CLEAR);
+            field.decrementFlagsCount();
+        } else {
+            // Проверка что число флагов меньше числа бомб
+            if (field.getFlagsCount() < field.getBombsCount()) {
+                cell.setFlag(true);
+                cell.setCellLook(CellLook.CLOSED_FLAGGED);
+                field.incrementFlagsCount();
+            }
+        }
+
+        view.updateBombsCount(field.getBombsCount() - field.getFlagsCount());
+
         List<Cell> updateCells = new LinkedList<>();
-        updateCells.add(fCell);
+        updateCells.add(cell);
         view.updateField(updateCells);
         view.printField();
     }

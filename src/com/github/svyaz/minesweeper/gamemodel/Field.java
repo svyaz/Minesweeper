@@ -24,9 +24,14 @@ public class Field {
     private int columns;
 
     /**
-     * Количество мин.
+     * Количество бомб.
      */
     private int bombsCount;
+
+    /**
+     * Количество установленных флагов.
+     */
+    private int flagsCount;
 
     /**
      * Количество открытых ячеек
@@ -40,6 +45,7 @@ public class Field {
         this.columns = mode.getColumns();
         this.rows = mode.getRows();
         this.bombsCount = mode.getBombsCount();
+        this.flagsCount = 0;
         this.openCellsCount = 0;
         this.cells = new Cell[rows][columns];
         initField();
@@ -82,8 +88,24 @@ public class Field {
         return columns;
     }
 
+    int getBombsCount() {
+        return bombsCount;
+    }
+
     void incrementOpenCellsCount() {
         openCellsCount++;
+    }
+
+    int getFlagsCount() {
+        return flagsCount;
+    }
+
+    void incrementFlagsCount() {
+        flagsCount++;
+    }
+
+    void decrementFlagsCount() {
+        flagsCount--;
     }
 
     boolean isAllOpen() {
