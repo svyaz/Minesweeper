@@ -92,8 +92,8 @@ public class Field {
         return bombsCount;
     }
 
-    void incrementOpenCellsCount() {
-        openCellsCount++;
+    void addOpenCellsCount(int openCellsCount) {
+        this.openCellsCount += openCellsCount;
     }
 
     int getFlagsCount() {

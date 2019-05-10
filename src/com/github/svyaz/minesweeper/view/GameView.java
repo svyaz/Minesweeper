@@ -24,6 +24,6 @@ public interface GameView {
     // Ожидать команду
     Command waitCommand();
 
-    // Показать сообщение об ошибке
+    // Показать сообщение
     void showMessage(String message);
 }
