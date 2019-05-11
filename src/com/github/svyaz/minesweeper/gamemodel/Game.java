@@ -89,7 +89,6 @@ public class Game {
      * Let's rock !!!
      */
     public void runGame() {
-        //TODO одинаковый код - в отдельный метод
         this.field = new Field(gameMode);
         time = 0;
         view.initView(gameMode.getDescription(),
@@ -98,6 +97,7 @@ public class Game {
                 gameMode.getBombsCount());
         view.printField();
 
+        //noinspection InfiniteLoopStatement
         while (true) {
             Command command = view.waitCommand();
             command.setGame(this);
@@ -165,8 +165,6 @@ public class Game {
      * @see Game#openNeighbors(int, int)
      */
     public void openCell(int row, int column) {
-        //TODO есть дублирующиеся куски кода с установкой флага и открытием соседей
-
         // Если игра уже закончена
         if (status == LOST || status == FINISHED) {
             view.showMessage("MSG_GAME_ALREADY_FINISHED");
@@ -299,10 +297,42 @@ public class Game {
         }
 
         if (bombsAround == flagsAround) {
-            //TODO Отдельный private метод на открытие. А то еще и перерисовывает после каждой открытой клетки!
-            for (Cell cellToOpen : cellsToOpenList) {
-                openCell(cellToOpen.getRow(), cellToOpen.getColumn());
+            try {
+                List<Cell> cellsToUpdate = new LinkedList<>();
+                for (Cell cellToOpen : cellsToOpenList) {
+                    List<Cell> subList = openRegion(cellToOpen);
+                    if (subList == null) {
+                        continue;
+                    }
+                    cellsToUpdate.addAll(subList);
+                }
+                if (cellsToUpdate.size() > 0) {
+                    field.addOpenCellsCount(cellsToUpdate.size());
+                    view.updateField(cellsToUpdate);
+                    view.printField();
+                }
+            } catch (BangException e) {
+                status = LOST;
+                timer.cancel();
+
+                List<Cell> cellsToUpdate = getAllBombsOnBang(cell);
+                field.addOpenCellsCount(cellsToUpdate.size());
+                view.updateField(cellsToUpdate);
+                view.printField();
+                view.showMessage("MSG_GAME_LOST");
+                return;
             }
+        }
+        if (field.isAllOpen()) {
+            // Если всё открыто - игра пройдена!
+            status = FINISHED;
+            timer.cancel();
+            // Ставим флажки на все неоткрытые клетки с бомбами
+            List<Cell> cellsToUpdate = getAllFlagsOnFinish();
+            view.updateBombsCount(field.getBombsCount() - field.getFlagsCount());
+            view.updateField(cellsToUpdate);
+            view.printField();
+            view.showMessage("MSG_GAME_FINISHED");
         }
     }
 
@@ -470,6 +500,9 @@ public class Game {
                 cell.setFlag(true);
                 cell.setCellLook(CellLook.CLOSED_FLAGGED);
                 field.incrementFlagsCount();
+            } else {
+                view.printField();
+                return;
             }
         }
 
