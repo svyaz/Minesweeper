@@ -21,10 +21,6 @@ public class Main {
 /*TODO
 Команды запуска:
 -mode:gui|text
--level:rookie|fan|pro|free
--free:n,m,b
--scores
--about
 -help
  */
 

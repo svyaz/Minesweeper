@@ -551,13 +551,14 @@ public class Game {
      * Показать таблицу рекордов.
      */
     public void showScores() {
-        String scoresString = scoresManager.getScoresString();
+        HashMap<String, String> scoresMap = scoresManager.getScoresMap();
 
-        if (!scoresString.isEmpty()) {
-            view.showScores(scoresString);
+        if (!scoresMap.isEmpty()) {
+            view.showScores(scoresMap);
         } else {
             view.showMessage("MSG_SCORES_EMPTY");
         }
     }
 
+    //TODO установка и сохранение рекордов!
 }

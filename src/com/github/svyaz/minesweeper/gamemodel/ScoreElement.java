@@ -3,7 +3,7 @@ package com.github.svyaz.minesweeper.gamemodel;
 /**
  * Запись в таблице рекордов
  */
-public class ScoreElement {
+class ScoreElement {
     private String modeString;
     private String userName;
     private long gameTime;
@@ -15,21 +15,21 @@ public class ScoreElement {
      * @param gameTime   время игры.
      * @param userName   имя игрока.
      */
-    public ScoreElement(String modeString, long gameTime, String userName) {
+    ScoreElement(String modeString, long gameTime, String userName) {
         this.modeString = modeString;
         this.gameTime = gameTime;
         this.userName = userName;
     }
 
-    public String getModeString() {
+    String getModeString() {
         return modeString;
     }
 
-    public String getUserName() {
+    String getUserName() {
         return userName;
     }
 
-    public long getGameTime() {
+    long getGameTime() {
         return gameTime;
     }
 }

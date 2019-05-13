@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Менеджер для работы с таблицей рекордов
  */
-public class ScoresManager {
+class ScoresManager {
     /**
      * Путь к файлу с записями
      */
@@ -58,20 +58,20 @@ public class ScoresManager {
     }
 
     /**
-     * Рекорды переводит в строку и отдает для вывода в view.
+     * Рекорды переводит в другую HashMap с ключем "Название режима игры" для передачи в view.
      *
-     * @return строку для передачи в view.
+     * @return HashMap для передачи в view.
      */
-    public String getScoresString() {
-        StringBuilder sb = new StringBuilder();
+    HashMap<String, String> getScoresMap() {
+        HashMap<String, String> result = new HashMap<>();
+
         for (ScoreElement element : scores.values()) {
-            sb.append(element.getModeString())
-                    .append(' ')
-                    .append(Game.getGameTimeString(element.getGameTime()))
-                    .append(' ')
-                    .append(element.getUserName())
-                    .append(System.lineSeparator());
+            String newKey = gameModes.get(element.getModeString()).getDescription();
+            String newValue = String.format(" %s %s",
+                    Game.getGameTimeString(element.getGameTime()),
+                    element.getUserName());
+            result.put(newKey, newValue);
         }
-        return sb.toString();
+        return result;
     }
 }
