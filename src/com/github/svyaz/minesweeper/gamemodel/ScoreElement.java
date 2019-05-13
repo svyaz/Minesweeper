@@ -20,4 +20,16 @@ public class ScoreElement {
         this.gameTime = gameTime;
         this.userName = userName;
     }
+
+    public String getModeString() {
+        return modeString;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public long getGameTime() {
+        return gameTime;
+    }
 }

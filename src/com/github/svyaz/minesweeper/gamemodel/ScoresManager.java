@@ -56,4 +56,22 @@ public class ScoresManager {
         } catch (IOException | IllegalArgumentException ignore) {
         }
     }
+
+    /**
+     * Рекорды переводит в строку и отдает для вывода в view.
+     *
+     * @return строку для передачи в view.
+     */
+    public String getScoresString() {
+        StringBuilder sb = new StringBuilder();
+        for (ScoreElement element : scores.values()) {
+            sb.append(element.getModeString())
+                    .append(' ')
+                    .append(Game.getGameTimeString(element.getGameTime()))
+                    .append(' ')
+                    .append(element.getUserName())
+                    .append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
 }

@@ -13,7 +13,7 @@ public interface GameView {
     void updateField(List<Cell> cellsList);
 
     // Обновить время игры
-    void updateGameTime(long gameTime);
+    void updateGameTimeString(String timeString);
 
     // Обновить число оставшихся бомб
     void updateBombsCount(int bombsCount);
@@ -26,4 +26,7 @@ public interface GameView {
 
     // Показать сообщение
     void showMessage(String message);
+
+    // Показать таблицу рекордов
+    void showScores(String scoresString);
 }

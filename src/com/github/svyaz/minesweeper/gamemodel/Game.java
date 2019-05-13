@@ -57,6 +57,19 @@ public class Game {
     private ScoresManager scoresManager;
 
     /**
+     * Переводит long-число милисекунд в формат hh:mm:ss
+     *
+     * @param gameTime время игры в милисекундах.
+     * @return форматированная строка hh:mm:ss
+     */
+    public static String getGameTimeString(long gameTime) {
+        int hours = (int) gameTime / 3_600_000;
+        int minutes = ((int) gameTime % 3_600_000) / 60_000;
+        int seconds = ((int) gameTime % 60_000) / 1_000;
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    /**
      * Создание контроллера и установка режима "Новичок" при запуске.
      */
     public Game(GameMode... modes) {
@@ -85,7 +98,7 @@ public class Game {
             @Override
             public void run() {
                 time = System.currentTimeMillis() - startTime;
-                view.updateGameTime(time);
+                view.updateGameTimeString(Game.getGameTimeString(time));
             }
         };
         timer.schedule(timerTask, 0, 1000);
@@ -538,8 +551,13 @@ public class Game {
      * Показать таблицу рекордов.
      */
     public void showScores() {
-        //TODO show scores
-        view.showMessage("Show scores.");
+        String scoresString = scoresManager.getScoresString();
+
+        if (!scoresString.isEmpty()) {
+            view.showScores(scoresString);
+        } else {
+            view.showMessage("MSG_SCORES_EMPTY");
+        }
     }
 
 }

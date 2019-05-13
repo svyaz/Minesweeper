@@ -1,6 +1,7 @@
 package com.github.svyaz.minesweeper.view.text;
 
 import com.github.svyaz.minesweeper.gamemodel.Cell;
+import com.github.svyaz.minesweeper.gamemodel.Game;
 import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
@@ -31,7 +32,7 @@ public class TextView implements GameView {
         this.columns = columns;
         this.bombsCount = bombsCount;
         this.cells = new char[rows][columns];
-        updateGameTime(0);
+        timeString = Game.getGameTimeString(0);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -92,11 +93,8 @@ public class TextView implements GameView {
     }
 
     @Override
-    public void updateGameTime(long gameTime) {
-        int hours = (int) gameTime / 3_600_000;
-        int minutes = ((int) gameTime % 3_600_000) / 60_000;
-        int seconds = ((int) gameTime % 60_000) / 1_000;
-        timeString = String.format("%d:%02d:%02d", hours, minutes, seconds);
+    public void updateGameTimeString(String timeString) {
+        this.timeString = timeString;
     }
 
     @Override
@@ -150,6 +148,11 @@ public class TextView implements GameView {
     @Override
     public void showMessage(String message) {
         System.out.println(messages.getString(message));
+    }
+
+    @Override
+    public void showScores(String scoresString) {
+        System.out.println(scoresString);
     }
 
     @Override
