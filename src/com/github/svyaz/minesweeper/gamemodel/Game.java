@@ -52,6 +52,11 @@ public class Game {
     private Field field;
 
     /**
+     * Менеджер таблицы рекордов
+     */
+    private ScoresManager scoresManager;
+
+    /**
      * Создание контроллера и установка режима "Новичок" при запуске.
      */
     public Game(GameMode... modes) {
@@ -64,6 +69,7 @@ public class Game {
         }
 
         this.gameMode = gameModes.get("rookie");
+        this.scoresManager = new ScoresManager(gameModes);
     }
 
     /**
