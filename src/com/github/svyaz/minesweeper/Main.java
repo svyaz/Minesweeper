@@ -22,6 +22,3 @@ public class Main {
 -mode:gui|text
 -help
  */
-
-//TODO сделать правильный манифест-файл
-//TODO под Windows в консоли русский текст вопросиками выводится.
