@@ -81,8 +81,8 @@ public class Game {
             gameModes.put(mode.getName(), mode);
         }
 
-        this.gameMode = gameModes.get("rookie");
-        this.scoresManager = new ScoresManager(gameModes);
+        gameMode = gameModes.get("rookie");
+        scoresManager = new ScoresManager(gameModes);
     }
 
     /**
@@ -237,6 +237,11 @@ public class Game {
             view.updateField(cellsToUpdate);
             view.printField();
             view.showMessage("MSG_GAME_FINISHED");
+            // Проверка по таблице рекордов
+            if (scoresManager.isNewRecord(gameMode, time)) {
+                saveNewRecord();
+                showScores();
+            }
         }
     }
 
@@ -352,6 +357,11 @@ public class Game {
             view.updateField(cellsToUpdate);
             view.printField();
             view.showMessage("MSG_GAME_FINISHED");
+            // Проверка по таблице рекордов
+            if (scoresManager.isNewRecord(gameMode, time)) {
+                saveNewRecord();
+                showScores();
+            }
         }
     }
 
@@ -560,5 +570,13 @@ public class Game {
         }
     }
 
-    //TODO установка и сохранение рекордов!
+    /**
+     * Установка и сохранение рекордов
+     */
+    private void saveNewRecord() {
+        String userName = view.getUserName();
+        scoresManager.setNewRecord(gameMode, userName, time);
+        scoresManager.save();
+    }
+
 }

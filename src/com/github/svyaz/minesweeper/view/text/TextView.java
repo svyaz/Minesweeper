@@ -220,4 +220,15 @@ public class TextView implements GameView {
         }
         return null;    // Чтобы метод компилировался.
     }
+
+    @Override
+    public String getUserName() {
+        System.out.println(messages.getString("USER_NAME_ENTER_INVITATION"));
+
+        if (scanner.hasNext()) {
+            return scanner.next().trim();
+        } else {
+            return messages.getString("USER_NAME_DEFAULT");
+        }
+    }
 }

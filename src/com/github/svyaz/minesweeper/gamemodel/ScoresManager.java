@@ -2,9 +2,7 @@ package com.github.svyaz.minesweeper.gamemodel;
 
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -73,5 +71,43 @@ class ScoresManager {
             result.put(newKey, newValue);
         }
         return result;
+    }
+
+    /**
+     * Метод проверяет является ли время новым рекордом.
+     *
+     * @param gameMode режим игры, для которого провряется.
+     * @param time     время законченной игры.
+     * @return true если это новый рекорд, false - если время больше чем рекорд.
+     */
+    boolean isNewRecord(GameMode gameMode, long time) {
+        ScoreElement currentScore = scores.get(gameMode.getName());
+        if (currentScore == null) {
+            return true;
+        }
+        return currentScore.getGameTime() > time;
+    }
+
+    /**
+     * Устанавливает новый рекорд в таблице.
+     *
+     * @param gameMode режим игры.
+     * @param userName имя игрока, поставившего рекорд.
+     * @param time     время рекордной игры.
+     */
+    void setNewRecord(GameMode gameMode, String userName, long time) {
+        ScoreElement element = new ScoreElement(gameMode.getName(), time, userName);
+        scores.put(gameMode.getName(), element);
+    }
+
+    /**
+     * Сохраняет текущие рекорды в файл.
+     */
+    void save() {
+        try (PrintWriter writer = new PrintWriter(scoresFileName)) {
+            scores.forEach((k, v) -> writer.print(String.format("%s|%s|%s%n", k, v.getGameTime(), v.getUserName())));
+            writer.flush();
+        } catch (FileNotFoundException ignore) {
+        }
     }
 }

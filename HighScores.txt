@@ -1,3 +1,0 @@
-rookie|10000000|max
-pro|7654321|vasya pupkin
-hbz|123456|klava petrova

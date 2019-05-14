@@ -30,4 +30,7 @@ public interface GameView {
 
     // Показать таблицу рекордов
     void showScores(HashMap<String, String> scoresMap);
+
+    // Получить имя пользователя, который поставил рекорд
+    String getUserName();
 }
