@@ -72,8 +72,8 @@ public class Game {
     /**
      * Создание контроллера и установка режима "Новичок" при запуске.
      */
-    public Game(GameMode... modes) {
-        view = new TextView();
+    public Game(GameView gameView, GameMode... modes) {
+        view = gameView;
         status = NOT_STARTED;
 
         gameModes = new HashMap<>();
