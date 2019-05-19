@@ -131,11 +131,7 @@ public class TextView implements GameView {
         sb.append(ls);
 
         for (int i = 0; i < rows; i++) {
-            if (i % 2 == 0) {
-                sb.append(String.format("%2s |", i));
-            } else {
-                sb.append("   |");
-            }
+            sb.append(String.format("%2s |", i));
 
             for (int j = 0; j < columns; j++) {
                 sb.append(' ').append(cells[i][j]);

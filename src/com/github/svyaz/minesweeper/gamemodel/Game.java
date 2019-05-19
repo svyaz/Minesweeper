@@ -132,7 +132,7 @@ public class Game {
     public void startNewGame(String mode) {
         GameMode gameMode = gameModes.get(mode);
         if (gameMode == null) {
-            view.showMessage("MODES_UNKNOWN");
+            view.showMessage("MODE_UNKNOWN");
             return;
         }
         this.gameMode = gameMode;
