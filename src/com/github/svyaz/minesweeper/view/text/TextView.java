@@ -12,18 +12,16 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class TextView implements GameView {
+    private static Scanner scanner = new Scanner(System.in);
     private int rows;
     private int columns;
     private int bombsCount;
     private char[][] cells;
     private String modeDescription;
     private String timeString;
-    private Scanner scanner;
     private ResourceBundle messages = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.text.Messages");
 
     public TextView() {
-        scanner = new Scanner(System.in);
-        scanner.useDelimiter(System.lineSeparator());
     }
 
     @Override
@@ -158,8 +156,8 @@ public class TextView implements GameView {
 
     @Override
     public Command waitCommand() {
-        while (scanner.hasNext()) {
-            String inputString = scanner.next().trim().replaceAll(" +", " ");
+        while (scanner.hasNextLine()) {
+            String inputString = scanner.nextLine().trim().replaceAll(" +", " ");
 
             if (inputString.matches("o \\d+ \\d+")) {
                 // Команда "Открыть одну ячейку по координатам"
