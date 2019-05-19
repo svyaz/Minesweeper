@@ -38,6 +38,8 @@ public class TextView implements GameView {
                 this.cells[i][j] = '-';
             }
         }
+
+        showMessage("HELP_TEXT");
     }
 
     @Override

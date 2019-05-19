@@ -6,7 +6,7 @@ import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.ProMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.RookieMode;
 import com.github.svyaz.minesweeper.view.GameView;
-import com.github.svyaz.minesweeper.view.gui.GuiView;
+//import com.github.svyaz.minesweeper.view.gui.GuiView;
 import com.github.svyaz.minesweeper.view.text.TextView;
 
 public class Main {
