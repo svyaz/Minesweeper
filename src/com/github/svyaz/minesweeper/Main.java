@@ -12,7 +12,7 @@ import com.github.svyaz.minesweeper.view.text.TextView;
 public class Main {
     public static void main(String[] args) {
 
-        GameView gameView = null;
+        /*GameView gameView = null;
 
         if (args.length >= 2 && args[0].equals("-mode")) {
             switch (args[1]) {
@@ -36,7 +36,9 @@ public class Main {
             System.out.println();
             System.out.println("Prints help!");
             System.exit(0);
-        }
+        }*/
+
+        GameView gameView = new TextView();
 
         Game gameController = new Game(gameView,
                 new RookieMode(),
@@ -49,3 +51,4 @@ public class Main {
 }
 
 //TODO сделать нормальные сообщения в Main.
+//TODO сделать иконку приложения
