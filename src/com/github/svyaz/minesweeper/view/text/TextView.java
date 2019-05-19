@@ -120,8 +120,10 @@ public class TextView implements GameView {
         // Координаты
         sb.append("   |");
         for (int i = 0; i < columns; i++) {
-            if (i % 2 == 0) {
-                sb.append(String.format("%2s  ", i));
+            if (i < 10) {
+                sb.append(String.format("%2s", i));
+            } else if (i % 2 != 0) {
+                sb.append(String.format("  %2s", i));
             }
         }
         sb.append(ls);
