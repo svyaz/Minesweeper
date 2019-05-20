@@ -6,13 +6,13 @@ import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.ProMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.RookieMode;
 import com.github.svyaz.minesweeper.view.GameView;
-//import com.github.svyaz.minesweeper.view.gui.GuiView;
+import com.github.svyaz.minesweeper.view.gui.GuiView;
 import com.github.svyaz.minesweeper.view.text.TextView;
 
 public class Main {
     public static void main(String[] args) {
 
-        /*GameView gameView = null;
+        GameView gameView = null;
 
         if (args.length >= 2 && args[0].equals("-mode")) {
             switch (args[1]) {
@@ -36,9 +36,9 @@ public class Main {
             System.out.println();
             System.out.println("Prints help!");
             System.exit(0);
-        }*/
+        }
 
-        GameView gameView = new TextView();
+        //GameView gameView = new TextView();
 
         Game gameController = new Game(gameView,
                 new RookieMode(),

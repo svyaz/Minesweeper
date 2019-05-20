@@ -1,6 +1,8 @@
 package com.github.svyaz.minesweeper.view.gui;
 
 import com.github.svyaz.minesweeper.gamemodel.Cell;
+import com.github.svyaz.minesweeper.gamemodel.CellLook;
+import com.github.svyaz.minesweeper.gamemodel.Game;
 import com.github.svyaz.minesweeper.gamemodel.commands.Command;
 import com.github.svyaz.minesweeper.view.GameView;
 
@@ -12,28 +14,28 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GuiView implements GameView {
+    private int rows;
+    private int columns;
+    private int bombsCount;
+
     private JFrame frame;
     private JLabel timeLabel;
     private JLabel bombsLabel;
     private JButton mainButton;
-    private JPanel fieldPanel;
+    private JPanel fieldPanel = new JPanel();
+
+    private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
 
     public GuiView() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                frame = new JFrame("Minesweeper");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                //frame.setResizable(false);
-                Container pane = frame.getContentPane();
+        SwingUtilities.invokeLater(() -> {
+            frame = new JFrame("Minesweeper");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setVisible(true);
 
-                addMenuComponents();
-                addGameComponents(pane);
-
-                frame.setSize(400, 200);
-                //frame.pack();
-                frame.setVisible(true);
-            }
+            loadFieldIcons();
+            addMenuComponents();
+            addGameComponents(frame.getContentPane());
         });
     }
 
@@ -85,7 +87,7 @@ public class GuiView implements GameView {
         GridBagConstraints constraints = new GridBagConstraints();
 
         // === Bombs remain label ===
-        bombsLabel = new JLabel("99");
+        bombsLabel = new JLabel();
         constraints.anchor = GridBagConstraints.NORTHWEST;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridheight = 1;
@@ -139,34 +141,99 @@ public class GuiView implements GameView {
         mainPanel.add(timeLabel);
 
         // === Game field panel ===
-        GridLayout fieldLayout = new GridLayout(10,10);
-        fieldPanel = new JPanel(fieldLayout);
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                fieldPanel.add(new JLabel(i + "-" + j));
-            }
-        }
-
-        //fieldPanel.setSize(200, 200);
-        //fieldPanel.setBackground(Color.GREEN);
         constraints.anchor = GridBagConstraints.NORTH;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridheight = 1;
         constraints.gridwidth = 3;
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(0, 10, 15, 10);
         constraints.ipadx = 0;
         constraints.ipady = 0;
         constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
+        constraints.weighty = 0.8;
         layout.setConstraints(fieldPanel, constraints);
         mainPanel.add(fieldPanel);
     }
 
+    private void loadFieldIcons() {
+        try {
+            for (int i = 0; i < CellLook.values().length; i++) {
+                String iconPath = null;
+
+                switch (CellLook.values()[i]) {
+                    case OPEN_0:
+                        iconPath = "../../resources/images/empty.png";
+                        break;
+                    case OPEN_1:
+                        iconPath = "../../resources/images/num-1.png";
+                        break;
+                    case OPEN_2:
+                        iconPath = "../../resources/images/num-2.png";
+                        break;
+                    case OPEN_3:
+                        iconPath = "../../resources/images/num-3.png";
+                        break;
+                    case OPEN_4:
+                        iconPath = "../../resources/images/num-4.png";
+                        break;
+                    case OPEN_5:
+                        iconPath = "../../resources/images/num-5.png";
+                        break;
+                    case OPEN_6:
+                        iconPath = "../../resources/images/num-6.png";
+                        break;
+                    case OPEN_7:
+                        iconPath = "../../resources/images/num-7.png";
+                        break;
+                    case OPEN_8:
+                        iconPath = "../../resources/images/num-8.png";
+                        break;
+                    case CLOSED_CLEAR:
+                        iconPath = "../../resources/images/closed.png";
+                        break;
+                    case CLOSED_FLAGGED:
+                        iconPath = "../../resources/images/flag.png";
+                        break;
+                    case BOMB_CLEAR:
+                        iconPath = "../../resources/images/bomb.png";
+                        break;
+                    case BOMB_BANG:
+                        iconPath = "../../resources/images/bang.png";
+                        break;
+                    case BOMB_WRONG:
+                        iconPath = "../../resources/images/bomb-wrong.png";
+                        break;
+                }
+
+                ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
+                fieldIcons.put(CellLook.values()[i], icon);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initView(String modeDescription, int rows, int columns, int bombsCount) {
+        SwingUtilities.invokeLater(() -> {
+            frame.setTitle(modeDescription);
+            this.rows = rows;
+            this.columns = columns;
+            this.bombsCount = bombsCount;
+            timeLabel.setText(Game.getGameTimeString(0));
+            bombsLabel.setText(String.valueOf(bombsCount));
 
+            GridLayout fieldLayout = new GridLayout(rows, columns);
+            fieldPanel.setLayout(fieldLayout);
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    fieldPanel.add(new JLabel(fieldIcons.get(CellLook.CLOSED_CLEAR)));
+                }
+            }
+            frame.pack();
+        });
     }
 
     @Override
