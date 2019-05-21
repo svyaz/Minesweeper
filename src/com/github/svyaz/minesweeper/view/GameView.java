@@ -1,7 +1,7 @@
 package com.github.svyaz.minesweeper.view;
 
 import com.github.svyaz.minesweeper.gamemodel.Cell;
-import com.github.svyaz.minesweeper.gamemodel.commands.Command;
+import com.github.svyaz.minesweeper.gamemodel.Game;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +22,8 @@ public interface GameView {
     // Нарисовать поле
     void printField();
 
-    // Ожидать команду
-    Command waitCommand();
+    // Запустить view
+    void startView(Game gameController);
 
     // Показать сообщение
     void showMessage(String message);

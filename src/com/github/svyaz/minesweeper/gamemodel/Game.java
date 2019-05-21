@@ -4,7 +4,6 @@ import com.github.svyaz.minesweeper.gamemodel.commands.Command;
 import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
-import com.github.svyaz.minesweeper.view.text.TextView;
 
 import java.util.*;
 
@@ -115,13 +114,17 @@ public class Game {
                 gameMode.getColumns(),
                 gameMode.getBombsCount());
         view.printField();
+        view.startView(this);
+    }
 
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            Command command = view.waitCommand();
-            command.setGame(this);
-            command.execute();
-        }
+    /**
+     * Выполняет команду полученную от view.
+     *
+     * @param command команда на выполнение.
+     */
+    public void executeCommand(Command command) {
+        command.setGame(this);
+        command.execute();
     }
 
     /**

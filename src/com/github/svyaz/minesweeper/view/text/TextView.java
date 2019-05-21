@@ -155,7 +155,7 @@ public class TextView implements GameView {
     }
 
     @Override
-    public Command waitCommand() {
+    public void startView(Game gameController) {
         while (scanner.hasNextLine()) {
             String inputString = scanner.nextLine().trim().replaceAll(" +", " ");
 
@@ -164,21 +164,21 @@ public class TextView implements GameView {
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new OpenCellCommand(row, column);
+                gameController.executeCommand(new OpenCellCommand(row, column));
 
             } else if (inputString.matches("b \\d+ \\d+")) {
                 // Команда "Открыть окружающие ячейки"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new OpenNeighborsCommand(row, column);
+                gameController.executeCommand(new OpenNeighborsCommand(row, column));
 
             } else if (inputString.matches("f \\d+ \\d+")) {
                 // Команда "Поставить/снять флаг"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]);
                 int column = Integer.parseInt(strings[2]);
-                return new FlagCellCommand(row, column);
+                gameController.executeCommand(new FlagCellCommand(row, column));
 
             } else if (inputString.matches("h")) {
                 // Показать help по командам
@@ -186,15 +186,15 @@ public class TextView implements GameView {
 
             } else if (inputString.matches("a")) {
                 // Показать информацию о программе
-                return new ShowAboutCommand();
+                gameController.executeCommand(new ShowAboutCommand());
 
             } else if (inputString.matches("s")) {
                 // Команда "Показать таблицу рекордов"
-                return new ShowScoresCommand();
+                gameController.executeCommand(new ShowScoresCommand());
 
             } else if (inputString.matches("[qe]")) {
                 // Выход из программы.
-                return new ExitCommand();
+                gameController.executeCommand(new ExitCommand());
 
             } else if (inputString.matches("n \\d+ \\d+ \\d+")) {
                 // Запуск новой игры в Свободном режиме
@@ -202,29 +202,28 @@ public class TextView implements GameView {
                 int rows = Integer.parseInt(strings[1]);
                 int columns = Integer.parseInt(strings[2]);
                 int bombsCount = Integer.parseInt(strings[3]);
-                return new StartFreeGameCommand(rows, columns, bombsCount);
+                gameController.executeCommand(new StartFreeGameCommand(rows, columns, bombsCount));
 
             } else if (inputString.matches("n \\w+")) {
                 // Запуск новой игры в одном из предустановленных режимов (Новичок, Любитель, Профессионал).
-                return new StartPresetGameCommand(inputString.substring(2));
+                gameController.executeCommand(new StartPresetGameCommand(inputString.substring(2)));
 
             } else if (inputString.matches("r")) {
                 // Рестартовать игру в текущем режиме
-                return new RestartCommand();
+                gameController.executeCommand(new RestartCommand());
             } else {
                 //  Когда ввели что-то неожидаемое.
                 showMessage("MSG_UNKNOWN_COMMAND");
             }
         }
-        return null;    // Чтобы метод компилировался.
     }
 
     @Override
     public String getUserName() {
         System.out.println(messages.getString("USER_NAME_ENTER_INVITATION"));
 
-        if (scanner.hasNext()) {
-            return scanner.next().trim();
+        if (scanner.hasNextLine()) {
+            return scanner.nextLine().trim();
         } else {
             return messages.getString("USER_NAME_DEFAULT");
         }

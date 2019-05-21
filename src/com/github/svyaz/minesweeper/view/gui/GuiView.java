@@ -261,9 +261,9 @@ public class GuiView implements GameView {
     }
 
     @Override
-    public Command waitCommand() {
+    public void startView(Game gameController) {
 
-        return new Command() {
+        /*return new Command() {
             @Override
             public void execute() {
                 try {
@@ -273,7 +273,7 @@ public class GuiView implements GameView {
                 }
                 System.out.println("From GUI");
             }
-        };
+        };*/
     }
 
     @Override
