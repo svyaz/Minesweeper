@@ -5,7 +5,13 @@ import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 
-import java.util.*;
+import javax.swing.SwingUtilities;
+import java.util.HashMap;
+import java.util.TimerTask;
+import java.util.Timer;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import static com.github.svyaz.minesweeper.gamemodel.GameStatus.*;
 
@@ -88,19 +94,21 @@ public class Game {
      * Запуск таймера при старте игры (когда сделан первый ход)
      */
     private void startTimer() {
-        time = 0;
-        timer = new Timer(true);
+        SwingUtilities.invokeLater(() -> {
+            time = 0;
+            timer = new Timer(true);
 
-        TimerTask timerTask = new TimerTask() {
-            private final long startTime = System.currentTimeMillis();
+            TimerTask timerTask = new TimerTask() {
+                private final long startTime = System.currentTimeMillis();
 
-            @Override
-            public void run() {
-                time = System.currentTimeMillis() - startTime;
-                view.updateGameTimeString(Game.getGameTimeString(time));
-            }
-        };
-        timer.schedule(timerTask, 0, 1000);
+                @Override
+                public void run() {
+                    time = System.currentTimeMillis() - startTime;
+                    view.updateGameTimeString(Game.getGameTimeString(time));
+                }
+            };
+            timer.schedule(timerTask, 0, 1000);
+        });
     }
 
     /**
@@ -581,5 +589,4 @@ public class Game {
         scoresManager.setNewRecord(gameMode, userName, time);
         scoresManager.save();
     }
-
 }
