@@ -23,6 +23,7 @@ public class GuiView implements GameView {
     private JLabel bombsLabel;
     private JButton mainButton;
     private JPanel fieldPanel = new JPanel();
+    private JLabel[][] cells;
 
     private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
 
@@ -77,6 +78,7 @@ public class GuiView implements GameView {
         frame.setJMenuBar(menuBar);
 
         // === Actions ===
+
         exitItem.addActionListener(e -> System.exit(0));
     }
 
@@ -221,6 +223,7 @@ public class GuiView implements GameView {
             this.rows = rows;
             this.columns = columns;
             this.bombsCount = bombsCount;
+            cells = new JLabel[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
 
@@ -229,7 +232,8 @@ public class GuiView implements GameView {
 
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    fieldPanel.add(new JLabel(fieldIcons.get(CellLook.CLOSED_CLEAR)));
+                    cells[i][j] = new JLabel(fieldIcons.get(CellLook.CLOSED_CLEAR));
+                    fieldPanel.add(cells[i][j]);
                 }
             }
             frame.pack();
@@ -253,11 +257,12 @@ public class GuiView implements GameView {
 
     @Override
     public void printField() {
-
+        // Should it do anything?
     }
 
     @Override
     public Command waitCommand() {
+
         return new Command() {
             @Override
             public void execute() {
