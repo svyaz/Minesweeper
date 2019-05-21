@@ -21,9 +21,6 @@ public class TextView implements GameView {
     private String timeString;
     private ResourceBundle messages = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.text.Messages");
 
-    public TextView() {
-    }
-
     @Override
     public void initView(String modeDescription, int rows, int columns, int bombsCount) {
         this.modeDescription = modeDescription;
