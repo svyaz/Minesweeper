@@ -156,44 +156,44 @@ public class TextView implements GameView {
         while (scanner.hasNextLine()) {
             String inputString = scanner.nextLine().trim().replaceAll(" +", " ");
 
-            if (inputString.matches("o \\d+ \\d+")) {
+            if (inputString.matches("[oO] \\d+ \\d+")) {
                 // Команда "Открыть одну ячейку по координатам"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]) - 1;
                 int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new OpenCellCommand(row, column));
 
-            } else if (inputString.matches("b \\d+ \\d+")) {
+            } else if (inputString.matches("[bB] \\d+ \\d+")) {
                 // Команда "Открыть окружающие ячейки"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]) - 1;
                 int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new OpenNeighborsCommand(row, column));
 
-            } else if (inputString.matches("f \\d+ \\d+")) {
+            } else if (inputString.matches("[fF] \\d+ \\d+")) {
                 // Команда "Поставить/снять флаг"
                 String[] strings = inputString.split(" ");
                 int row = Integer.parseInt(strings[1]) - 1;
                 int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new FlagCellCommand(row, column));
 
-            } else if (inputString.matches("h")) {
+            } else if (inputString.matches("[hH]")) {
                 // Показать help по командам
                 showMessage("HELP_TEXT");
 
-            } else if (inputString.matches("a")) {
+            } else if (inputString.matches("[aA]")) {
                 // Показать информацию о программе
                 gameController.executeCommand(new ShowAboutCommand());
 
-            } else if (inputString.matches("s")) {
+            } else if (inputString.matches("[sS]")) {
                 // Команда "Показать таблицу рекордов"
                 gameController.executeCommand(new ShowScoresCommand());
 
-            } else if (inputString.matches("[qe]")) {
+            } else if (inputString.matches("[qQeE]")) {
                 // Выход из программы.
                 gameController.executeCommand(new ExitCommand());
 
-            } else if (inputString.matches("n \\d+ \\d+ \\d+")) {
+            } else if (inputString.matches("[nN] \\d+ \\d+ \\d+")) {
                 // Запуск новой игры в Свободном режиме
                 String[] strings = inputString.split(" ");
                 int rows = Integer.parseInt(strings[1]);
@@ -201,11 +201,11 @@ public class TextView implements GameView {
                 int bombsCount = Integer.parseInt(strings[3]);
                 gameController.executeCommand(new StartFreeGameCommand(rows, columns, bombsCount));
 
-            } else if (inputString.matches("n \\w+")) {
+            } else if (inputString.matches("[nN] \\w+")) {
                 // Запуск новой игры в одном из предустановленных режимов (Новичок, Любитель, Профессионал).
-                gameController.executeCommand(new StartPresetGameCommand(inputString.substring(2)));
+                gameController.executeCommand(new StartPresetGameCommand(inputString.substring(2).toLowerCase()));
 
-            } else if (inputString.matches("r")) {
+            } else if (inputString.matches("[rR]")) {
                 // Рестартовать игру в текущем режиме
                 gameController.executeCommand(new RestartCommand());
             } else {

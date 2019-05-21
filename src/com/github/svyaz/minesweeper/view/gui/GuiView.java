@@ -3,7 +3,6 @@ package com.github.svyaz.minesweeper.view.gui;
 import com.github.svyaz.minesweeper.gamemodel.Cell;
 import com.github.svyaz.minesweeper.gamemodel.CellLook;
 import com.github.svyaz.minesweeper.gamemodel.Game;
-import com.github.svyaz.minesweeper.gamemodel.commands.Command;
 import com.github.svyaz.minesweeper.view.GameView;
 
 import javax.imageio.ImageIO;
@@ -79,7 +78,7 @@ public class GuiView implements GameView {
 
         // === Actions ===
 
-        exitItem.addActionListener(e -> System.exit(0));
+        //exitItem.addActionListener(e -> System.exit(0));
     }
 
     private void addGameComponents(Container mainPanel) {
@@ -262,6 +261,7 @@ public class GuiView implements GameView {
 
     @Override
     public void startView(Game gameController) {
+
 
         /*return new Command() {
             @Override
