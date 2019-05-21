@@ -117,10 +117,10 @@ public class TextView implements GameView {
         // Координаты
         sb.append("   |");
         for (int i = 0; i < columns; i++) {
-            if (i < 10) {
-                sb.append(String.format("%2s", i));
-            } else if (i % 2 != 0) {
-                sb.append(String.format("  %2s", i));
+            if (i < 9) {
+                sb.append(String.format("%2s", i + 1));
+            } else if ((i + 1) % 2 != 0) {
+                sb.append(String.format("  %2s", i + 1));
             }
         }
         sb.append(ls);
@@ -130,7 +130,7 @@ public class TextView implements GameView {
         sb.append(ls);
 
         for (int i = 0; i < rows; i++) {
-            sb.append(String.format("%2s |", i));
+            sb.append(String.format("%2s |", i + 1));
 
             for (int j = 0; j < columns; j++) {
                 sb.append(' ').append(cells[i][j]);
@@ -159,22 +159,22 @@ public class TextView implements GameView {
             if (inputString.matches("o \\d+ \\d+")) {
                 // Команда "Открыть одну ячейку по координатам"
                 String[] strings = inputString.split(" ");
-                int row = Integer.parseInt(strings[1]);
-                int column = Integer.parseInt(strings[2]);
+                int row = Integer.parseInt(strings[1]) - 1;
+                int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new OpenCellCommand(row, column));
 
             } else if (inputString.matches("b \\d+ \\d+")) {
                 // Команда "Открыть окружающие ячейки"
                 String[] strings = inputString.split(" ");
-                int row = Integer.parseInt(strings[1]);
-                int column = Integer.parseInt(strings[2]);
+                int row = Integer.parseInt(strings[1]) - 1;
+                int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new OpenNeighborsCommand(row, column));
 
             } else if (inputString.matches("f \\d+ \\d+")) {
                 // Команда "Поставить/снять флаг"
                 String[] strings = inputString.split(" ");
-                int row = Integer.parseInt(strings[1]);
-                int column = Integer.parseInt(strings[2]);
+                int row = Integer.parseInt(strings[1]) - 1;
+                int column = Integer.parseInt(strings[2]) - 1;
                 gameController.executeCommand(new FlagCellCommand(row, column));
 
             } else if (inputString.matches("h")) {

@@ -208,7 +208,7 @@ public class Game {
         }
 
         // Если за пределами поля
-        if (row >= field.getRows() || column >= field.getColumns()) {
+        if (row < 0 || row >= field.getRows() || column < 0 || column >= field.getColumns()) {
             view.printField();
             return;
         }
@@ -279,7 +279,7 @@ public class Game {
         }
 
         // Если за пределами поля
-        if (row >= field.getRows() || column >= field.getColumns()) {
+        if (row < 0 || row >= field.getRows() || column < 0 || column >= field.getColumns()) {
             view.printField();
             return;
         }
@@ -516,7 +516,7 @@ public class Game {
         }
 
         // Если за пределами поля
-        if (row >= field.getRows() || row >= field.getColumns()) {
+        if (row < 0 || row >= field.getRows() || column < 0 || column >= field.getColumns()) {
             view.printField();
             return;
         }
