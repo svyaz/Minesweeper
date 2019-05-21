@@ -387,14 +387,14 @@ public class Game {
      * @throws BangException если взорвались.
      */
     private List<Cell> openRegion(Cell cell) {
-        // Если бомба - взорвались
-        if (cell.hasBomb()) {
-            throw new BangException();
-        }
-
         // Если флаг или уже открыта.
         if (cell.hasFlag() || cell.isOpen()) {
             return null;
+        }
+
+        // Если бомба - взорвались
+        if (cell.hasBomb()) {
+            throw new BangException();
         }
 
         List<Cell> result = new LinkedList<>();
