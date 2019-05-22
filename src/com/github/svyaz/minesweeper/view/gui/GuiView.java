@@ -3,6 +3,7 @@ package com.github.svyaz.minesweeper.view.gui;
 import com.github.svyaz.minesweeper.gamemodel.Cell;
 import com.github.svyaz.minesweeper.gamemodel.CellLook;
 import com.github.svyaz.minesweeper.gamemodel.Game;
+import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,16 @@ public class GuiView implements GameView {
     private JButton mainButton;
     private JPanel fieldPanel = new JPanel();
     private JLabel[][] cells;
+
+    private JMenuItem newGameItem;
+    private JMenuItem scoresItem;
+    private JMenuItem modeRookieItem;
+    private JMenuItem modeFanItem;
+    private JMenuItem modeProItem;
+    private JMenuItem modeFreeItem;
+    private JMenuItem exitItem;
+    private JMenuItem helpItem;
+    private JMenuItem aboutItem;
 
     private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
 
@@ -45,14 +56,14 @@ public class GuiView implements GameView {
         JMenu infoMenu = new JMenu("Info");
 
         // === Game menu ===
-        JMenuItem newGameItem = new JMenuItem("New game");
-        JMenuItem scoresItem = new JMenuItem("High scores ...");
-        JMenuItem exitItem = new JMenuItem("Exit");
+        newGameItem = new JMenuItem("New game");
+        scoresItem = new JMenuItem("High scores ...");
+        exitItem = new JMenuItem("Exit");
         // --- modes ---
-        JMenuItem modeRookieItem = new JMenuItem("Rookie");
-        JMenuItem modeFanItem = new JMenuItem("Fan");
-        JMenuItem modeProItem = new JMenuItem("Professional");
-        JMenuItem modeFreeItem = new JMenuItem("Free ...");
+        modeRookieItem = new JMenuItem("Rookie");
+        modeFanItem = new JMenuItem("Fan");
+        modeProItem = new JMenuItem("Professional");
+        modeFreeItem = new JMenuItem("Free ...");
         gameMenu.add(newGameItem);
         gameMenu.addSeparator(); // -----
         gameMenu.add(modeRookieItem);
@@ -65,8 +76,8 @@ public class GuiView implements GameView {
         gameMenu.add(exitItem);
 
         // === Info menu ===
-        JMenuItem helpItem = new JMenuItem("Help ...");
-        JMenuItem aboutItem = new JMenuItem("About program ...");
+        helpItem = new JMenuItem("Help ...");
+        aboutItem = new JMenuItem("About program ...");
         infoMenu.add(helpItem);
         infoMenu.addSeparator(); // -----
         infoMenu.add(aboutItem);
@@ -75,10 +86,6 @@ public class GuiView implements GameView {
         menuBar.add(gameMenu);
         menuBar.add(infoMenu);
         frame.setJMenuBar(menuBar);
-
-        // === Actions ===
-
-        //exitItem.addActionListener(e -> System.exit(0));
     }
 
     private void addGameComponents(Container mainPanel) {
@@ -261,6 +268,22 @@ public class GuiView implements GameView {
 
     @Override
     public void startView(Game gameController) {
+        // register listeners
+        SwingUtilities.invokeLater(() -> {
+            newGameItem.addActionListener(e -> gameController.executeCommand(new RestartCommand()));
+            scoresItem.addActionListener(e -> gameController.executeCommand(new ShowScoresCommand()));
+            exitItem.addActionListener(e -> gameController.executeCommand(new ExitCommand()));
+            aboutItem.addActionListener(e -> gameController.executeCommand(new ShowAboutCommand()));
+
+            helpItem.addActionListener(e -> System.out.println("HELP!!!"));
+
+            modeRookieItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("rookie")));
+            modeFanItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("fan")));
+            modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
+            //modeFreeItem.addActionListener(e -> gameController.executeCommand(new StartFreeGameCommand()));
+        });
+
+
 
 
         /*return new Command() {
@@ -275,6 +298,7 @@ public class GuiView implements GameView {
             }
         };*/
     }
+
 
     @Override
     public void showMessage(String message) {
