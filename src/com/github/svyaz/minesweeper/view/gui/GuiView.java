@@ -234,6 +234,7 @@ public class GuiView implements GameView {
             bombsLabel.setText(String.valueOf(bombsCount));
 
             GridLayout fieldLayout = new GridLayout(rows, columns);
+            fieldPanel.removeAll();
             fieldPanel.setLayout(fieldLayout);
 
             for (int i = 0; i < rows; i++) {
