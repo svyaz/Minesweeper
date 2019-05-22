@@ -9,6 +9,7 @@ import com.github.svyaz.minesweeper.view.GameView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,13 +19,15 @@ public class GuiView implements GameView {
     private int columns;
     private int bombsCount;
 
+    // Main controls
     private JFrame frame;
     private JLabel timeLabel;
     private JLabel bombsLabel;
     private JButton mainButton;
-    private JPanel fieldPanel = new JPanel();
+    private JPanel fieldPanel;
     private JLabel[][] cells;
 
+    // Menu controls
     private JMenuItem newGameItem;
     private JMenuItem scoresItem;
     private JMenuItem modeRookieItem;
@@ -149,6 +152,7 @@ public class GuiView implements GameView {
         mainPanel.add(timeLabel);
 
         // === Game field panel ===
+        fieldPanel = new JPanel();
         constraints.anchor = GridBagConstraints.NORTH;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridheight = 1;
@@ -271,7 +275,11 @@ public class GuiView implements GameView {
     public void startView(Game gameController) {
         // register listeners
         SwingUtilities.invokeLater(() -> {
-            newGameItem.addActionListener(e -> gameController.executeCommand(new RestartCommand()));
+
+            ActionListener restartListener = e -> gameController.executeCommand(new RestartCommand());
+
+            mainButton.addActionListener(restartListener);
+            newGameItem.addActionListener(restartListener);
             scoresItem.addActionListener(e -> gameController.executeCommand(new ShowScoresCommand()));
             exitItem.addActionListener(e -> gameController.executeCommand(new ExitCommand()));
             aboutItem.addActionListener(e -> gameController.executeCommand(new ShowAboutCommand()));
@@ -283,21 +291,6 @@ public class GuiView implements GameView {
             modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
             //modeFreeItem.addActionListener(e -> gameController.executeCommand(new StartFreeGameCommand()));
         });
-
-
-
-
-        /*return new Command() {
-            @Override
-            public void execute() {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("From GUI");
-            }
-        };*/
     }
 
 
