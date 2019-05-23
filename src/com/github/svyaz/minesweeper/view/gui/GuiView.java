@@ -257,7 +257,14 @@ public class GuiView implements GameView {
 
     @Override
     public void updateField(List<Cell> cellsList) {
+        SwingUtilities.invokeLater(() -> {
+            for (Cell cell : cellsList) {
+                int row = cell.getRow();
+                int column = cell.getColumn();
 
+                this.cells[row][column].setIcon(fieldIcons.get(cell.getCellLook()));
+            }
+        });
     }
 
     @Override
