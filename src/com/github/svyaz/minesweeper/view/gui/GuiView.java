@@ -19,7 +19,7 @@ import java.util.List;
 public class GuiView implements GameView {
     private int rows;
     private int columns;
-    private int bombsCount;
+    //private int bombsCount;
 
     // Main controls
     private JFrame frame;
@@ -235,7 +235,7 @@ public class GuiView implements GameView {
             frame.setTitle(modeDescription);
             this.rows = rows;
             this.columns = columns;
-            this.bombsCount = bombsCount;
+            //this.bombsCount = bombsCount;
             cells = new JLabelCell[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
@@ -262,14 +262,12 @@ public class GuiView implements GameView {
 
     @Override
     public void updateGameTimeString(String timeString) {
-        SwingUtilities.invokeLater(() -> {
-            timeLabel.setText(timeString);
-        });
+        SwingUtilities.invokeLater(() -> timeLabel.setText(timeString));
     }
 
     @Override
     public void updateBombsCount(int bombsCount) {
-
+        SwingUtilities.invokeLater(() -> bombsLabel.setText(String.valueOf(bombsCount)));
     }
 
     @Override
@@ -343,7 +341,7 @@ public class GuiView implements GameView {
 
     @Override
     public void showMessage(String message) {
-
+        //TODO
     }
 
     @Override
