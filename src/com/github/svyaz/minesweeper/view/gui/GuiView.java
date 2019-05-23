@@ -262,7 +262,9 @@ public class GuiView implements GameView {
 
     @Override
     public void updateGameTimeString(String timeString) {
-        //timeLabel.setText(timeString);
+        SwingUtilities.invokeLater(() -> {
+            timeLabel.setText(timeString);
+        });
     }
 
     @Override
@@ -296,17 +298,17 @@ public class GuiView implements GameView {
 
             // Game events
             cellsMouseAdapter = new MouseAdapter() {
-                /*@Override
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
                     JLabelCell cell = (JLabelCell) e.getSource();
-                    System.out.println(e);
+                    //System.out.println(e);
                     //System.out.printf("Clicked b:%d, row:%d, col:%d%n", e.getButton(), cell.getRow(), cell.getColumn());
                     //System.out.println("  Button: " + e.getButton());
                     //System.out.println("  Row:    " + cell.getRow());
                     //System.out.println("  Column: " + cell.getColumn());
 
-                    *//*int buttonIndex = e.getButton();
+                    int buttonIndex = e.getButton();
                     Command command = null;
                     int row = cell.getRow();
                     int column = cell.getColumn();
@@ -319,39 +321,13 @@ public class GuiView implements GameView {
                         command = new FlagCellCommand(row, column);
 
                     } else {
-                        //
-                        command = new OpenNeighborsCommand(row, column);
+                        //TODO надо научиться обрабатывать одновременное нажатие двух кнопок
+                        //command = new OpenNeighborsCommand(row, column);
                     }
-                    gameController.executeCommand(command);*//*
+                    gameController.executeCommand(command);
 
-                }*/
-                private boolean button1Pressed = false;
-                private boolean button3Pressed = false;
-                //private boolean bothPressed = false;
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    //super.mousePressed(e);
-                    button1Pressed = e.getButton() == MouseEvent.BUTTON1;
-                    button3Pressed = e.getButton() == MouseEvent.BUTTON3;
-
-                    if (button1Pressed && button3Pressed) {
-                        System.out.println("Both");
-                    } else if (button1Pressed) {
-                        System.out.println("Left");
-                    } else if (button3Pressed) {
-                        System.out.println("Right");
-                    } else {
-                        System.out.println("None");
-                    }
                 }
 
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    //super.mouseReleased(e);
-                    button1Pressed = false;
-                    button3Pressed = false;
-                }
             };
 
             // В первый раз после запуска надо назначить листенера тут. Иначе на момент заполнения cell[][]
@@ -361,10 +337,6 @@ public class GuiView implements GameView {
                     cells[i][j].addMouseListener(cellsMouseAdapter);
                 }
             }
-
-
-
-
         });
     }
 
