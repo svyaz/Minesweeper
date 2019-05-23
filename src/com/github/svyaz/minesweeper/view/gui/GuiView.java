@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +27,8 @@ public class GuiView implements GameView {
     private JLabel bombsLabel;
     private JButton mainButton;
     private JPanel fieldPanel;
-    private JLabel[][] cells;
+    private JLabelCell[][] cells;
+    private MouseAdapter cellsMouseAdapter;
 
     // Menu controls
     private JMenuItem newGameItem;
@@ -42,7 +45,7 @@ public class GuiView implements GameView {
 
     public GuiView() {
         SwingUtilities.invokeLater(() -> {
-            frame = new JFrame("Minesweeper");
+            frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
             frame.setVisible(true);
@@ -233,7 +236,7 @@ public class GuiView implements GameView {
             this.rows = rows;
             this.columns = columns;
             this.bombsCount = bombsCount;
-            cells = new JLabel[rows][columns];
+            cells = new JLabelCell[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
 
@@ -243,7 +246,8 @@ public class GuiView implements GameView {
 
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    cells[i][j] = new JLabel(fieldIcons.get(CellLook.CLOSED_CLEAR));
+                    cells[i][j] = new JLabelCell(i, j, fieldIcons.get(CellLook.CLOSED_CLEAR));
+                    cells[i][j].addMouseListener(cellsMouseAdapter);
                     fieldPanel.add(cells[i][j]);
                 }
             }
@@ -275,7 +279,6 @@ public class GuiView implements GameView {
     public void startView(Game gameController) {
         // register listeners
         SwingUtilities.invokeLater(() -> {
-
             ActionListener restartListener = e -> gameController.executeCommand(new RestartCommand());
 
             mainButton.addActionListener(restartListener);
@@ -290,6 +293,78 @@ public class GuiView implements GameView {
             modeFanItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("fan")));
             modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
             //modeFreeItem.addActionListener(e -> gameController.executeCommand(new StartFreeGameCommand()));
+
+            // Game events
+            cellsMouseAdapter = new MouseAdapter() {
+                /*@Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    JLabelCell cell = (JLabelCell) e.getSource();
+                    System.out.println(e);
+                    //System.out.printf("Clicked b:%d, row:%d, col:%d%n", e.getButton(), cell.getRow(), cell.getColumn());
+                    //System.out.println("  Button: " + e.getButton());
+                    //System.out.println("  Row:    " + cell.getRow());
+                    //System.out.println("  Column: " + cell.getColumn());
+
+                    *//*int buttonIndex = e.getButton();
+                    Command command = null;
+                    int row = cell.getRow();
+                    int column = cell.getColumn();
+
+                    if (buttonIndex == MouseEvent.BUTTON1) {
+                        // левая кнопка
+                        command = new OpenCellCommand(row, column);
+                    } else if (buttonIndex == MouseEvent.BUTTON3) {
+                        // правая кнопка
+                        command = new FlagCellCommand(row, column);
+
+                    } else {
+                        //
+                        command = new OpenNeighborsCommand(row, column);
+                    }
+                    gameController.executeCommand(command);*//*
+
+                }*/
+                private boolean button1Pressed = false;
+                private boolean button3Pressed = false;
+                //private boolean bothPressed = false;
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    //super.mousePressed(e);
+                    button1Pressed = e.getButton() == MouseEvent.BUTTON1;
+                    button3Pressed = e.getButton() == MouseEvent.BUTTON3;
+
+                    if (button1Pressed && button3Pressed) {
+                        System.out.println("Both");
+                    } else if (button1Pressed) {
+                        System.out.println("Left");
+                    } else if (button3Pressed) {
+                        System.out.println("Right");
+                    } else {
+                        System.out.println("None");
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    //super.mouseReleased(e);
+                    button1Pressed = false;
+                    button3Pressed = false;
+                }
+            };
+
+            // В первый раз после запуска надо назначить листенера тут. Иначе на момент заполнения cell[][]
+            // cellsMouseAdapter = null и в первой игре после запуска ячейки не нажимаются.
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    cells[i][j].addMouseListener(cellsMouseAdapter);
+                }
+            }
+
+
+
+
         });
     }
 
