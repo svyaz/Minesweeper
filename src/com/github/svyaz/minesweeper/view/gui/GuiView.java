@@ -261,7 +261,6 @@ public class GuiView implements GameView {
             for (Cell cell : cellsList) {
                 int row = cell.getRow();
                 int column = cell.getColumn();
-
                 this.cells[row][column].setIcon(fieldIcons.get(cell.getCellLook()));
             }
         });
@@ -284,7 +283,7 @@ public class GuiView implements GameView {
 
     @Override
     public void startView(Game gameController) {
-        // register listeners
+        // Register listeners
         SwingUtilities.invokeLater(() -> {
             ActionListener restartListener = e -> gameController.executeCommand(new RestartCommand());
 
@@ -300,18 +299,13 @@ public class GuiView implements GameView {
             modeFanItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("fan")));
             modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
             //modeFreeItem.addActionListener(e -> gameController.executeCommand(new StartFreeGameCommand()));
+            //TODO
 
             // Game events
             cellsMouseAdapter = new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
                     JLabelCell cell = (JLabelCell) e.getSource();
-                    //System.out.println(e);
-                    //System.out.printf("Clicked b:%d, row:%d, col:%d%n", e.getButton(), cell.getRow(), cell.getColumn());
-                    //System.out.println("  Button: " + e.getButton());
-                    //System.out.println("  Row:    " + cell.getRow());
-                    //System.out.println("  Column: " + cell.getColumn());
 
                     int buttonIndex = e.getButton();
                     Command command = null;
@@ -345,19 +339,25 @@ public class GuiView implements GameView {
         });
     }
 
-
     @Override
     public void showMessage(String message) {
-        //TODO
+        //TODO тут надо сделать разное поведение в зависимости от ситуации:
+        // смена внешности кнопки...
+        JOptionPane.showMessageDialog(frame, message, "MESSAGE_TITLE", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public void showScores(HashMap<String, String> scoresMap) {
-
+        StringBuilder sb = new StringBuilder();
+        scoresMap.forEach((key, value) -> sb
+                .append(key)
+                .append(value)
+                .append(System.lineSeparator()));
+        JOptionPane.showMessageDialog(frame, sb.toString(), "SCORES_TITLE", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public String getUserName() {
-        return null;
+        return null;    //TODO
     }
 }

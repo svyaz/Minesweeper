@@ -34,7 +34,7 @@ public class Main {
         } else {
             System.out.println("Unknown parameters.");
             System.out.println();
-            System.out.println("Prints help!");
+            System.out.println("Prints help!"); //TODO
             System.exit(0);
         }
 
@@ -52,6 +52,7 @@ public class Main {
 
 //TODO сделать нормальные сообщения в Main.
 //TODO сделать иконку приложения
+//TODO проверить ячейки с цифрами 6,7,8
 
 //TODO Исправить замечание от 21.05.2019 -
 // 3. После проигрыша или победы лучше опять выдать список команд
