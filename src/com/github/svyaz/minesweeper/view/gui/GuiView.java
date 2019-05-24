@@ -279,7 +279,7 @@ public class GuiView implements GameView {
 
     @Override
     public void printField() {
-        // Should it do anything?
+        SwingUtilities.invokeLater(() -> fieldPanel.updateUI());
     }
 
     @Override
