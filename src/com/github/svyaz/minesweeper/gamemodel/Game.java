@@ -5,7 +5,6 @@ import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 
-import javax.swing.SwingUtilities;
 import java.util.HashMap;
 import java.util.TimerTask;
 import java.util.Timer;
@@ -94,21 +93,19 @@ public class Game {
      * Запуск таймера при старте игры (когда сделан первый ход)
      */
     private void startTimer() {
-        SwingUtilities.invokeLater(() -> {
-            time = 0;
-            timer = new Timer(true);
+        time = 0;
+        timer = new Timer(true);
 
-            TimerTask timerTask = new TimerTask() {
-                private final long startTime = System.currentTimeMillis();
+        TimerTask timerTask = new TimerTask() {
+            private final long startTime = System.currentTimeMillis();
 
-                @Override
-                public void run() {
-                    time = System.currentTimeMillis() - startTime;
-                    view.updateGameTimeString(Game.getGameTimeString(time));
-                }
-            };
-            timer.schedule(timerTask, 0, 1000);
-        });
+            @Override
+            public void run() {
+                time = System.currentTimeMillis() - startTime;
+                view.updateGameTimeString(Game.getGameTimeString(time));
+            }
+        };
+        timer.schedule(timerTask, 0, 1000);
     }
 
     /**
@@ -573,7 +570,6 @@ public class Game {
      */
     public void showScores() {
         HashMap<String, String> scoresMap = scoresManager.getScoresMap();
-
         if (!scoresMap.isEmpty()) {
             view.showScores(scoresMap);
         } else {
