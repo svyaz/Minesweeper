@@ -48,11 +48,11 @@ public class GuiView implements GameView {
             frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
-            frame.setVisible(true);
 
             loadFieldIcons();
             addMenuComponents();
             addGameComponents(frame.getContentPane());
+            frame.setVisible(true);
         });
     }
 
@@ -358,6 +358,58 @@ public class GuiView implements GameView {
 
     @Override
     public String getUserName() {
-        return null;    //TODO
+        // === Modal frame ===
+        JDialog userForm = new JDialog(frame, "Enter user name", true);
+        userForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        userForm.setSize(250, 140);
+        userForm.setResizable(false);
+
+        Container pane = userForm.getContentPane();
+        GridBagLayout layout = new GridBagLayout();
+        pane.setLayout(layout);
+        pane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        // === Label ===
+        JLabel label = new JLabel("New record! Enter your name:");
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets = new Insets(10, 10, 0, 10);
+        constraints.ipadx = 0;
+        constraints.ipady = 0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.3;
+        layout.setConstraints(label, constraints);
+        pane.add(label);
+
+        // === Text ===
+        JTextField textField = new JTextField(null, "DEFAULT_USER_NAME", 0);
+        constraints.gridy = 1;
+        constraints.weighty = 0.3;
+        layout.setConstraints(textField, constraints);
+        pane.add(textField);
+
+        // === Button ===
+        JButton button = new JButton("SAVE_ACTION");
+        button.addActionListener(l -> userForm.dispose());
+        constraints.anchor = GridBagConstraints.SOUTH;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridy = 2;
+        constraints.weighty = 0.4;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        layout.setConstraints(button, constraints);
+        pane.add(button);
+
+        userForm.setVisible(true);
+
+        String text = textField.getText();
+        if (text == null || text.isEmpty()) {
+            return "DEFAULT_USER_NAME";
+        }
+        return text;
     }
 }

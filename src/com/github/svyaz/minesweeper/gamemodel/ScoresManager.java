@@ -37,7 +37,7 @@ class ScoresManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(scoresFileName))) {
             while (true) {
                 String text = reader.readLine();
-                if (text == null) {
+                if (text == null || text.isEmpty()) {
                     break;
                 }
                 //ScoreElement element = new ScoreElement(text);
