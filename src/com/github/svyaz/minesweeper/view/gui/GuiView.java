@@ -3,6 +3,7 @@ package com.github.svyaz.minesweeper.view.gui;
 import com.github.svyaz.minesweeper.gamemodel.Cell;
 import com.github.svyaz.minesweeper.gamemodel.CellLook;
 import com.github.svyaz.minesweeper.gamemodel.Game;
+import com.github.svyaz.minesweeper.gamemodel.GameStatus;
 import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
@@ -41,6 +42,7 @@ public class GuiView implements GameView {
     private JMenuItem aboutItem;
 
     private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
+    private HashMap<GameStatus, ImageIcon> mainButtonIcons = new HashMap<>();
 
     public GuiView() {
         SwingUtilities.invokeLater(() -> {
@@ -48,6 +50,7 @@ public class GuiView implements GameView {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
 
+            loadMainButtonIcons();
             loadFieldIcons();
             addMenuComponents();
             addGameComponents(frame.getContentPane());
@@ -121,12 +124,7 @@ public class GuiView implements GameView {
 
         // === Main center button ===
         mainButton = new JButton();
-        try {
-            Image buttonImage = ImageIO.read(getClass().getResource("../../resources/images/face-smile.png"));
-            mainButton.setIcon(new ImageIcon(buttonImage));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mainButton.setIcon(mainButtonIcons.get(GameStatus.NOT_STARTED));
         constraints.anchor = GridBagConstraints.NORTH;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridheight = 1;
@@ -226,6 +224,32 @@ public class GuiView implements GameView {
 
                 ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
                 fieldIcons.put(CellLook.values()[i], icon);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadMainButtonIcons() {
+        try {
+            for (int i = 0; i < GameStatus.values().length; i++) {
+                String iconPath = null;
+
+                switch (GameStatus.values()[i]) {
+                    case NOT_STARTED:
+                    case STARTED:
+                        iconPath = "../../resources/images/face-smile.png";
+                        break;
+                    case LOST:
+                        iconPath = "../../resources/images/face-gameover.png";
+                        break;
+                    case FINISHED:
+                        iconPath = "../../resources/images/face-glasses.png";
+                        break;
+                }
+
+                ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
+                mainButtonIcons.put(GameStatus.values()[i], icon);
             }
         } catch (IOException e) {
             e.printStackTrace();
