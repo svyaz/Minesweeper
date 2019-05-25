@@ -265,6 +265,7 @@ public class GuiView implements GameView {
             cells = new JLabelCell[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
+            mainButton.setIcon(mainButtonIcons.get(GameStatus.STARTED));
 
             GridLayout fieldLayout = new GridLayout(rows, columns);
             fieldPanel.removeAll();
@@ -367,9 +368,17 @@ public class GuiView implements GameView {
 
     @Override
     public void showMessage(String message) {
-        //TODO тут надо сделать разное поведение в зависимости от ситуации:
-        // смена внешности кнопки...
-        JOptionPane.showMessageDialog(frame, message, "MESSAGE_TITLE", JOptionPane.INFORMATION_MESSAGE);
+        switch (message) {
+            case "MSG_GAME_FINISHED":
+                mainButton.setIcon(mainButtonIcons.get(GameStatus.FINISHED));
+                break;
+            case "MSG_GAME_LOST":
+                mainButton.setIcon(mainButtonIcons.get(GameStatus.LOST));
+                break;
+            default:
+                JOptionPane.showMessageDialog(frame, message, "MESSAGE_TITLE", JOptionPane.INFORMATION_MESSAGE);
+                break;
+        }
     }
 
     @Override
