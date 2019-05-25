@@ -19,7 +19,6 @@ import java.util.List;
 public class GuiView implements GameView {
     private int rows;
     private int columns;
-    //private int bombsCount;
 
     // Main controls
     private JFrame frame;
@@ -52,6 +51,10 @@ public class GuiView implements GameView {
             loadFieldIcons();
             addMenuComponents();
             addGameComponents(frame.getContentPane());
+
+            /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            frame.setLocation(screenSize.width / 3, screenSize.height / 3);*/
+            frame.setLocationByPlatform(true);
             frame.setVisible(true);
         });
     }
@@ -235,7 +238,6 @@ public class GuiView implements GameView {
             frame.setTitle(modeDescription);
             this.rows = rows;
             this.columns = columns;
-            //this.bombsCount = bombsCount;
             cells = new JLabelCell[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
@@ -403,6 +405,11 @@ public class GuiView implements GameView {
         constraints.insets = new Insets(10, 10, 10, 10);
         layout.setConstraints(button, constraints);
         pane.add(button);
+
+        Rectangle frameBounds = frame.getBounds();
+        Rectangle formBounds = userForm.getBounds();
+        userForm.setLocation(frameBounds.x + frameBounds.width / 2 - formBounds.width / 2,
+                frameBounds.y + frameBounds.height / 2 - formBounds.height / 2);
 
         userForm.setVisible(true);
 
