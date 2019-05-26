@@ -375,6 +375,8 @@ public class GuiView implements GameView {
             case "MSG_GAME_LOST":
                 mainButton.setIcon(mainButtonIcons.get(GameStatus.LOST));
                 break;
+            case "MSG_GAME_ALREADY_FINISHED":
+                break;
             default:
                 JOptionPane.showMessageDialog(frame, message, "MESSAGE_TITLE", JOptionPane.INFORMATION_MESSAGE);
                 break;
