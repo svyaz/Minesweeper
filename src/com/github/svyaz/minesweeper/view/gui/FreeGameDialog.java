@@ -1,0 +1,134 @@
+package com.github.svyaz.minesweeper.view.gui;
+
+import com.github.svyaz.minesweeper.gamemodel.commands.StartFreeGameCommand;
+
+import javax.swing.*;
+import java.awt.*;
+
+class FreeGameDialog {
+    private JFrame parentFrame;
+    private JDialog dialog;
+    private int rows;
+    private int columns;
+    private int bombsCount;
+    private StartFreeGameCommand command = null;
+    private JTextField rowsTextField;
+    private JTextField columnsTextField;
+    private JTextField bombsTextField;
+
+    FreeGameDialog(JFrame parentFrame, int rows, int columns, int bombsCount) {
+        this.parentFrame = parentFrame;
+        this.rows = rows;
+        this.columns = columns;
+        this.bombsCount = bombsCount;
+        createDialog();
+    }
+
+    private void createDialog() {
+        // === Modal frame ===
+        dialog = new JDialog(parentFrame, "Free game parameters", true);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setSize(250, 150);
+        dialog.setResizable(false);
+
+        Container pane = dialog.getContentPane();
+        GridBagLayout layout = new GridBagLayout();
+        pane.setLayout(layout);
+        pane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        // === Rows text ===
+        JLabel rowsLabel = new JLabel("Height:");
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets = new Insets(10, 10, 0, 10);
+        constraints.ipadx = 0;
+        constraints.ipady = 0;
+        constraints.weightx = 0.5;
+        constraints.weighty = 0.2;
+        layout.setConstraints(rowsLabel, constraints);
+        pane.add(rowsLabel);
+
+        // === Rows input ===
+        rowsTextField = new JTextField(String.valueOf(rows), 0);
+        constraints.gridx = 1;
+        layout.setConstraints(rowsTextField, constraints);
+        pane.add(rowsTextField);
+
+        // === Columns text ===
+        JLabel columnsLabel = new JLabel("Width:");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        layout.setConstraints(columnsLabel, constraints);
+        pane.add(columnsLabel);
+
+        // === Columns input ===
+        columnsTextField = new JTextField(String.valueOf(columns), 0);
+        constraints.gridx = 1;
+        layout.setConstraints(columnsTextField, constraints);
+        pane.add(columnsTextField);
+
+        // === Bombs text ===
+        JLabel bombsLabel = new JLabel("Bombs count:");
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        layout.setConstraints(bombsLabel, constraints);
+        pane.add(bombsLabel);
+
+        // === Bombs input ===
+        bombsTextField = new JTextField(String.valueOf(bombsCount), 0);
+        constraints.gridx = 1;
+        layout.setConstraints(bombsTextField, constraints);
+        pane.add(bombsTextField);
+
+        // === Button ===
+        JButton button = new JButton("OK_ACTION");
+        constraints.anchor = GridBagConstraints.SOUTH;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 2;
+        constraints.weighty = 0.4;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        layout.setConstraints(button, constraints);
+        pane.add(button);
+
+        button.addActionListener(l -> {
+            setCommand();
+            dialog.dispose();
+        });
+
+        Rectangle frameBounds = parentFrame.getBounds();
+        Rectangle formBounds = dialog.getBounds();
+        dialog.setLocation(frameBounds.x + frameBounds.width / 2 - formBounds.width / 2,
+                frameBounds.y + frameBounds.height / 2 - formBounds.height / 2);
+    }
+
+    private void setCommand() {
+        try {
+            rows = Integer.parseInt(rowsTextField.getText());
+        } catch (NumberFormatException ignore) {
+        }
+
+        try {
+            columns = Integer.parseInt(columnsTextField.getText());
+        } catch (NumberFormatException ignore) {
+        }
+
+        try {
+            bombsCount = Integer.parseInt(bombsTextField.getText());
+        } catch (NumberFormatException ignore) {
+        }
+
+        command = new StartFreeGameCommand(rows, columns, bombsCount);
+    }
+
+    StartFreeGameCommand getCommand() {
+        dialog.setVisible(true);
+        return command;
+    }
+}

@@ -10,9 +10,7 @@ import com.github.svyaz.minesweeper.view.GameView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +18,7 @@ import java.util.List;
 public class GuiView implements GameView {
     private int rows;
     private int columns;
+    private int currentModeBombsCount;  // используется только для значения по умолчанию в форме FreeGame
 
     // Main controls
     private JFrame frame;
@@ -262,6 +261,7 @@ public class GuiView implements GameView {
             frame.setTitle(modeDescription);
             this.rows = rows;
             this.columns = columns;
+            this.currentModeBombsCount = bombsCount;
             cells = new JLabelCell[rows][columns];
             timeLabel.setText(Game.getGameTimeString(0));
             bombsLabel.setText(String.valueOf(bombsCount));
@@ -320,13 +320,19 @@ public class GuiView implements GameView {
             exitItem.addActionListener(e -> gameController.executeCommand(new ExitCommand()));
             aboutItem.addActionListener(e -> gameController.executeCommand(new ShowAboutCommand()));
 
-            helpItem.addActionListener(e -> System.out.println("HELP!!!"));
+            helpItem.addActionListener(e -> System.out.println("HELP!!!")); //TODO
 
+            // Game modes
             modeRookieItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("rookie")));
             modeFanItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("fan")));
             modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
-            //modeFreeItem.addActionListener(e -> gameController.executeCommand(new StartFreeGameCommand()));
-            //TODO
+            modeFreeItem.addActionListener(e -> {
+                FreeGameDialog freeGameDialog = new FreeGameDialog(frame, rows, columns, currentModeBombsCount);
+                Command command = freeGameDialog.getCommand();
+                if (command != null) {
+                    gameController.executeCommand(command);
+                }
+            });
 
             // Game events
             cellsMouseAdapter = new MouseAdapter() {
@@ -351,9 +357,7 @@ public class GuiView implements GameView {
                         //command = new OpenNeighborsCommand(row, column);
                     }
                     gameController.executeCommand(command);
-
                 }
-
             };
 
             // В первый раз после запуска надо назначить листенера тут. Иначе на момент заполнения cell[][]
@@ -395,6 +399,7 @@ public class GuiView implements GameView {
 
     @Override
     public String getUserName() {
+        //TODO переделать на окно в отдельном классе.
         // === Modal frame ===
         JDialog userForm = new JDialog(frame, "Enter user name", true);
         userForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -424,7 +429,7 @@ public class GuiView implements GameView {
         pane.add(label);
 
         // === Text ===
-        JTextField textField = new JTextField(null, "DEFAULT_USER_NAME", 0);
+        JTextField textField = new JTextField("DEFAULT_USER_NAME", 0);
         constraints.gridy = 1;
         constraints.weighty = 0.3;
         layout.setConstraints(textField, constraints);
