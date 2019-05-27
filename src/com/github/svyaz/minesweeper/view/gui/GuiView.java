@@ -121,21 +121,15 @@ public class GuiView implements GameView {
         constraints.ipady = 0;
         constraints.weightx = 0.33;
         constraints.weighty = 0.2;
-        layout.setConstraints(bombsLabel, constraints); //TODO почистить одинаковые свойства в констрэйнтах
+        layout.setConstraints(bombsLabel, constraints);
         mainPanel.add(bombsLabel);
 
         // === Main center button ===
         mainButton = new JButton();
         mainButton.setIcon(mainButtonIcons.get(GameStatus.NOT_STARTED));
         constraints.anchor = GridBagConstraints.NORTH;
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 1;
         constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.insets = new Insets(10, 10, 10, 10);
         constraints.ipadx = 0;
-        constraints.ipady = 0;
         constraints.weightx = 0.34;
         constraints.weighty = 0.2;
         layout.setConstraints(mainButton, constraints);
@@ -144,14 +138,7 @@ public class GuiView implements GameView {
         // === Game time label ===
         timeLabel = new JLabel("0:00:00");
         constraints.anchor = GridBagConstraints.NORTHEAST;
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 1;
         constraints.gridx = 2;
-        constraints.gridy = 0;
-        constraints.insets = new Insets(10, 10, 10, 10);
-        constraints.ipadx = 0;
-        constraints.ipady = 0;
         constraints.weightx = 0.33;
         constraints.weighty = 0.2;
         layout.setConstraints(timeLabel, constraints);
@@ -160,14 +147,10 @@ public class GuiView implements GameView {
         // === Game field panel ===
         fieldPanel = new JPanel();
         constraints.anchor = GridBagConstraints.NORTH;
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridheight = 1;
         constraints.gridwidth = 3;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.insets = new Insets(0, 10, 15, 10);
-        constraints.ipadx = 0;
-        constraints.ipady = 0;
         constraints.weightx = 1.0;
         constraints.weighty = 0.8;
         layout.setConstraints(fieldPanel, constraints);
