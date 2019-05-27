@@ -8,18 +8,20 @@ class UserNameDialog {
     private JDialog dialog;
     private JLabel userLabel;
     private JTextField userNameTextField;
-    private String userName = "DEFAULT_USER_NAME";
+    private JButton okButton;
+    private String userName;
 
-    UserNameDialog(JFrame parentFrame) {
+    UserNameDialog(JFrame parentFrame, String defaultUserName) {
         this.parentFrame = parentFrame;
+        this.userName = defaultUserName;
         createDialog();
     }
 
     private void createDialog() {
         // === Modal frame ===
-        dialog = new JDialog(parentFrame, "Enter user name", true);
+        dialog = new JDialog(parentFrame, true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        dialog.setSize(250, 140);
+        dialog.setSize(260, 140);
         dialog.setResizable(false);
 
         Container pane = dialog.getContentPane();
@@ -29,7 +31,7 @@ class UserNameDialog {
         GridBagConstraints constraints = new GridBagConstraints();
 
         // === Label ===
-        userLabel = new JLabel("New record! Enter your name:");
+        userLabel = new JLabel();
         constraints.anchor = GridBagConstraints.WEST;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridheight = 1;
@@ -45,23 +47,23 @@ class UserNameDialog {
         pane.add(userLabel);
 
         // === Text ===
-        userNameTextField = new JTextField("DEFAULT_USER_NAME", 0);
+        userNameTextField = new JTextField(0);
         constraints.gridy = 1;
         constraints.weighty = 0.3;
         layout.setConstraints(userNameTextField, constraints);
         pane.add(userNameTextField);
 
         // === Button ===
-        JButton button = new JButton("SAVE_ACTION");
+        okButton = new JButton();
         constraints.anchor = GridBagConstraints.SOUTH;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridy = 2;
         constraints.weighty = 0.4;
         constraints.insets = new Insets(10, 10, 10, 10);
-        layout.setConstraints(button, constraints);
-        pane.add(button);
+        layout.setConstraints(okButton, constraints);
+        pane.add(okButton);
 
-        button.addActionListener(l -> {
+        okButton.addActionListener(l -> {
             setUserName();
             dialog.dispose();
         });
@@ -70,6 +72,15 @@ class UserNameDialog {
         Rectangle formBounds = dialog.getBounds();
         dialog.setLocation(frameBounds.x + frameBounds.width / 2 - formBounds.width / 2,
                 frameBounds.y + frameBounds.height / 2 - formBounds.height / 2);
+    }
+
+    void setComponentsText(String dialogTitle,
+                           String message,
+                           String buttonString) {
+        dialog.setTitle(dialogTitle);
+        userLabel.setText(message);
+        userNameTextField.setText(userName);
+        okButton.setText(buttonString);
     }
 
     private void setUserName() {

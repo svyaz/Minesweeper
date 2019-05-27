@@ -15,6 +15,10 @@ class FreeGameDialog {
     private JTextField rowsTextField;
     private JTextField columnsTextField;
     private JTextField bombsTextField;
+    private JLabel rowsLabel;
+    private JLabel columnsLabel;
+    private JLabel bombsLabel;
+    private JButton okButton;
 
     FreeGameDialog(JFrame parentFrame, int rows, int columns, int bombsCount) {
         this.parentFrame = parentFrame;
@@ -26,9 +30,9 @@ class FreeGameDialog {
 
     private void createDialog() {
         // === Modal frame ===
-        dialog = new JDialog(parentFrame, "Free game parameters", true);
+        dialog = new JDialog(parentFrame, true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        dialog.setSize(250, 150);
+        dialog.setSize(260, 160);
         dialog.setResizable(false);
 
         Container pane = dialog.getContentPane();
@@ -38,7 +42,7 @@ class FreeGameDialog {
         GridBagConstraints constraints = new GridBagConstraints();
 
         // === Rows text ===
-        JLabel rowsLabel = new JLabel("Height:");
+        rowsLabel = new JLabel();
         constraints.anchor = GridBagConstraints.WEST;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridheight = 1;
@@ -60,7 +64,7 @@ class FreeGameDialog {
         pane.add(rowsTextField);
 
         // === Columns text ===
-        JLabel columnsLabel = new JLabel("Width:");
+        columnsLabel = new JLabel();
         constraints.gridx = 0;
         constraints.gridy = 1;
         layout.setConstraints(columnsLabel, constraints);
@@ -73,7 +77,7 @@ class FreeGameDialog {
         pane.add(columnsTextField);
 
         // === Bombs text ===
-        JLabel bombsLabel = new JLabel("Bombs count:");
+        bombsLabel = new JLabel();
         constraints.gridx = 0;
         constraints.gridy = 2;
         layout.setConstraints(bombsLabel, constraints);
@@ -86,7 +90,7 @@ class FreeGameDialog {
         pane.add(bombsTextField);
 
         // === Button ===
-        JButton button = new JButton("OK_ACTION");
+        okButton = new JButton();
         constraints.anchor = GridBagConstraints.SOUTH;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
@@ -94,10 +98,10 @@ class FreeGameDialog {
         constraints.gridwidth = 2;
         constraints.weighty = 0.4;
         constraints.insets = new Insets(10, 10, 10, 10);
-        layout.setConstraints(button, constraints);
-        pane.add(button);
+        layout.setConstraints(okButton, constraints);
+        pane.add(okButton);
 
-        button.addActionListener(l -> {
+        okButton.addActionListener(l -> {
             setCommand();
             dialog.dispose();
         });
@@ -106,6 +110,18 @@ class FreeGameDialog {
         Rectangle formBounds = dialog.getBounds();
         dialog.setLocation(frameBounds.x + frameBounds.width / 2 - formBounds.width / 2,
                 frameBounds.y + frameBounds.height / 2 - formBounds.height / 2);
+    }
+
+    void setComponentsText(String dialogTitle,
+                           String rowsString,
+                           String columnsString,
+                           String bombsString,
+                           String buttonString) {
+        dialog.setTitle(dialogTitle);
+        rowsLabel.setText(rowsString);
+        columnsLabel.setText(columnsString);
+        bombsLabel.setText(bombsString);
+        okButton.setText(buttonString);
     }
 
     private void setCommand() {

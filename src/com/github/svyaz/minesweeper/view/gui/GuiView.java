@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class GuiView implements GameView {
     private int rows;
@@ -43,6 +44,8 @@ public class GuiView implements GameView {
     private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
     private HashMap<GameStatus, ImageIcon> mainButtonIcons = new HashMap<>();
 
+    private ResourceBundle messages = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.gui.Messages");
+
     public GuiView() {
         SwingUtilities.invokeLater(() -> {
             frame = new JFrame();
@@ -63,18 +66,18 @@ public class GuiView implements GameView {
 
     private void addMenuComponents() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu gameMenu = new JMenu("Game");
-        JMenu infoMenu = new JMenu("Info");
+        JMenu gameMenu = new JMenu(messages.getString("MENU_GAME"));
+        JMenu infoMenu = new JMenu(messages.getString("MENU_INFO"));
 
         // === Game menu ===
-        newGameItem = new JMenuItem("New game");
-        scoresItem = new JMenuItem("High scores ...");
-        exitItem = new JMenuItem("Exit");
+        newGameItem = new JMenuItem(messages.getString("MENU_ITEM_NEW_GAME"));
+        scoresItem = new JMenuItem(messages.getString("MENU_ITEM_HIGH_SCORES"));
+        exitItem = new JMenuItem(messages.getString("MENU_ITEM_EXIT"));
         // --- modes ---
-        modeRookieItem = new JMenuItem("Rookie");
-        modeFanItem = new JMenuItem("Fan");
-        modeProItem = new JMenuItem("Professional");
-        modeFreeItem = new JMenuItem("Free ...");
+        modeRookieItem = new JMenuItem(messages.getString("MENU_ITEM_ROOKIE"));
+        modeFanItem = new JMenuItem(messages.getString("MENU_ITEM_FAN"));
+        modeProItem = new JMenuItem(messages.getString("MENU_ITEM_PRO"));
+        modeFreeItem = new JMenuItem(messages.getString("MENU_ITEM_FREE"));
         gameMenu.add(newGameItem);
         gameMenu.addSeparator(); // -----
         gameMenu.add(modeRookieItem);
@@ -87,8 +90,8 @@ public class GuiView implements GameView {
         gameMenu.add(exitItem);
 
         // === Info menu ===
-        helpItem = new JMenuItem("Help ...");
-        aboutItem = new JMenuItem("About program ...");
+        helpItem = new JMenuItem(messages.getString("MENU_ITEM_HELP"));
+        aboutItem = new JMenuItem(messages.getString("MENU_ITEM_ABOUT"));
         infoMenu.add(helpItem);
         infoMenu.addSeparator(); // -----
         infoMenu.add(aboutItem);
@@ -118,7 +121,7 @@ public class GuiView implements GameView {
         constraints.ipady = 0;
         constraints.weightx = 0.33;
         constraints.weighty = 0.2;
-        layout.setConstraints(bombsLabel, constraints);
+        layout.setConstraints(bombsLabel, constraints); //TODO почистить одинаковые свойства в констрэйнтах
         mainPanel.add(bombsLabel);
 
         // === Main center button ===
@@ -319,15 +322,20 @@ public class GuiView implements GameView {
             scoresItem.addActionListener(e -> gameController.executeCommand(new ShowScoresCommand()));
             exitItem.addActionListener(e -> gameController.executeCommand(new ExitCommand()));
             aboutItem.addActionListener(e -> gameController.executeCommand(new ShowAboutCommand()));
-
-            helpItem.addActionListener(e -> System.out.println("HELP!!!")); //TODO
+            helpItem.addActionListener(e -> showMessage("HELP_TEXT"));
 
             // Game modes
             modeRookieItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("rookie")));
             modeFanItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("fan")));
             modeProItem.addActionListener(e -> gameController.executeCommand(new StartPresetGameCommand("pro")));
+
             modeFreeItem.addActionListener(e -> {
                 FreeGameDialog freeGameDialog = new FreeGameDialog(frame, rows, columns, currentModeBombsCount);
+                freeGameDialog.setComponentsText(messages.getString("FREE_DIALOG_TITLE"),
+                        messages.getString("FREE_DIALOG_HEIGHT"),
+                        messages.getString("FREE_DIALOG_WIDTH"),
+                        messages.getString("FREE_DIALOG_BOMBS"),
+                        messages.getString("FREE_DIALOG_OK"));
                 Command command = freeGameDialog.getCommand();
                 if (command != null) {
                     gameController.executeCommand(command);
@@ -382,8 +390,10 @@ public class GuiView implements GameView {
             case "MSG_GAME_ALREADY_FINISHED":
                 break;
             default:
-                JOptionPane.showMessageDialog(frame, message, "MESSAGE_TITLE", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                JOptionPane.showMessageDialog(frame,
+                        messages.getString(message),
+                        messages.getString("MESSAGES_TITLE"),
+                        JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -394,12 +404,19 @@ public class GuiView implements GameView {
                 .append(key)
                 .append(value)
                 .append(System.lineSeparator()));
-        JOptionPane.showMessageDialog(frame, sb.toString(), "SCORES_TITLE", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame,
+                sb.toString(),
+                messages.getString("SCORES_TITLE"),
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public String getUserName() {
-        UserNameDialog userNameDialog = new UserNameDialog(frame);
+        UserNameDialog userNameDialog = new UserNameDialog(frame,
+                messages.getString("DEFAULT_USERNAME"));
+        userNameDialog.setComponentsText(messages.getString("USERNAME_DIALOG_TITLE"),
+                messages.getString("USERNAME_DIALOG_MESSAGE"),
+                messages.getString("USERNAME_DIALOG_OK"));
         return userNameDialog.getUserName();
     }
 }
