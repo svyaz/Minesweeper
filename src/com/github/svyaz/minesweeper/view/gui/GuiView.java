@@ -244,7 +244,7 @@ public class GuiView implements GameView {
     @Override
     public void initView(String modeDescription, int rows, int columns, int bombsCount) {
         SwingUtilities.invokeLater(() -> {
-            frame.setTitle(modeDescription);
+            frame.setTitle(messages.getString(modeDescription));
             this.rows = rows;
             this.columns = columns;
             this.currentModeBombsCount = bombsCount;
