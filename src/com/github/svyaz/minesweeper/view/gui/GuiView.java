@@ -396,7 +396,7 @@ public class GuiView implements GameView {
     public void showScores(HashMap<String, String> scoresMap) {
         StringBuilder sb = new StringBuilder();
         scoresMap.forEach((key, value) -> sb
-                .append(key)
+                .append(messages.getString(key))
                 .append(value)
                 .append(System.lineSeparator()));
         JOptionPane.showMessageDialog(frame,
