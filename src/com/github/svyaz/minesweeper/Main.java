@@ -10,31 +10,36 @@ import com.github.svyaz.minesweeper.view.gui.GuiView;
 import com.github.svyaz.minesweeper.view.text.TextView;
 
 public class Main {
-    public static void main(String[] args) {
+    private static final String MESSAGE_UNKNOWN_MODE = "Неизвестный режим игры.";
+    private static final String MESSAGE_UNKNOWN_PARAMS = "Неизвестные параметры.";
+    private static final String MESSAGE_HELP = "Запуск программы:\n" +
+            "Minesweeper.jar [-mode [text | gui] | -help]\n" +
+            "  -mode - режим запуска. text - текстовый, gui - графический.\n" +
+            "  -help - показ этой справки.\n";
 
+    public static void main(String[] args) {
         GameView gameView = null;
 
-        if (args.length >= 2 && args[0].equals("-mode")) {
-            switch (args[1]) {
-                case "text":
-                    gameView = new TextView();
-                    break;
-                case "gui":
-                    gameView = new GuiView();
-                    break;
-                default:
-                    System.out.println("Unknown mode. Run program with parameter -help");
-                    System.exit(0);
+        if (args.length >= 2 && args[0].matches("-[mM][oO][dD][eE]")) {
+            if (args[1].matches("[tT][eE][xX][tT]")) {
+                gameView = new TextView();
+            } else if (args[1].matches("[gG][uU][iI]")) {
+                gameView = new GuiView();
+            } else {
+                System.out.println(MESSAGE_UNKNOWN_MODE);
+                System.out.println();
+                System.out.println(MESSAGE_HELP);
+                System.exit(0);
             }
-        } else if (args.length >= 1 && args[0].equals("-help")) {
-            System.out.println("Prints help!");
+        } else if (args.length >= 1 && args[0].matches("-[hH][eE][lL][pP]")) {
+            System.out.println(MESSAGE_HELP);
             System.exit(0);
         } else if (args.length == 0) {
             gameView = new GuiView();
         } else {
-            System.out.println("Unknown parameters.");
+            System.out.println(MESSAGE_UNKNOWN_PARAMS);
             System.out.println();
-            System.out.println("Prints help!"); //TODO
+            System.out.println(MESSAGE_HELP);
             System.exit(0);
         }
 
@@ -48,8 +53,6 @@ public class Main {
     }
 }
 
-//TODO сделать нормальные сообщения в Main.
 //TODO сделать в GUI красивые: счетчик флагов, таймер и картинки для кнопки.
 //TODO сделать иконку приложения
 //TODO в конце еще раз текстовую версию протестировать.
-//TODO потолще красную линию на зачеркнутой бомбе.
