@@ -74,6 +74,42 @@ public class Field {
             cells[row][column].setBomb();
             i++;
         }
+
+        // Для тестирования показа цифры 8 (Новичок). Тыкать в клетку {2, 2}.
+        /*cells[0][0].setBomb();
+        cells[0][1].setBomb();
+        cells[0][2].setBomb();
+        cells[1][0].setBomb();
+        cells[1][2].setBomb();
+        cells[2][0].setBomb();
+        cells[2][1].setBomb();
+        cells[2][2].setBomb();
+        cells[2][3].setBomb();
+        cells[2][4].setBomb();*/
+
+        // Для тестирования показа цифры 7 (Новичок). Тыкать в клетку {2, 2}.
+        /*cells[0][0].setBomb();
+        cells[0][1].setBomb();
+        cells[0][2].setBomb();
+        cells[1][0].setBomb();
+        cells[2][0].setBomb();
+        cells[2][1].setBomb();
+        cells[2][2].setBomb();
+        cells[2][3].setBomb();
+        cells[2][4].setBomb();
+        cells[2][5].setBomb();*/
+
+        // Для тестирования показа цифры 6 (Новичок). Тыкать в клетку {2, 2}.
+        /*cells[0][0].setBomb();
+        cells[0][1].setBomb();
+        cells[1][0].setBomb();
+        cells[2][0].setBomb();
+        cells[2][1].setBomb();
+        cells[2][2].setBomb();
+        cells[2][3].setBomb();
+        cells[2][4].setBomb();
+        cells[2][5].setBomb();
+        cells[2][6].setBomb();*/
     }
 
     Cell getCell(int row, int column) {
