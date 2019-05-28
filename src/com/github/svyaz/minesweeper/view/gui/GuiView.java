@@ -44,6 +44,10 @@ public class GuiView implements GameView {
     private HashMap<CellLook, ImageIcon> fieldIcons = new HashMap<>();
     private HashMap<GameStatus, ImageIcon> mainButtonIcons = new HashMap<>();
 
+    // Флаги для определения нажатия обоих кнопок мыши
+    private boolean isLeftPressed = false;
+    private boolean isRightPressed = false;
+
     private ResourceBundle messages = ResourceBundle.getBundle("com.github.svyaz.minesweeper.view.gui.Messages");
 
     public GuiView() {
@@ -328,26 +332,34 @@ public class GuiView implements GameView {
             // Game events
             cellsMouseAdapter = new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    JLabelCell cell = (JLabelCell) e.getSource();
+                public void mousePressed(MouseEvent e) {
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        isLeftPressed = true;
+                    } else if (SwingUtilities.isRightMouseButton(e)) {
+                        isRightPressed = true;
+                    }
+                }
 
-                    int buttonIndex = e.getButton();
-                    Command command = null;
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    JLabelCell cell = (JLabelCell) e.getSource();
                     int row = cell.getRow();
                     int column = cell.getColumn();
+                    Command command = null;
 
-                    if (buttonIndex == MouseEvent.BUTTON1) {
-                        // левая кнопка
+                    if (isLeftPressed && isRightPressed) {
+                        command = new OpenNeighborsCommand(row, column);
+                    } else if (isLeftPressed) {
                         command = new OpenCellCommand(row, column);
-                    } else if (buttonIndex == MouseEvent.BUTTON3) {
-                        // правая кнопка
+                    } else if (isRightPressed) {
                         command = new FlagCellCommand(row, column);
-
-                    } else {
-                        //TODO надо научиться обрабатывать одновременное нажатие двух кнопок
-                        //command = new OpenNeighborsCommand(row, column);
                     }
-                    gameController.executeCommand(command);
+
+                    isLeftPressed = false;
+                    isRightPressed = false;
+                    if (command != null) {
+                        gameController.executeCommand(command);
+                    }
                 }
             };
 

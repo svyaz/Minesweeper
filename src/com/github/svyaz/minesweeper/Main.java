@@ -38,8 +38,6 @@ public class Main {
             System.exit(0);
         }
 
-        //GameView gameView = new TextView();
-
         Game gameController = new Game(gameView,
                 new RookieMode(),
                 new FanMode(),
@@ -55,3 +53,4 @@ public class Main {
 //TODO сделать иконку приложения
 //TODO проверить ячейки с цифрами 6,7,8
 //TODO в конце еще раз текстовую версию протестировать.
+//TODO потолще красную линию на зачеркнутой бомбе.
