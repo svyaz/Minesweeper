@@ -7,16 +7,15 @@ import com.github.svyaz.minesweeper.gamemodel.GameStatus;
 import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class GuiView implements GameView {
+    private static final String IMAGES_PATH = "/com/github/svyaz/minesweeper/resources/";
     private int rows;
     private int columns;
     private int currentModeBombsCount;  // используется только для значения по умолчанию в форме FreeGame
@@ -171,86 +170,78 @@ public class GuiView implements GameView {
     }
 
     private void loadFieldIcons() {
-        try {
-            for (int i = 0; i < CellLook.values().length; i++) {
-                String iconPath = null;
+        for (int i = 0; i < CellLook.values().length; i++) {
+            String iconPath = null;
 
-                switch (CellLook.values()[i]) {
-                    case OPEN_0:
-                        iconPath = "../../resources/images/empty.png";
-                        break;
-                    case OPEN_1:
-                        iconPath = "../../resources/images/num-1.png";
-                        break;
-                    case OPEN_2:
-                        iconPath = "../../resources/images/num-2.png";
-                        break;
-                    case OPEN_3:
-                        iconPath = "../../resources/images/num-3.png";
-                        break;
-                    case OPEN_4:
-                        iconPath = "../../resources/images/num-4.png";
-                        break;
-                    case OPEN_5:
-                        iconPath = "../../resources/images/num-5.png";
-                        break;
-                    case OPEN_6:
-                        iconPath = "../../resources/images/num-6.png";
-                        break;
-                    case OPEN_7:
-                        iconPath = "../../resources/images/num-7.png";
-                        break;
-                    case OPEN_8:
-                        iconPath = "../../resources/images/num-8.png";
-                        break;
-                    case CLOSED_CLEAR:
-                        iconPath = "../../resources/images/closed.png";
-                        break;
-                    case CLOSED_FLAGGED:
-                        iconPath = "../../resources/images/flag.png";
-                        break;
-                    case BOMB_CLEAR:
-                        iconPath = "../../resources/images/bomb.png";
-                        break;
-                    case BOMB_BANG:
-                        iconPath = "../../resources/images/bang.png";
-                        break;
-                    case BOMB_WRONG:
-                        iconPath = "../../resources/images/bomb-wrong.png";
-                        break;
-                }
-
-                ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
-                fieldIcons.put(CellLook.values()[i], icon);
+            switch (CellLook.values()[i]) {
+                case OPEN_0:
+                    iconPath = "empty.png";
+                    break;
+                case OPEN_1:
+                    iconPath = "num-1.png";
+                    break;
+                case OPEN_2:
+                    iconPath = "num-2.png";
+                    break;
+                case OPEN_3:
+                    iconPath = "num-3.png";
+                    break;
+                case OPEN_4:
+                    iconPath = "num-4.png";
+                    break;
+                case OPEN_5:
+                    iconPath = "num-5.png";
+                    break;
+                case OPEN_6:
+                    iconPath = "num-6.png";
+                    break;
+                case OPEN_7:
+                    iconPath = "num-7.png";
+                    break;
+                case OPEN_8:
+                    iconPath = "num-8.png";
+                    break;
+                case CLOSED_CLEAR:
+                    iconPath = "closed.png";
+                    break;
+                case CLOSED_FLAGGED:
+                    iconPath = "flag.png";
+                    break;
+                case BOMB_CLEAR:
+                    iconPath = "bomb.png";
+                    break;
+                case BOMB_BANG:
+                    iconPath = "bang.png";
+                    break;
+                case BOMB_WRONG:
+                    iconPath = "bomb-wrong.png";
+                    break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + iconPath));
+            fieldIcons.put(CellLook.values()[i], icon);
         }
     }
 
     private void loadMainButtonIcons() {
-        try {
-            for (int i = 0; i < GameStatus.values().length; i++) {
-                String iconPath = null;
+        for (int i = 0; i < GameStatus.values().length; i++) {
+            String iconPath = null;
 
-                switch (GameStatus.values()[i]) {
-                    case NOT_STARTED:
-                    case STARTED:
-                        iconPath = "../../resources/images/face-smile.png";
-                        break;
-                    case LOST:
-                        iconPath = "../../resources/images/face-gameover.png";
-                        break;
-                    case FINISHED:
-                        iconPath = "../../resources/images/face-glasses.png";
-                        break;
-                }
-
-                ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
-                mainButtonIcons.put(GameStatus.values()[i], icon);
+            switch (GameStatus.values()[i]) {
+                case NOT_STARTED:
+                case STARTED:
+                    iconPath = "face-smile.png";
+                    break;
+                case LOST:
+                    iconPath = "face-gameover.png";
+                    break;
+                case FINISHED:
+                    iconPath = "face-glasses.png";
+                    break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + iconPath));
+            mainButtonIcons.put(GameStatus.values()[i], icon);
         }
     }
 

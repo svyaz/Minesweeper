@@ -52,5 +52,3 @@ public class Main {
         gameController.runGame();
     }
 }
-
-//TODO сделать иконку приложения
