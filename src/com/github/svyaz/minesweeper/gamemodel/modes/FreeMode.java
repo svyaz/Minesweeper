@@ -1,6 +1,13 @@
 package com.github.svyaz.minesweeper.gamemodel.modes;
 
 public class FreeMode extends GameMode {
+    private static final int MIN_ROWS = 9;
+    private static final int MAX_ROWS = 24;
+    private static final int MIN_COLUMNS = 9;
+    private static final int MAX_COLUMNS = 30;
+    private static final double MIN_BOMBS_FACTOR = 0.1;
+    private static final double MAX_BOMBS_FACTOR = 0.3;
+
     public FreeMode(int rows, int columns, int bombsCount) {
         this.name = "free";
         this.description = "MODE_FREE";
@@ -10,17 +17,17 @@ public class FreeMode extends GameMode {
          * 9 <= rows <= 24
          * 9 <= columns <= 30
          */
-        this.rows = rows < 9 ? 9 : (rows > 24 ? 24 : rows);
-        this.columns = columns < 9 ? 9 : (columns > 30 ? 30 : columns);
+        this.rows = rows < MIN_ROWS ? MIN_ROWS : (rows > MAX_ROWS ? MAX_ROWS : rows);
+        this.columns = columns < MIN_COLUMNS ? MIN_COLUMNS : (columns > MAX_COLUMNS ? MAX_COLUMNS : columns);
 
         /*
-         * Количество бомб в стандартном сапере можно задавать максимум до 667 штук.
+         * Количество бомб в стандартном сапёре можно задавать максимум до 667 штук.
          * Я решил ограничивать задаваемое число - не больше 30% от количества клеток,
          * иначе, мне кажется, игру не пройти. И не меньше 10% - иначе слишком легко :)
          */
         int cells = this.rows * this.columns;
-        this.bombsCount = bombsCount < cells * 0.1
-                ? (int) (cells * 0.1)
-                : (bombsCount > cells * 0.3 ? (int) (cells * 0.3) : bombsCount);
+        this.bombsCount = bombsCount < cells * MIN_BOMBS_FACTOR
+                ? (int) (cells * MIN_BOMBS_FACTOR)
+                : (bombsCount > cells * MAX_BOMBS_FACTOR ? (int) (cells * MAX_BOMBS_FACTOR) : bombsCount);
     }
 }
