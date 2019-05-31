@@ -12,10 +12,10 @@ import com.github.svyaz.minesweeper.view.text.TextView;
 public class Main {
     private static final String MESSAGE_UNKNOWN_MODE = "Неизвестный режим игры.";
     private static final String MESSAGE_UNKNOWN_PARAMS = "Неизвестные параметры.";
-    private static final String MESSAGE_HELP = "Запуск программы:\n" +
-            "Minesweeper.jar [-mode [text | gui] | -help]\n" +
-            "  -mode - режим запуска. text - текстовый, gui - графический.\n" +
-            "  -help - показ этой справки.\n";
+    private static final String MESSAGE_HELP = "Запуск программы:" + System.lineSeparator() +
+            "Minesweeper.jar [-mode [text | gui] | -help]" + System.lineSeparator() +
+            "  -mode - режим запуска. text - текстовый, gui - графический." + System.lineSeparator() +
+            "  -help - показ этой справки.";
 
     public static void main(String[] args) {
         GameView gameView = null;

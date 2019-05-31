@@ -386,7 +386,7 @@ public class GuiView implements GameView {
                 break;
             default:
                 JOptionPane.showMessageDialog(frame,
-                        messages.getString(message),
+                        String.format(messages.getString(message), ""), // to avoid format-warning
                         messages.getString("MESSAGES_TITLE"),
                         JOptionPane.INFORMATION_MESSAGE);
         }

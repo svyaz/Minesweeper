@@ -143,7 +143,8 @@ public class TextView implements GameView {
 
     @Override
     public void showMessage(String message) {
-        System.out.println(messages.getString(message));
+        System.out.printf(messages.getString(message), ""); // to avoid format-warning
+        System.out.println();
     }
 
     @Override
