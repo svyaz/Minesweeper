@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class GuiView implements GameView {
     private static final String IMAGES_PATH = "/com/github/svyaz/minesweeper/resources/";
+    private static final int KEY_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     private int rows;
     private int columns;
     private int currentModeBombsCount;  // используется только для значения по умолчанию в форме FreeGame
@@ -107,6 +108,12 @@ public class GuiView implements GameView {
         menuBar.add(gameMenu);
         menuBar.add(infoMenu);
         frame.setJMenuBar(menuBar);
+
+        // === Set hot keys ===
+        newGameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KEY_MASK));
+        scoresItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KEY_MASK));
+        helpItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KEY_MASK));
+        aboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KEY_MASK));
     }
 
     private void addGameComponents(Container mainPanel) {
