@@ -114,57 +114,61 @@ public class GuiView implements GameView {
         mainPanel.setLayout(layout);
         mainPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         GridBagConstraints constraints = new GridBagConstraints();
+
         Font font = new Font("Arial", Font.PLAIN, 16);
+        Dimension topDimension = new Dimension(70, 30);
 
         // === Bombs remain label ===
         bombsLabel = new JLabel();
         bombsLabel.setFont(font);
+        JPanel bombsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bombsPanel.setMinimumSize(topDimension);
+        bombsPanel.setPreferredSize(topDimension);
+        bombsPanel.add(bombsLabel);
         constraints.anchor = GridBagConstraints.WEST;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(10, 10, 10, 0);
-        constraints.ipadx = 30;
+        constraints.insets = new Insets(0, 8, 0, 0);
+        constraints.ipadx = 0;
         constraints.ipady = 0;
-        constraints.weightx = 0.33;
-        constraints.weighty = 0.2;
-        layout.setConstraints(bombsLabel, constraints);
-        mainPanel.add(bombsLabel);
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        layout.setConstraints(bombsPanel, constraints);
+        mainPanel.add(bombsPanel);
 
         // === Main center button ===
         mainButton = new JButton();
         mainButton.setIcon(mainButtonIcons.get(GameStatus.NOT_STARTED));
+        mainButton.setBorderPainted(true);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridx = 1;
-        constraints.ipadx = 0;
-        constraints.insets = new Insets(10, 0, 10, 0);
-        constraints.weightx = 0.34;
-        constraints.weighty = 0.2;
+        constraints.insets = new Insets(8, 0, 8, 0);
         layout.setConstraints(mainButton, constraints);
         mainPanel.add(mainButton);
 
         // === Game time label ===
         timeLabel = new JLabel("0:00:00");
         timeLabel.setFont(font);
+        JPanel timePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        timePanel.setMinimumSize(topDimension);
+        timePanel.setPreferredSize(topDimension);
+        timePanel.add(timeLabel);
         constraints.anchor = GridBagConstraints.EAST;
         constraints.gridx = 2;
-        constraints.insets = new Insets(10, 0, 10, 10);
-        constraints.weightx = 0.33;
-        constraints.weighty = 0.2;
-        layout.setConstraints(timeLabel, constraints);
-        mainPanel.add(timeLabel);
+        constraints.insets = new Insets(0, 0, 0, 8);
+        layout.setConstraints(timePanel, constraints);
+        mainPanel.add(timePanel);
 
         // === Game field panel ===
-        fieldPanel = new JPanel();
-        constraints.anchor = GridBagConstraints.NORTH;
+        fieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridwidth = 3;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.insets = new Insets(0, 10, 10, 10);
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.8;
         layout.setConstraints(fieldPanel, constraints);
         mainPanel.add(fieldPanel);
     }
