@@ -100,6 +100,7 @@ class FreeGameDialog {
         constraints.insets = new Insets(10, 10, 10, 10);
         layout.setConstraints(okButton, constraints);
         pane.add(okButton);
+        SwingUtilities.getRootPane(dialog).setDefaultButton(okButton);
 
         okButton.addActionListener(l -> {
             setCommand();
