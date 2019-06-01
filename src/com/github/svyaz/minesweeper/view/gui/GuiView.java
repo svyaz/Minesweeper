@@ -344,9 +344,12 @@ public class GuiView implements GameView {
             cellsMouseAdapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (SwingUtilities.isLeftMouseButton(e)) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
                         isLeftPressed = true;
-                    } else if (SwingUtilities.isRightMouseButton(e)) {
+                    } else if (e.getButton() == MouseEvent.BUTTON3) {
+                        isRightPressed = true;
+                    } else if (e.getButton() == MouseEvent.BUTTON2) {
+                        isLeftPressed = true;
                         isRightPressed = true;
                     }
                 }
