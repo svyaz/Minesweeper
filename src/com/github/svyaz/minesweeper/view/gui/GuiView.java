@@ -5,6 +5,7 @@ import com.github.svyaz.minesweeper.gamemodel.CellLook;
 import com.github.svyaz.minesweeper.gamemodel.Game;
 import com.github.svyaz.minesweeper.gamemodel.GameStatus;
 import com.github.svyaz.minesweeper.gamemodel.commands.*;
+import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.view.GameView;
 
 import javax.swing.*;
@@ -333,7 +334,17 @@ public class GuiView implements GameView {
                         messages.getString("FREE_DIALOG_HEIGHT"),
                         messages.getString("FREE_DIALOG_WIDTH"),
                         messages.getString("FREE_DIALOG_BOMBS"),
-                        messages.getString("FREE_DIALOG_OK"));
+                        messages.getString("FREE_DIALOG_OK"),
+                        String.format(messages.getString("FREE_DIALOG_HEIGHT_HINT"),
+                                FreeMode.MIN_ROWS,
+                                FreeMode.MAX_ROWS),
+                        String.format(messages.getString("FREE_DIALOG_WIDTH_HINT"),
+                                FreeMode.MIN_COLUMNS,
+                                FreeMode.MAX_COLUMNS),
+                        String.format(messages.getString("FREE_DIALOG_BOMBS_HINT"),
+                                (int) (FreeMode.MIN_BOMBS_FACTOR * 100.0),
+                                (int) (FreeMode.MAX_BOMBS_FACTOR * 100.0))
+                );
                 Command command = freeGameDialog.getCommand();
                 if (command != null) {
                     gameController.executeCommand(command);

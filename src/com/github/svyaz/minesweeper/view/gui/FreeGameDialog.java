@@ -117,12 +117,18 @@ class FreeGameDialog {
                            String rowsString,
                            String columnsString,
                            String bombsString,
-                           String buttonString) {
+                           String buttonString,
+                           String rowsHintString,
+                           String columnsHintString,
+                           String bombsHintString) {
         dialog.setTitle(dialogTitle);
         rowsLabel.setText(rowsString);
         columnsLabel.setText(columnsString);
         bombsLabel.setText(bombsString);
         okButton.setText(buttonString);
+        rowsTextField.setToolTipText(rowsHintString);
+        columnsTextField.setToolTipText(columnsHintString);
+        bombsTextField.setToolTipText(bombsHintString);
     }
 
     private void setCommand() {

@@ -1,12 +1,12 @@
 package com.github.svyaz.minesweeper.gamemodel.modes;
 
 public class FreeMode extends GameMode {
-    private static final int MIN_ROWS = 9;
-    private static final int MAX_ROWS = 24;
-    private static final int MIN_COLUMNS = 9;
-    private static final int MAX_COLUMNS = 30;
-    private static final double MIN_BOMBS_FACTOR = 0.1;
-    private static final double MAX_BOMBS_FACTOR = 0.3;
+    public static final int MIN_ROWS = 9;
+    public static final int MAX_ROWS = 24;
+    public static final int MIN_COLUMNS = 9;
+    public static final int MAX_COLUMNS = 30;
+    public static final double MIN_BOMBS_FACTOR = 0.1;
+    public static final double MAX_BOMBS_FACTOR = 0.3;
 
     public FreeMode(int rows, int columns, int bombsCount) {
         this.name = "free";
