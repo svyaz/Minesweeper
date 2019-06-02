@@ -39,7 +39,9 @@ public class Field {
     private int openCellsCount;
 
     /**
-     * Создает поле из переданного режима игры
+     * Создает поле из переданного режима игры.
+     *
+     * @param mode режим игры.
      */
     Field(GameMode mode) {
         this.columns = mode.getColumns();
@@ -48,19 +50,20 @@ public class Field {
         this.flagsCount = 0;
         this.openCellsCount = 0;
         this.cells = new Cell[rows][columns];
-        initField();
-    }
-
-    /**
-     * Заполнение поля бомбами в случайном порядке.
-     */
-    private void initField() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 cells[i][j] = new Cell(i, j);
             }
         }
+    }
 
+    /**
+     * Заполнение поля бомбами в случайном порядке. За исключением ячейки куда сделан первых клик.
+     *
+     * @param excludeRow    строка ячейки куда сделан первый клик.
+     * @param excludeColumn столбец ячейки куда сделан первый клик.
+     */
+    void placeBombsOnField(int excludeRow, int excludeColumn) {
         Random random = new Random();
         int i = 0;
 
@@ -68,7 +71,7 @@ public class Field {
             int row = random.nextInt(rows);
             int column = random.nextInt(columns);
 
-            if (cells[row][column].hasBomb()) {
+            if (cells[row][column].hasBomb() || (row == excludeRow && column == excludeColumn)) {
                 continue;
             }
             cells[row][column].setBomb();

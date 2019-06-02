@@ -198,16 +198,17 @@ public class Game {
             return;
         }
 
-        // Стартуем игру если это первый ход
-        if (status == NOT_STARTED) {
-            startTimer();
-            status = STARTED;
-        }
-
         // Если за пределами поля
         if (row < 0 || row >= field.getRows() || column < 0 || column >= field.getColumns()) {
             view.printField();
             return;
+        }
+
+        // Стартуем игру если это первый ход
+        if (status == NOT_STARTED) {
+            field.placeBombsOnField(row, column);
+            startTimer();
+            status = STARTED;
         }
 
         Cell cell = field.getCell(row, column);
@@ -267,12 +268,6 @@ public class Game {
         if (status == LOST || status == FINISHED) {
             view.showMessage("MSG_GAME_ALREADY_FINISHED");
             return;
-        }
-
-        // Стартуем игру если это первый ход
-        if (status == NOT_STARTED) {
-            startTimer();
-            status = STARTED;
         }
 
         // Если за пределами поля
@@ -506,16 +501,17 @@ public class Game {
             return;
         }
 
-        // Стартуем игру если это первый ход
-        if (status == NOT_STARTED) {
-            startTimer();
-            status = STARTED;
-        }
-
         // Если за пределами поля
         if (row < 0 || row >= field.getRows() || column < 0 || column >= field.getColumns()) {
             view.printField();
             return;
+        }
+
+        // Стартуем игру если это первый ход
+        if (status == NOT_STARTED) {
+            field.placeBombsOnField(row, column);
+            startTimer();
+            status = STARTED;
         }
 
         Cell cell = field.getCell(row, column);
