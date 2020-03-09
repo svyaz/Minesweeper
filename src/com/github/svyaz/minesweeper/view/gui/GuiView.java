@@ -11,9 +11,8 @@ import com.github.svyaz.minesweeper.view.GameView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class GuiView implements GameView {
     private static final String IMAGES_PATH = "/com/github/svyaz/minesweeper/resources/";
@@ -66,8 +65,6 @@ public class GuiView implements GameView {
             addMenuComponents();
             addGameComponents(frame.getContentPane());
 
-            /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setLocation(screenSize.width / 3, screenSize.height / 3);*/
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
         });
@@ -182,79 +179,19 @@ public class GuiView implements GameView {
     }
 
     private void loadFieldIcons() {
-        for (int i = 0; i < CellLook.values().length; i++) {
-            String iconPath = null;
-
-            switch (CellLook.values()[i]) {
-                case OPEN_0:
-                    iconPath = "empty.png";
-                    break;
-                case OPEN_1:
-                    iconPath = "num-1.png";
-                    break;
-                case OPEN_2:
-                    iconPath = "num-2.png";
-                    break;
-                case OPEN_3:
-                    iconPath = "num-3.png";
-                    break;
-                case OPEN_4:
-                    iconPath = "num-4.png";
-                    break;
-                case OPEN_5:
-                    iconPath = "num-5.png";
-                    break;
-                case OPEN_6:
-                    iconPath = "num-6.png";
-                    break;
-                case OPEN_7:
-                    iconPath = "num-7.png";
-                    break;
-                case OPEN_8:
-                    iconPath = "num-8.png";
-                    break;
-                case CLOSED_CLEAR:
-                    iconPath = "closed.png";
-                    break;
-                case CLOSED_FLAGGED:
-                    iconPath = "flag.png";
-                    break;
-                case BOMB_CLEAR:
-                    iconPath = "bomb.png";
-                    break;
-                case BOMB_BANG:
-                    iconPath = "bang.png";
-                    break;
-                case BOMB_WRONG:
-                    iconPath = "bomb-wrong.png";
-                    break;
-            }
-
-            ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + iconPath));
-            fieldIcons.put(CellLook.values()[i], icon);
-        }
+        Arrays.stream(CellLook.values())
+                .forEach(v -> {
+                    ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + v.getFileName()));
+                    fieldIcons.put(v, icon);
+                });
     }
 
     private void loadMainButtonIcons() {
-        for (int i = 0; i < GameStatus.values().length; i++) {
-            String iconPath = null;
-
-            switch (GameStatus.values()[i]) {
-                case NOT_STARTED:
-                case STARTED:
-                    iconPath = "face-smile.png";
-                    break;
-                case LOST:
-                    iconPath = "face-gameover.png";
-                    break;
-                case FINISHED:
-                    iconPath = "face-glasses.png";
-                    break;
-            }
-
-            ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + iconPath));
-            mainButtonIcons.put(GameStatus.values()[i], icon);
-        }
+        Arrays.stream(GameStatus.values())
+                .forEach(v -> {
+                    ImageIcon icon = new ImageIcon(getClass().getResource(IMAGES_PATH + v.getFileName()));
+                    mainButtonIcons.put(v, icon);
+                });
     }
 
     @Override

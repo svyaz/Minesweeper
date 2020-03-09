@@ -47,44 +47,4 @@ public class Cell {
         this.flag = false;
         this.cellLook = CellLook.CLOSED_CLEAR;
     }
-
-    /*public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    boolean isOpen() {
-        return open;
-    }
-
-    void open() {
-        open = true;
-    }
-
-    boolean hasBomb() {
-        return bomb;
-    }
-
-    void setBomb() {
-        bomb = true;
-    }
-
-    boolean hasFlag() {
-        return flag;
-    }
-
-    void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    public CellLook getCellLook() {
-        return cellLook;
-    }
-
-    void setCellLook(CellLook cellLook) {
-        this.cellLook = cellLook;
-    }*/
 }
