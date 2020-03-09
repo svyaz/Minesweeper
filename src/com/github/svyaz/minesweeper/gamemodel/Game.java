@@ -279,7 +279,7 @@ public class Game {
         Cell cell = field.getCell(row, column);
 
         // Если флаг или закрыта, то просто перерисовываем поле.
-        if (cell.hasFlag() || !cell.isOpen()) {
+        if (cell.isFlag() || !cell.isOpen()) {
             view.printField();
             return;
         }
@@ -305,15 +305,15 @@ public class Game {
                 }
 
                 // Считаем бомбы вокруг
-                if (neighbor.hasBomb()) {
+                if (neighbor.isBomb()) {
                     ++bombsAround;
                 }
 
                 // Считаем флаги вокруг
-                if (neighbor.hasFlag()) {
+                if (neighbor.isFlag()) {
                     ++flagsAround;
                 } else {
-                    if (neighbor.hasBomb()) {
+                    if (neighbor.isBomb()) {
                         // Добавление в начало чтобы на бомбах сразу взрываться
                         cellsToOpenList.add(0, neighbor);
                     } else {
@@ -380,12 +380,12 @@ public class Game {
      */
     private List<Cell> openRegion(Cell cell) {
         // Если флаг или уже открыта.
-        if (cell.hasFlag() || cell.isOpen()) {
+        if (cell.isFlag() || cell.isOpen()) {
             return null;
         }
 
         // Если бомба - взорвались
-        if (cell.hasBomb()) {
+        if (cell.isBomb()) {
             throw new BangException();
         }
 
@@ -398,7 +398,7 @@ public class Game {
         while (!queue.isEmpty()) {
             Cell current = queue.remove();
 
-            if (current.isOpen() || current.hasFlag()) {
+            if (current.isOpen() || current.isFlag()) {
                 // Если ячейка уже открыта или на ней стоит флаг
                 continue;
             }
@@ -416,7 +416,7 @@ public class Game {
                     }
 
                     Cell neighbor = field.getCell(i, j);
-                    if (neighbor.hasBomb()) {
+                    if (neighbor.isBomb()) {
                         ++bombsAround;
                     } else {
                         subQueue.add(neighbor);
@@ -424,7 +424,7 @@ public class Game {
                 }
             }
 
-            current.open();
+            current.setOpen(true);
             current.setCellLook(CellLook.values()[bombsAround]);
             result.add(current);
 
@@ -448,13 +448,13 @@ public class Game {
             for (int j = 0; j < field.getColumns(); j++) {
                 Cell tmpCell = field.getCell(i, j);
 
-                if (tmpCell.hasBomb()) {
-                    if (tmpCell.hasFlag()) {
+                if (tmpCell.isBomb()) {
+                    if (tmpCell.isFlag()) {
                         continue;
                     }
                     tmpCell.setCellLook(tmpCell == cell ? CellLook.BOMB_BANG : CellLook.BOMB_CLEAR);
                 } else {
-                    if (tmpCell.hasFlag()) {
+                    if (tmpCell.isFlag()) {
                         tmpCell.setCellLook(CellLook.BOMB_WRONG);
                     } else {
                         continue;
@@ -477,7 +477,7 @@ public class Game {
         for (int i = 0; i < field.getRows(); i++) {
             for (int j = 0; j < field.getColumns(); j++) {
                 Cell tmpCell = field.getCell(i, j);
-                if (tmpCell.hasBomb() && !tmpCell.hasFlag()) {
+                if (tmpCell.isBomb() && !tmpCell.isFlag()) {
                     field.incrementFlagsCount();
                     tmpCell.setFlag(true);
                     tmpCell.setCellLook(CellLook.CLOSED_FLAGGED);
@@ -523,7 +523,7 @@ public class Game {
         }
 
         // Ставим/убираем флаг
-        if (cell.hasFlag()) {
+        if (cell.isFlag()) {
             cell.setFlag(false);
             cell.setCellLook(CellLook.CLOSED_CLEAR);
             field.decrementFlagsCount();

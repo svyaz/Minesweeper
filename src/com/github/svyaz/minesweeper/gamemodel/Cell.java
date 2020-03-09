@@ -1,8 +1,13 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Ячейка игрового поля.
  */
+@Getter
+@Setter
 public class Cell {
     /**
      * Координата ячейки по строке
@@ -43,7 +48,7 @@ public class Cell {
         this.cellLook = CellLook.CLOSED_CLEAR;
     }
 
-    public int getRow() {
+    /*public int getRow() {
         return row;
     }
 
@@ -81,5 +86,5 @@ public class Cell {
 
     void setCellLook(CellLook cellLook) {
         this.cellLook = cellLook;
-    }
+    }*/
 }

@@ -71,10 +71,10 @@ public class Field {
             int row = random.nextInt(rows);
             int column = random.nextInt(columns);
 
-            if (cells[row][column].hasBomb() || (row == excludeRow && column == excludeColumn)) {
+            if (cells[row][column].isBomb() || (row == excludeRow && column == excludeColumn)) {
                 continue;
             }
-            cells[row][column].setBomb();
+            cells[row][column].setBomb(true);
             i++;
         }
 
