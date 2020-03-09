@@ -1,8 +1,11 @@
 package com.github.svyaz.minesweeper.gamemodel.modes;
 
+import lombok.Getter;
+
 /**
  * Режим игры.
  */
+@Getter
 public abstract class GameMode {
     /**
      * Название режима (параметр запуска программы)
@@ -28,24 +31,4 @@ public abstract class GameMode {
      * Количество бомб.
      */
     int bombsCount;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getBombsCount() {
-        return bombsCount;
-    }
 }
