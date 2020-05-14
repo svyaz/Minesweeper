@@ -1,29 +1,56 @@
 package com.github.svyaz.minesweeper;
 
 import com.github.svyaz.minesweeper.gamemodel.Game;
-import com.github.svyaz.minesweeper.gamemodel.modes.FanMode;
-import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
-import com.github.svyaz.minesweeper.gamemodel.modes.ProMode;
-import com.github.svyaz.minesweeper.gamemodel.modes.RookieMode;
+import com.github.svyaz.minesweeper.gamemodel.modes.*;
 import com.github.svyaz.minesweeper.view.GameView;
 import com.github.svyaz.minesweeper.view.gui.GuiView;
 import com.github.svyaz.minesweeper.view.text.TextView;
+import org.apache.commons.cli.*;
 
 public class Main {
+    private static final String MESSAGE_PARSE_ERROR = "Невозможно разобрать входные параметры";
     private static final String MESSAGE_UNKNOWN_MODE = "Неизвестный режим игры.";
     private static final String MESSAGE_UNKNOWN_PARAMS = "Неизвестные параметры.";
     private static final String MESSAGE_HELP = "Запуск программы:" + System.lineSeparator() +
             "Minesweeper.jar [-mode [text | gui] | -help]" + System.lineSeparator() +
-            "  -mode - режим запуска. text - текстовый, gui - графический." + System.lineSeparator() +
+            "  -mode - режим запуска. text - текстовый, gui - графический. По умолчанию - gui" + System.lineSeparator() +
             "  -help - показ этой справки.";
 
     public static void main(String[] args) {
-        GameView gameView = null;
+        Options options = new Options();
 
-        if (args.length >= 2 && args[0].matches("-[mM][oO][dD][eE]")) {
-            if (args[1].matches("[tT][eE][xX][tT]")) {
+        Option modeOption = Option.builder("mode")
+                .hasArg(true)
+                .required(false)
+                .desc("Режим запуска. text - текстовый, gui - графический.")
+                .build();
+
+        Option helpOption = Option.builder("help")
+                .hasArg(false)
+                .required(false)
+                .desc("Вызов справки.")
+                .build();
+
+        options.addOption(modeOption);
+        options.addOption(helpOption);
+
+        CommandLineParser parser = new DefaultParser();
+
+        try {
+            CommandLine cmdLine = parser.parse(options, args);
+
+            if (cmdLine.hasOption("help")) {
+                System.out.println(MESSAGE_HELP);
+                System.exit(0);
+            }
+
+            String mode = cmdLine.getOptionValue("mode", "gui");
+
+            GameView gameView = null;
+
+            if (mode.equals("text")) {
                 gameView = new TextView();
-            } else if (args[1].matches("[gG][uU][iI]")) {
+            } else if (mode.equals("gui")) {
                 gameView = new GuiView();
             } else {
                 System.out.println(MESSAGE_UNKNOWN_MODE);
@@ -31,24 +58,23 @@ public class Main {
                 System.out.println(MESSAGE_HELP);
                 System.exit(0);
             }
-        } else if (args.length >= 1 && args[0].matches("-[hH][eE][lL][pP]")) {
-            System.out.println(MESSAGE_HELP);
-            System.exit(0);
-        } else if (args.length == 0) {
-            gameView = new GuiView();
-        } else {
+
+            Game gameController = new Game(gameView,
+                    new RookieMode(),
+                    new FanMode(),
+                    new ProMode(),
+                    new FreeMode(9, 9, 10)
+            );
+            gameController.runGame();
+
+        } catch (UnrecognizedOptionException e) {
             System.out.println(MESSAGE_UNKNOWN_PARAMS);
             System.out.println();
             System.out.println(MESSAGE_HELP);
-            System.exit(0);
-        }
 
-        Game gameController = new Game(gameView,
-                new RookieMode(),
-                new FanMode(),
-                new ProMode(),
-                new FreeMode(9, 9, 10)
-        );
-        gameController.runGame();
+        } catch (ParseException e) {
+            System.out.println(MESSAGE_PARSE_ERROR);
+            System.out.println(e.getMessage());
+        }
     }
 }
