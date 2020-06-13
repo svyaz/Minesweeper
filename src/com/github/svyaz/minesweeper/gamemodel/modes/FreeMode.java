@@ -9,8 +9,8 @@ public class FreeMode extends GameMode {
     public static final double MAX_BOMBS_FACTOR = 0.3;
 
     public FreeMode(int rows, int columns, int bombsCount) {
-        this.name = "free";
-        this.description = "MODE_FREE";
+        name = "free";
+        description = "MODE_FREE";
 
         /*
          * Размер поля в стандартном сапёре в режиме "Свободная игра" ограничен:

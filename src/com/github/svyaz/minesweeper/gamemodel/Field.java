@@ -1,13 +1,14 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
+import lombok.Getter;
 
 import java.util.Random;
 
 /**
  * Игровое поле.
  */
-public class Field {
+class Field {
     /**
      * Массив ячеек поля.
      */
@@ -16,21 +17,25 @@ public class Field {
     /**
      * Количество ячеек по вертикали.
      */
+    @Getter
     private int rows;
 
     /**
      * Количество ячеек по горизонтали.
      */
+    @Getter
     private int columns;
 
     /**
      * Количество бомб.
      */
+    @Getter
     private int bombsCount;
 
     /**
      * Количество установленных флагов.
      */
+    @Getter
     private int flagsCount;
 
     /**
@@ -119,24 +124,8 @@ public class Field {
         return cells[row][column];
     }
 
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    int getBombsCount() {
-        return bombsCount;
-    }
-
     void addOpenCellsCount(int openCellsCount) {
         this.openCellsCount += openCellsCount;
-    }
-
-    int getFlagsCount() {
-        return flagsCount;
     }
 
     void incrementFlagsCount() {

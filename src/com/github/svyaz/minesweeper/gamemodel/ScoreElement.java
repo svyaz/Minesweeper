@@ -1,35 +1,26 @@
 package com.github.svyaz.minesweeper.gamemodel;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Запись в таблице рекордов
  */
+@Getter
+@AllArgsConstructor
 class ScoreElement {
+    /**
+     * режим игры
+     */
     private String modeString;
-    private String userName;
+
+    /**
+     * имя игрока
+     */
     private long gameTime;
 
     /**
-     * Создает элемент для сохранения после установки нового рекорда.
-     *
-     * @param modeString режим игры.
-     * @param gameTime   время игры.
-     * @param userName   имя игрока.
+     * время игры
      */
-    ScoreElement(String modeString, long gameTime, String userName) {
-        this.modeString = modeString;
-        this.gameTime = gameTime;
-        this.userName = userName;
-    }
-
-    String getModeString() {
-        return modeString;
-    }
-
-    String getUserName() {
-        return userName;
-    }
-
-    long getGameTime() {
-        return gameTime;
-    }
+    private String userName;
 }

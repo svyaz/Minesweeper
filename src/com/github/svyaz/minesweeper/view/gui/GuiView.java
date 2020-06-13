@@ -223,13 +223,9 @@ public class GuiView implements GameView {
 
     @Override
     public void updateField(List<Cell> cellsList) {
-        SwingUtilities.invokeLater(() -> {
-            for (Cell cell : cellsList) {
-                int row = cell.getRow();
-                int column = cell.getColumn();
-                this.cells[row][column].setIcon(fieldIcons.get(cell.getCellLook()));
-            }
-        });
+        SwingUtilities.invokeLater(() -> cellsList.forEach(c ->
+                cells[c.getRow()][c.getColumn()].setIcon(fieldIcons.get(c.getCellLook()))
+        ));
     }
 
     @Override
@@ -282,10 +278,8 @@ public class GuiView implements GameView {
                                 (int) (FreeMode.MIN_BOMBS_FACTOR * 100.0),
                                 (int) (FreeMode.MAX_BOMBS_FACTOR * 100.0))
                 );
-                Command command = freeGameDialog.getCommand();
-                if (command != null) {
-                    gameController.executeCommand(command);
-                }
+                Optional.ofNullable(freeGameDialog.getCommand())
+                        .ifPresent(gameController::executeCommand);
             });
 
             // Game events
@@ -316,12 +310,11 @@ public class GuiView implements GameView {
                     } else if (isRightPressed) {
                         command = new FlagCellCommand(row, column);
                     }
-
                     isLeftPressed = false;
                     isRightPressed = false;
-                    if (command != null) {
-                        gameController.executeCommand(command);
-                    }
+
+                    Optional.ofNullable(command)
+                            .ifPresent(gameController::executeCommand);
                 }
             };
 
@@ -355,7 +348,7 @@ public class GuiView implements GameView {
     }
 
     @Override
-    public void showScores(HashMap<String, String> scoresMap) {
+    public void showScores(Map<String, String> scoresMap) {
         StringBuilder sb = new StringBuilder();
         scoresMap.forEach((key, value) -> sb
                 .append(messages.getString(key))

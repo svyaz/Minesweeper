@@ -17,14 +17,14 @@ class ScoresManager {
     /**
      * Записи о рекордах для каждого из игрового режимов
      */
-    private HashMap<String, ScoreElement> scores;
+    private Map<String, ScoreElement> scores;
 
     /**
      * Доступные режимы игры
      */
-    private HashMap<String, GameMode> gameModes;
+    private Map<String, GameMode> gameModes;
 
-    ScoresManager(HashMap<String, GameMode> gameModes) {
+    ScoresManager(Map<String, GameMode> gameModes) {
         this.gameModes = gameModes;
         this.scores = new HashMap<>();
         loadHighScores();
@@ -81,11 +81,9 @@ class ScoresManager {
      * @return true если это новый рекорд, false - если время больше чем рекорд.
      */
     boolean isNewRecord(GameMode gameMode, long time) {
-        ScoreElement currentScore = scores.get(gameMode.getName());
-        if (currentScore == null) {
-            return true;
-        }
-        return currentScore.getGameTime() > time;
+        return Optional.ofNullable(scores.get(gameMode.getName()))
+                .map(el -> el.getGameTime() > time)
+                .orElse(true);
     }
 
     /**

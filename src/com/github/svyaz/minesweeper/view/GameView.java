@@ -3,8 +3,8 @@ package com.github.svyaz.minesweeper.view;
 import com.github.svyaz.minesweeper.gamemodel.Cell;
 import com.github.svyaz.minesweeper.gamemodel.Game;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface GameView {
     // Инициализация view
@@ -29,7 +29,7 @@ public interface GameView {
     void showMessage(String message);
 
     // Показать таблицу рекордов
-    void showScores(HashMap<String, String> scoresMap);
+    void showScores(Map<String, String> scoresMap);
 
     // Получить имя пользователя, который поставил рекорд
     String getUserName();

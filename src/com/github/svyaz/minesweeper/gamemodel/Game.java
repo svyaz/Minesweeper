@@ -5,12 +5,8 @@ import com.github.svyaz.minesweeper.gamemodel.modes.FreeMode;
 import com.github.svyaz.minesweeper.gamemodel.modes.GameMode;
 import com.github.svyaz.minesweeper.view.GameView;
 
-import java.util.HashMap;
-import java.util.TimerTask;
-import java.util.Timer;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.github.svyaz.minesweeper.gamemodel.GameStatus.*;
 
@@ -38,7 +34,7 @@ public class Game {
     /**
      * Время игры.
      */
-    private long time;
+    private AtomicLong time;
 
     /**
      * Режим игры: Новичок, Любитель, Профессионал, Свободная игра.
@@ -48,7 +44,7 @@ public class Game {
     /**
      * Возможные режимы: Новичок, Любитель, Профессионал, Свободная игра.
      */
-    private HashMap<String, GameMode> gameModes;
+    private Map<String, GameMode> gameModes;
 
     /**
      * Игровое поле.
@@ -79,11 +75,11 @@ public class Game {
     public Game(GameView gameView, GameMode... modes) {
         view = gameView;
         status = NOT_STARTED;
+        time = new AtomicLong(0);
 
         gameModes = new HashMap<>();
-        for (GameMode mode : modes) {
-            gameModes.put(mode.getName(), mode);
-        }
+        Arrays.stream(modes)
+                .forEach(mode -> gameModes.put(mode.getName(), mode));
 
         gameMode = gameModes.get("rookie");
         scoresManager = new ScoresManager(gameModes);
@@ -93,7 +89,7 @@ public class Game {
      * Запуск таймера при старте игры (когда сделан первый ход)
      */
     private void startTimer() {
-        time = 0;
+        time.set(0);
         timer = new Timer(true);
 
         TimerTask timerTask = new TimerTask() {
@@ -101,8 +97,8 @@ public class Game {
 
             @Override
             public void run() {
-                time = System.currentTimeMillis() - startTime;
-                view.updateGameTimeString(Game.getGameTimeString(time));
+                time.set(System.currentTimeMillis() - startTime);
+                view.updateGameTimeString(Game.getGameTimeString(time.get()));
             }
         };
         timer.schedule(timerTask, 0, 1000);
@@ -113,7 +109,7 @@ public class Game {
      */
     public void runGame() {
         this.field = new Field(gameMode);
-        time = 0;
+        time.set(0);
         view.initView(gameMode.getDescription(),
                 gameMode.getRows(),
                 gameMode.getColumns(),
@@ -172,7 +168,7 @@ public class Game {
         }
 
         field = new Field(gameMode);
-        time = 0;
+        time.set(0);
         view.initView(gameMode.getDescription(),
                 gameMode.getRows(),
                 gameMode.getColumns(),
@@ -247,7 +243,7 @@ public class Game {
             view.printField();
             view.showMessage("MSG_GAME_FINISHED");
             // Проверка по таблице рекордов
-            if (scoresManager.isNewRecord(gameMode, time)) {
+            if (scoresManager.isNewRecord(gameMode, time.get())) {
                 saveNewRecord();
                 showScores();
             }
@@ -361,7 +357,7 @@ public class Game {
             view.printField();
             view.showMessage("MSG_GAME_FINISHED");
             // Проверка по таблице рекордов
-            if (scoresManager.isNewRecord(gameMode, time)) {
+            if (scoresManager.isNewRecord(gameMode, time.get())) {
                 saveNewRecord();
                 showScores();
             }
@@ -565,7 +561,7 @@ public class Game {
      * Показать таблицу рекордов.
      */
     public void showScores() {
-        HashMap<String, String> scoresMap = scoresManager.getScoresMap();
+        Map<String, String> scoresMap = scoresManager.getScoresMap();
         if (!scoresMap.isEmpty()) {
             view.showScores(scoresMap);
         } else {
@@ -578,7 +574,7 @@ public class Game {
      */
     private void saveNewRecord() {
         String userName = view.getUserName();
-        scoresManager.setNewRecord(gameMode, userName, time);
+        scoresManager.setNewRecord(gameMode, userName, time.get());
         scoresManager.save();
     }
 }

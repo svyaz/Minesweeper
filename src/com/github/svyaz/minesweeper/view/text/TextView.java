@@ -5,10 +5,7 @@ import com.github.svyaz.minesweeper.gamemodel.Game;
 import com.github.svyaz.minesweeper.gamemodel.commands.*;
 import com.github.svyaz.minesweeper.view.GameView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class TextView implements GameView {
@@ -148,7 +145,7 @@ public class TextView implements GameView {
     }
 
     @Override
-    public void showScores(HashMap<String, String> scoresMap) {
+    public void showScores(Map<String, String> scoresMap) {
         scoresMap.forEach((key, value) -> System.out.println(messages.getString(key) + value));
     }
 
